@@ -1,29 +1,5 @@
 package Modele;
 
-/*
- * gauffre empoison�e
- * Copyright (C) 2020 Grondin Denis
-
- * Ce programme est libre, vous pouvez le redistribuer et/ou le
- * modifier selon les termes de la Licence Publique Générale GNU publiée par la
- * Free Software Foundation (version 2 ou bien toute autre version ultérieure
- * choisie par vous).
-
- * Ce programme est distribué car potentiellement utile, mais SANS
- * AUCUNE GARANTIE, ni explicite ni implicite, y compris les garanties de
- * commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
- * Licence Publique Générale GNU pour plus de détails.
-
- * Vous devez avoir reçu une copie de la Licence Publique Générale
- * GNU en même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free
- * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * États-Unis.
-
- * Contact: denisg3105@gmail.com
- *          515 rue des r�sidences
- *          Domaine universitaire
- *          38401 Saint Martin d'Hères
- */
 
 import Patterns.Observable;
 import java.io.File;
@@ -61,7 +37,7 @@ public class Jeu extends Observable {
 			save = new FileOutputStream(new File(s));
 	    BufferedOutputStream bsave = new BufferedOutputStream(save);
 	    bsave.write(1);
-	    // donn�e a sauvegarder
+	    // donnée a sauvegarder
 		bsave.close();
 		} catch (IOException e) {	
 			System.err.println("Impossible de sauvegarder dans " + s);
@@ -74,7 +50,7 @@ public class Jeu extends Observable {
 		      FileInputStream save = new FileInputStream(new File(s));
 		      BufferedInputStream bsave = new BufferedInputStream(save);
 		      ligne=bsave.read();
-		      // donn�e a lire
+		      // donnée a lire
 		      bsave.close();
 		  } catch (IOException e) {
 		      e.printStackTrace();
