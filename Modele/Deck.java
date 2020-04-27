@@ -1,12 +1,14 @@
 package Modele;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Stack;
 
 public class Deck {
 	private Stack<Carte> cartes;
 	
-	Deck(){
+	public Deck(){
+		cartes = new Stack<Carte>();
 		Couleur couleur = null;
 		for(int j =0;j<4 ;j++ ) {
 			switch(j) {
@@ -39,6 +41,15 @@ public class Deck {
 	}
 	public Carte piocher() {
 		return cartes.pop();
+	}
+	
+	public String toString() {
+		String str = "Deck : ";
+		Iterator it = cartes.iterator();
+		while(it.hasNext()) {
+			str = str+it.next()+"\n";
+		}
+		return str;
 	}
 	
 }
