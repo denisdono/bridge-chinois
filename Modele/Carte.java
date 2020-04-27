@@ -14,5 +14,11 @@ public class Carte {
 		return valeur;
 	}
 
+	public String toString() {
+		String str = "Carte : " ;
+		str = str+" "+getValeur()+" "+getCouleur();
+		return str;
+		
+	}
 }
 
