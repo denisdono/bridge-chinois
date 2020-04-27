@@ -10,7 +10,7 @@ public class Deck {
 	public Deck(){
 		cartes = new Stack<Carte>();
 		Couleur couleur = null;
-		for(int j =0;j<4 ;j++ ) {
+		for(int j =0;j<4 ;j++ ) { // creations de toutes les cartes
 			switch(j) {
 				case 0: couleur = Couleur.Trefle;
 						break;
@@ -22,24 +22,24 @@ public class Deck {
 					break;		
 						
 			}
-			for(int i = 2 ;i<15;i++ ) {
+			for(int i = 2 ;i<15;i++ ) { // Les cartes vont du 2 au 14 pour les cartes de 2 a 10 les chiffres parlent d'eux meme ensuite 11=valet, 12=dame, 13=roi et 14=as
 				Carte carte = new Carte(i,couleur);
 				cartes.push(carte);
 			}
 		}
-		Collections.shuffle(cartes);
+		Collections.shuffle(cartes); //melange de la pile 
 	}
-	Deck(Stack<Carte> cartes){
+	Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
 		this.cartes=cartes;
 	}
 	
-	public boolean estVide() {
+	public boolean estVide() { //voir si le deck est vide
 		return cartes.empty();
 	}
-	public Carte topDeck() {
+	public Carte topDeck() { //regarder la carte du dessus de la pile
 		return cartes.peek();
 	}
-	public Carte piocher() {
+	public Carte piocher() { //recuperer et enlever la carte du dessus de la pile
 		return cartes.pop();
 	}
 	
