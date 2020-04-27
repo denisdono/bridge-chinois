@@ -43,6 +43,10 @@ public class Deck {
 		return cartes.pop();
 	}
 	
+	public Stack getCartes() { //recuperer le tas de carte
+		return cartes;
+	}
+	
 	public String toString() {
 		String str = "Deck : ";
 		Iterator it = cartes.iterator();
