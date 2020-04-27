@@ -15,7 +15,7 @@ public class Carte {
 	}
 
 	public String toString() {
-		String str = "Carte :" ;
+		String str = "" ;
 		str = str+" "+getValeur()+" "+getCouleur();
 		return str;
 		
