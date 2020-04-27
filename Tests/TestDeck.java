@@ -37,14 +37,24 @@ public class TestDeck {
 		Deck deckAff = new Deck();
 		
 		System.out.println("////Test de l'affichage du deck////");
+		System.out.println();
+		//test affichage des 52 cartes
 		TestDeck test = new TestDeck(deckAff);
 		test.testAffichageDeck(deckAff);
 		
-		//test de la pioche
+		//test de la pioche : 
+		//Entrée : deck de 52 cartes
+		//Sortie : deck de 0 cartes
 		System.out.println("////Test de la pioche////");
+		//assertEquals(test.deck.getCartes().size(),52);
+		System.out.println();
+		System.out.println("Taille du deck : "+test.deck.getCartes().size());//doit etre égale a 52
+		
 		test.testPioche(deckAff);
-		//assertEquals(nbPioche,52);
-		System.out.print("NbPioche : "+test.nbPioche);
+		//assertEquals(test.deck.getCartes().size(),0);
+		System.out.println();
+		System.out.println("Taille du deck : "+test.deck.getCartes().size());//doit etre egal a 0
+		
 		
 		
 		
