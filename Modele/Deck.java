@@ -48,7 +48,7 @@ public class Deck {
 	}
 	
 	public String toString() {
-		String str = "Deck : ";
+		String str = "Deck : \n";
 		Iterator it = cartes.iterator();
 		while(it.hasNext()) {
 			str = str+it.next()+"\n";
