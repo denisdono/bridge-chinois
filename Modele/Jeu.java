@@ -14,14 +14,19 @@ import java.io.IOException;
 
 
 public class Jeu extends Observable {
-	boolean enCours;
-	boolean maj;
-	Deck [] piles;
-	List<Carte> main1;
-	List<Carte> main2;
+	boolean enCours;// partie en cour
+	boolean piochage;// y'as t'il des cartes a piocher ?
+	boolean maj;// inutil pour l'instant
+	Deck [] piles;// pile présente sur la table
+	List<Carte> main1;//main du joueur 1
+	List<Carte> main2;//main du joueur 2
+	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
 	
 
 	public Jeu() {
+		enCours = true;
+		piochage= true;
+		joueurdominant=1;
 		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
 		Stack<Carte> p =new Stack<Carte>();// variable temporaire
