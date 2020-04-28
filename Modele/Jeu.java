@@ -16,7 +16,6 @@ import java.io.IOException;
 public class Jeu extends Observable {
 	boolean enCours;// partie en cour
 	boolean piochage;// y'as t'il des cartes a piocher ?
-	boolean maj;// inutil pour l'instant
 	Deck [] piles;// pile présente sur la table
 	List<Carte> main1;//main du joueur 1
 	List<Carte> main2;//main du joueur 2
@@ -32,7 +31,7 @@ public class Jeu extends Observable {
 		Stack<Carte> p =new Stack<Carte>();// variable temporaire
 		main1=new ArrayList <Carte>();
 		main2=new ArrayList <Carte>();
-		for (int i=0;i<11;i++) {
+		for (int i=0;i<11;i++) { // remplissage des mains des joueurs
 			main1.add(paquet.piocher());
 			main2.add(paquet.piocher());
 		}

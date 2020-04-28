@@ -11,7 +11,7 @@ public class bridge {
 		boolean IA;
 
 
-		// Le choix des joueurs est passé en arguments de la ligne de commande
+		// Le choix de l'adersaire est passé en arguments de la ligne de commande
 		// Par défaut on prend IA
 		// Avec des arguments on peut choisir humain ou IA comme adversaire
 			String nature;
