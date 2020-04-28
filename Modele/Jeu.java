@@ -3,8 +3,6 @@ package Modele;
 
 import Patterns.Observable;
 import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,9 +15,10 @@ public class Jeu extends Observable {
 	boolean enCours;// partie en cour
 	boolean piochage;// y'as t'il des cartes a piocher ?
 	Deck [] piles;// pile présente sur la table
-	List<Carte> main1;//main du joueur 1
-	List<Carte> main2;//main du joueur 2
+	Hand main1;//main du joueur 1
+	Hand main2;//main du joueur 2
 	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
+	Couleur atout;// l'atout de la manche
 	
 
 	public Jeu() {
@@ -29,11 +28,11 @@ public class Jeu extends Observable {
 		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
 		Stack<Carte> p =new Stack<Carte>();// variable temporaire
-		main1=new ArrayList <Carte>();
-		main2=new ArrayList <Carte>();
+		main1=new Hand();
+		main2=new Hand();
 		for (int i=0;i<11;i++) { // remplissage des mains des joueurs
-			main1.add(paquet.piocher());
-			main2.add(paquet.piocher());
+			main1.ajoutCarte(paquet.piocher());
+			main2.ajoutCarte(paquet.piocher());
 		}
 		for (int i=0;i<6;i++) {// boucle sur les six piles
 			for (int j=0;j<5;j++) {// boucle pour piocher les 5 cartes
@@ -44,9 +43,20 @@ public class Jeu extends Observable {
 		}
 	}
 
-	public void jouer(int l, int c) {
+	public void jouer() {
 		if (enCours) {
 			// tour de jeu
+			
+			// joueurdominant pose une carte
+			
+			// le second joueur pose une carte en conséquences (limiter par raport a la cartes)
+			
+			// calcul de qui remporte le plis
+			
+			// celui qui gagne devien joueur dominant
+			
+			//s'il reste des cartes a piocher le joueur dominant pioche suivi du second
+			
 			metAJour();
 		}
 	}
@@ -85,5 +95,18 @@ public class Jeu extends Observable {
 	public boolean enCours() {
 		return enCours;
 	}
-
+	
+	public boolean peutJouer(Carte c1, Carte c2, Hand main) {
+		if (c1.getCouleur()==c2.getCouleur()) {
+			return true;}
+		else {
+			for (int i=0;i<main.getnbCarte();i++) {
+				if (main.voirCarte(i).getCouleur()==c1.getCouleur()) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+	}
 }
