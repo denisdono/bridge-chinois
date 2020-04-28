@@ -52,6 +52,12 @@ public class TestDeck {
 		
 		test.testPioche(deckAff);
 		//assertEquals(test.deck.getCartes().size(),0);
+		
+		//test de la pioche:
+		//si on pioche alors que la pioche est vide
+		//doit afficher que la pioche est vide
+		System.out.println("\n///Test piocher alors que la pioche est vide///\n");
+		deckAff.piocher();
 		System.out.println();
 		System.out.println("Taille du deck : "+test.deck.getCartes().size());//doit etre egal a 0
 		

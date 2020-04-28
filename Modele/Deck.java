@@ -1,6 +1,7 @@
 package Modele;
 
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -40,7 +41,15 @@ public class Deck {
 		return cartes.peek();
 	}
 	public Carte piocher() { //recuperer et enlever la carte du dessus de la pile
-		return cartes.pop();
+		Carte carte = null;
+		try {			
+			carte = cartes.pop();
+		}catch(EmptyStackException e) {
+			System.out.println("La pioche est vide");
+		}
+		return carte;
+			
+		
 	}
 	
 	public Stack getCartes() { //recuperer le tas de carte
