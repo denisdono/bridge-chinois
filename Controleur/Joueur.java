@@ -12,15 +12,15 @@ import Modele.Jeu;
 // - tenir compte d'une temporisation écoulée (utilisé dans une IA)
 // - tenir compte d'un coup joué à la souris (utilisé par un joueur humain)
 abstract class Joueur {
-	Jeu plateau;
+	Jeu jeu;
 	int num;
 
 	// Le joueur connait son numéro, cela lui permet d'inspecter le plateau en
 	// sachant
 	// repérer ses pions et évaluer où il en est
-	Joueur(int n, Jeu p) {
+	Joueur(int n, Jeu j) {
 		num = n;
-		plateau = p;
+		jeu = j;
 	}
 
 	int num() {
@@ -35,7 +35,7 @@ abstract class Joueur {
 
 	// Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
 	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
-	boolean jeu(int i, int j) {
+	boolean jeu() {
 		return false;
 	}
 }

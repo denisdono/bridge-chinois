@@ -10,11 +10,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 50;
 	int decompte;
 
-	public ControleurMediateur(Jeu j, boolean[] IA) {
+	public ControleurMediateur(Jeu j, boolean IA) {
 		jeu = j;
-		joueurs = new Joueur[IA.length];
-		for (int i = 0; i < joueurs.length; i++)
-			if (IA[i])
+		joueurs = new Joueur[2];
+		for (int i = 0; i < 2; i++)
+			if (i==1 && IA)
 				joueurs[i] = new JoueurIA(i, jeu);
 			else
 				joueurs[i] = new JoueurHumain(i, jeu);
@@ -24,13 +24,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
-		if (joueurs[joueurCourant].jeu(l, c))
+		if (joueurs[joueurCourant].jeu())
 			changeJoueur();
 	}
 
 	void changeJoueur() {
-		joueurCourant = (joueurCourant + 1) % joueurs.length;
-		decompte = lenteurAttente;
+		if (jeu.new_dom()){// s'il y as eu un changement du joueur dominant on remet le bon joueur
+			joueurCourant=jeu.j_dom();
+			jeu.ch_joueur();
+		}
+		else {// sinon on fais continuer en alternance
+			joueurCourant = (joueurCourant + 1) % joueurs.length;
+			decompte = lenteurAttente;
+		}
 	}
 
 	public void tictac() {
