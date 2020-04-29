@@ -35,6 +35,7 @@ public class Hand{
 		}
 		else {
 		main[nbcarte]=c;
+		nbcarte++;
 		}
 	}
 	
