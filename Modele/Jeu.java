@@ -93,7 +93,8 @@ public class Jeu extends Observable {
 				etape=0;
 				break;
 			}
-		}	
+		}
+		enCours=mains[0].getnbCarte()==0;
 	}
 	
 	public int etape() {
