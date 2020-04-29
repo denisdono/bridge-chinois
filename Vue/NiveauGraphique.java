@@ -1,51 +1,35 @@
 package Vue;
 
+
 import Modele.Jeu;
 import Patterns.Observateur;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 
-public class NiveauGraphique extends JComponent implements Observateur {
+public class NiveauGraphique extends JPanel implements Observateur {
 	Jeu jeu;
-	int largeurCase, hauteurCase;
+	int largeurCase=1, hauteurCase=1;
 
 	public NiveauGraphique(Jeu j) {
 		jeu = j;
 		jeu.ajouteObservateur(this);
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		Graphics2D drawable = (Graphics2D) g;
-        int lignes = jeu.hauteur();
-        int colonnes = jeu.largeur();
-        largeurCase = largeur() / colonnes;
-        hauteurCase = hauteur() / lignes;
-
-        g.clearRect(0, 0, largeur(), hauteur());
-        if (!jeu.enCours())
-            g.drawString("Fin", 20, hauteur()/2);
-        // Grille
-        for (int i=1; i<lignes;i++) {
-            g.drawLine(0, i*hauteurCase, largeur(), i*hauteurCase);
-        }
-        for (int j=1; j<colonnes;j++) {
-            g.drawLine(j*largeurCase, 0, j*largeurCase, hauteur());
-        }
-        // Coups
-        for (int i=0; i<lignes; i++)
-            for (int j=0; j<colonnes; j++)
-                switch (jeu.valeur(i, j)) {
-                    case -1:
-                        g.drawOval(j*largeurCase, i*hauteurCase, largeurCase, hauteurCase);
-                        break;
-                    default:
-                        g.drawLine(j*largeurCase, i*hauteurCase, (j+1)*largeurCase, (i+1)*hauteurCase);
-                        g.drawLine(j*largeurCase, (i+1)*hauteurCase, (j+1)*largeurCase, i*hauteurCase);
-                        break;
+                JPanel main1 = new JPanel(new FlowLayout());
+                for(int i =0;i<11;i++){
+                    JLabel l = new JLabel("emplac carte");
+                    main1.add(l);
                 }
+                this.add(main1);
 	}
+
+
+//    private String createImgName(Carte c) {
+//        return c.getCouleur().getNom() + " "+c.getValeur()+".png";
+//    }
+//      
+        
 
 	int largeur() {
 		return getWidth();

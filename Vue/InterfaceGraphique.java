@@ -46,23 +46,23 @@ public class InterfaceGraphique implements Runnable {
 	@Override
 	public void run() {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            JFrame frame = new JFrame("Ma fenetre a moi");
+            JFrame frame = new JFrame("Bridge Chinois");
             frame.setSize((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
 
             frame.setLayout(new FlowLayout());
             NiveauGraphique niv = new NiveauGraphique(j);
-            niv.setTaille(screenSize);
+            //niv.setTaille(screenSize);
             niv.addMouseListener(new AdaptateurSouris(niv, control));
-            MenuInGame menuInGame = new MenuInGame(j, control);
-
+            Menu m = new Menu();
             frame.add(niv);
-            frame.add(menuInGame.getPanel());
+            frame.add(m);
+            //frame.add(menuInGame);
            
              
             Timer chrono = new Timer( 16, new AdaptateurTemps(control));
             chrono.start();
             frame.pack();
-            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             frame.setVisible(true);
                 
