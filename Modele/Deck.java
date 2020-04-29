@@ -30,7 +30,7 @@ public class Deck {
 		}
 		Collections.shuffle(cartes); //melange de la pile 
 	}
-	public Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
+	Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
 		this.cartes=cartes;
 	}
 	
