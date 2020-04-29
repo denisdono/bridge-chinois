@@ -10,11 +10,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 50;
 	int decompte;
 
-	public ControleurMediateur(Jeu j, boolean[] IA) {
+	public ControleurMediateur(Jeu j, boolean IA) {
 		jeu = j;
-		joueurs = new Joueur[IA.length];
+		joueurs = new Joueur[2];
 		for (int i = 0; i < joueurs.length; i++)
-			if (IA[i])
+			if (i==1 && IA)
 				joueurs[i] = new JoueurIA(i, jeu);
 			else
 				joueurs[i] = new JoueurHumain(i, jeu);
