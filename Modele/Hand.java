@@ -21,7 +21,8 @@ public class Hand{
 	
 	public Carte poserCarte(int i) {// permet de poser une carte de la main (défini par l'indice)
 		Carte c=main[i];
-		for(int j=i;j<nbcarte-1;j++) {// remet les carte au debut du tableau
+		nbcarte--;
+		for(int j=i;j<nbcarte;j++) {// remet les carte au debut du tableau
 			main[j]=main[j+1];
 		}
 		return c;// retourn la carte a poser
@@ -34,6 +35,7 @@ public class Hand{
 		}
 		else {
 		main[nbcarte]=c;
+		nbcarte++;
 		}
 	}
 	
