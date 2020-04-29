@@ -30,7 +30,7 @@ public class Deck {
 		}
 		Collections.shuffle(cartes); //melange de la pile 
 	}
-	Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
+	public Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
 		this.cartes=cartes;
 	}
 	
@@ -52,7 +52,7 @@ public class Deck {
 		
 	}
 	
-	public Stack getCartes() { //recuperer le tas de carte
+	public Stack<Carte> getCartes() { //recuperer le tas de carte
 		return cartes;
 	}
 	
