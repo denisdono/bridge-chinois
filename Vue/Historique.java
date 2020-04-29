@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 /**
@@ -37,8 +38,9 @@ public class Historique extends JFrame implements Observateur {
     
     @Override
     public void miseAJour() {
-        //btBut4.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
-        hisPanel = new JPanel(new GridLayout(5,3));
+        //btBut4.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );
+        
+        hisPanel = new JPanel(new GridLayout(18,3));
         JLabel titre = new JLabel("Historique");
         titre.setFont(new Font("Calibri", Font.PLAIN, 24));
         hisPanel.add(titre);
@@ -58,12 +60,14 @@ public class Historique extends JFrame implements Observateur {
         hisPanel.add(ent2);
         hisPanel.add(ent3);
         ////////////////
-        for(int i = 0; i<9;i++){
+        for(int i = 0; i<16*3;i++){
             JLabel l = new JLabel("vals"+i, SwingConstants.CENTER);
             l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             hisPanel.add(l);
         }
-        this.add(hisPanel);
+        JScrollPane scrollPane = new JScrollPane(hisPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        this.add(scrollPane);
        
     }
 
