@@ -284,14 +284,13 @@ public class Jeu extends Observable {
 	
 	private boolean pilesvide() {
 		//teste si les 6 piles de pioche sont vide
-		boolean temp = false;
 		for (int i=0;i<6;i++) {
 			if (!piles[i].estVide()) {
-				//
-				temp=true;
+				//dés qu'une pile n'est pas vide on renvoi faux
+				return false;
 			}
 		}
-		return temp;
+		return true;
 	}
 	
 	public boolean peutPiocher(int i) {
