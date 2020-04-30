@@ -8,10 +8,8 @@ class JoueurHumain extends Joueur {
 	}
 
 	@Override
-	boolean jeu() {
-		if (jeu.etape()<2) {
-			int i=0;/// WARNING A CHANGER ///
-			// A adapter selon le jeu,
+	boolean jeu(int i) {
+		if (jeu.etape()<2) {			// A adapter selon le jeu,
 			// Un coup peut être constitué de plusieurs passages par cette fonction, ex :
 			// - selection d'un pièce + surlignage des coups possibles
 			// - selection de la destination
@@ -25,7 +23,6 @@ class JoueurHumain extends Joueur {
 			}
 		}
 		else {
-			int i=0;/// WARNING A CHANGER ///
 			if (jeu.peutPiocher(i)) {
 				jeu.jouer(i,num);
 				return true;
