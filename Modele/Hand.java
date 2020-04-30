@@ -19,7 +19,7 @@ public class Hand{
 		return main[i];
 	}
 	
-	public Carte poserCarte(int i) {// permet de poser une carte de la main (défini par l'indice)
+	public Carte poserCarte(int i) {// permet de poser une carte de la main (dï¿½fini par l'indice)
 		Carte c=main[i];
 		nbcarte--;
 		for(int j=i;j<nbcarte;j++) {// remet les carte au debut du tableau
@@ -47,7 +47,7 @@ public class Hand{
 		return plis;
 	}
 	
-	public void addPlis() {// incrémente les plis
+	public void addPlis() {// incrï¿½mente les plis
 		plis++ ;
 	}
 	
@@ -66,5 +66,9 @@ public class Hand{
 	public void addScore(int p) {// permet d'ajouter p au score
 		score=score+p;
 	}
+
+        public Carte[] getMain() {
+            return main;
+        }
 
 }

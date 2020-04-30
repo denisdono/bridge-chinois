@@ -286,7 +286,7 @@ public class Jeu extends Observable {
 		//teste si les 6 piles de pioche sont vide
 		for (int i=0;i<6;i++) {
 			if (!piles[i].estVide()) {
-				//dés qu'une pile n'est pas vide on renvoi faux
+				//dï¿½s qu'une pile n'est pas vide on renvoi faux
 				return false;
 			}
 		}
@@ -326,4 +326,13 @@ public class Jeu extends Observable {
 		}
 		
 	}
+
+        public Hand[] getMains() {
+            return mains;
+        }
+
+        public Deck[] getPiles() {
+            return piles;
+        }
+        
 }

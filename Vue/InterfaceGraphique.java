@@ -51,11 +51,9 @@ public class InterfaceGraphique implements Runnable {
             frame.setSize((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
 
             frame.setLayout(new FlowLayout());
-            NiveauGraphique niv = new NiveauGraphique(j);
-            //niv.setTaille(screenSize);
-            niv.addMouseListener(new AdaptateurSouris(niv, control));
+            Plateau pl = new Plateau(j);
             Menu m = new Menu();
-            frame.add(niv);
+            frame.add(pl);
             frame.add(m);
 	        
 	    frame.setJMenuBar(menuBar);

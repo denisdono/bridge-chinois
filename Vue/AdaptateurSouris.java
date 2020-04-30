@@ -5,10 +5,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AdaptateurSouris extends MouseAdapter {
-	NiveauGraphique niv;
+	Plateau niv;
 	CollecteurEvenements control;
 
-	AdaptateurSouris(NiveauGraphique n, CollecteurEvenements c) {
+	AdaptateurSouris(Plateau n, CollecteurEvenements c) {
 		niv = n;
 		control = c;
 	}
