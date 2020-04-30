@@ -56,7 +56,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         super();
         his = new Historique();
        
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));        rbgPanel4 = new ButtonGroup();
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
        
         lbLabel7 = new JLabel("Atout");
         lbLabel7.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
@@ -66,9 +66,9 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
         lbLabel8 = new JLabel("");
 
-        Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
+        //Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
         lbLabel8.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
-        lbLabel8.setIcon(atout);
+        //lbLabel8.setIcon(atout);
        
         this.add(lbLabel8);
 
