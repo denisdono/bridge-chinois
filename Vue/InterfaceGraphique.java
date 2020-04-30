@@ -33,10 +33,11 @@ import javax.swing.*;
 public class InterfaceGraphique implements Runnable {
 	Jeu j;
 	CollecteurEvenements control;
-
+	menuBar menuBar;
 	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
 		j = jeu;
 		control = c;
+		menuBar = new menuBar();  
 	}
 
 	public static void demarrer(Jeu j, CollecteurEvenements control) {
@@ -56,6 +57,8 @@ public class InterfaceGraphique implements Runnable {
             Menu m = new Menu();
             frame.add(niv);
             frame.add(m);
+	        
+	    frame.setJMenuBar(menuBar);
             //frame.add(menuInGame);
            
              
