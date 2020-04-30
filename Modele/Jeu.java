@@ -16,13 +16,13 @@ public class Jeu extends Observable {
 	boolean enCours;// partie en cour
 	boolean finmanche;// a t'on fini la manche ?
 	boolean piochage;// y'as t'il des cartes a piocher ?
-	boolean parManche;// la fin de partie et d�cid� par nombre de manche (false= on d�cide par score)
-	Deck [] piles;// pile pr�sente sur la table
+	boolean parManche;// la fin de partie et décidé par nombre de manche (false= on décide par score)
+	Deck [] piles;// pile présente sur la table
 	Hand [] mains;//main des joueur
 	int totalfin;// sore a obtenir ou nombre de manche a faire avant la fin de partie
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
-	int joueurdominant;// quel joueur � la main (premier a jouer/piocher)
+	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
@@ -33,10 +33,10 @@ public class Jeu extends Observable {
 		changerjoueur=false;
 		joueurdominant=0;
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
-		mains=new Hand[2];
-		mains[0]=new Hand();
-		mains[1]=new Hand();
-		nouvelleManche();
+		mains=new Hand[2];//cree les main des joueur
+		mains[0]=new Hand();//initialise la main du premier joueur
+		mains[1]=new Hand();//initialise la main du deuxième joueur
+		nouvelleManche();//initialise une manche
 	}
 
 	public void nouvelleManche() {
@@ -63,6 +63,7 @@ public class Jeu extends Observable {
 	
 	public void jouer(int i,int n) {
 		if (enCours) {
+			//tant que la condition de victoire par nombre de plis gagner ou de mancher gagner n'est pas atteinte
 			if (!finmanche) {
 				// tour de jeu
 				switch(etape) {
@@ -73,7 +74,7 @@ public class Jeu extends Observable {
 					etape++;
 					break;
 				case 1:
-					// le second joueur pose une carte en cons�quences (limiter par raport a la cartes)
+					// le second joueur pose une carte en conséquences (limiter par raport a la cartes)
 					c_sub=mains[n].poserCarte(i);
 					metAJour();
 					// calcul de qui remporte le plis
@@ -83,7 +84,7 @@ public class Jeu extends Observable {
 						joueurdominant = (joueurdominant + 1) % 2;
 						changerjoueur=true;
 					}
-					mains[joueurdominant].addPlis();// incr�mente le nombre de plis du vainqueur
+					mains[joueurdominant].addPlis();// incrémente le nombre de plis du vainqueur
 					metAJour();
 					etape++;
 					break;
@@ -99,28 +100,34 @@ public class Jeu extends Observable {
 					}
 					break;
 				case 3:
-					
+					//le deuxième joueure pioche
 					mains[n].ajoutCarte(piles[i].piocher());
 					metAJour();
-					piochage=!pilesvide();
-					etape=0;
+					piochage=!pilesvide();//teste si il reste des carte a piocher
+					etape=0;//fini un tour de jeu
 					break;
 				}
 				if (mains[0].getnbCarte()==0 && mains[1].getnbCarte()==0) {
+					//teste si la manche est fini
 					finmanche=true;
 					if(parManche) {
-						enCours=(manche!=totalfin);
+						//si on compte par nombre de manche
+						enCours=(manche!=totalfin);//on vérifie si on fini la partie
 						int j=vainqueurManche();
 						if (j!=-1) {
+							//si il n'y a pas égaliter on incrémente le score du vaiqueur
 							mains[j].addScore(1);
 						}
 					}
 					else{
+						//sinon est par nombre de plis gagner
+						//on ajoute le nombre de plis gagner par chaque jooueur
 						mains[0].addScore(mains[0].getnbPlis());
 						mains[1].addScore(mains[1].getnbPlis());
-						enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);
+						enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);//on vérifie si on fini la partie
 					}
 					if (enCours) {
+						//si la partie n'est pas fini on lance une nouvelle manche
 						nouvelleManche();
 						manche++;
 					}
@@ -134,10 +141,10 @@ public class Jeu extends Observable {
 
 	
 	public int carte_gagnante() {
-        //gagnant donne le num�ros du joueure gagnant
+        //gagnant donne le numéros du joueure gagnant
         int gagnant=-1;
             if (c_dom.getCouleur()==c_sub.getCouleur()){
-                //si les deux carte sont de m�me couleure la plus forte l'emporte
+                //si les deux carte sont de même couleure la plus forte l'emporte
                 if(c_dom.getValeur()>c_sub.getValeur()){
                     gagnant=1;
                 }
@@ -147,11 +154,11 @@ public class Jeu extends Observable {
             }
             else {
                 if (c_dom.getCouleur()==atout) {
-                    //le premier joueur gagne si il y a 1 atout ,les deux joueure on une couleure diff�rente
+                    //le premier joueur gagne si il y a 1 atout ,les deux joueure on une couleure différente
                     gagnant=1;
                 }
                 else {
-                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure diff�rente
+                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure différente
                     if (c_sub.getCouleur()==atout) {
                         gagnant=2;
                     }
@@ -166,22 +173,32 @@ public class Jeu extends Observable {
         }
 	
 	private void trouve_atout() {
+	//donne l'atout de la partie 
         int val_max=9;
+	//initialisation de la carte la plus haute trouver un cran en desssou de la carte nécessaire pour avoir un atout dans la manche
         Couleur col=Couleur.Neutre;
+	//on initialise sur une valeur neutre si on ne trouve pas d'atout cette valeure sera notre atout
         for (int i=0;i<6;i++) {
+	//teste sur les six pile de pioche
             if (piles[i].topDeck().getValeur()>val_max) {
+		//si on vient trouver une nouvelle plus haute carte 
                 val_max=piles[i].topDeck().getValeur();
+		    //on memorise le score de cette carte
                 col=piles[i].topDeck().getCouleur();
+		    //on memorise l'atout de notre carte
             }
             else if(piles[i].topDeck().getValeur()==val_max && piles[i].topDeck().getCouleur().getVal()>col.getVal()) {
+		    //si on on trouve une carte de meme score on test si la couleure de cette nouvelle carte est plus fort
                 col= piles[i].topDeck().getCouleur();
+		    //on memorise le nouvelle atout
             }
         }
         atout=col;
-       
+       	//enregistre l'atout de la manche en cour
     }
 	
 	private int vainqueurManche() {
+		
 		if (mains[0].getnbPlis()>mains[1].getnbPlis()) {
 			return 0;
 		}
@@ -207,7 +224,7 @@ public class Jeu extends Observable {
 			save = new FileOutputStream(new File(s));
 	    BufferedOutputStream bsave = new BufferedOutputStream(save);
 	    //bsave.write(1);
-	    // donnée a sauvegarder
+	    // donnÃ©e a sauvegarder
 		bsave.close();
 		} catch (IOException e) {	
 			System.err.println("Impossible de sauvegarder dans " + s);
@@ -221,7 +238,7 @@ public class Jeu extends Observable {
 		      FileInputStream save = new FileInputStream(new File(s));
 		      BufferedInputStream bsave = new BufferedInputStream(save);
 		      //bsave.read();
-		      // donnée a lire
+		      // donnÃ©e a lire
 		      bsave.close();
 		  } catch (IOException e) {
 		      e.printStackTrace();
