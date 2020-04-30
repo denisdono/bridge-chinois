@@ -59,5 +59,12 @@ public class Hand{
 		return score;
 	}
 	
+	public void resetScore() {// remet le score a 0
+		score=0;
+	}
+	
+	public void addScore(int p) {// permet d'ajouter p au score
+		score=score+p;
+	}
 
 }

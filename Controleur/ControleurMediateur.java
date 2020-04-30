@@ -31,7 +31,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	void changeJoueur() {
 		if (jeu.new_dom()){// s'il y as eu un changement du joueur dominant on remet le bon joueur
 			joueurCourant=jeu.j_dom();
-			jeu.ch_joueur();
+			jeu.ch_joueur();//remet la variable du nouveau joueur dominant a false
 		}
 		else {// sinon on fais continuer en alternance
 			joueurCourant = (joueurCourant + 1) % joueurs.length;

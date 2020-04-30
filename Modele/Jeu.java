@@ -12,12 +12,16 @@ import java.io.IOException;
 
 
 public class Jeu extends Observable {
-	boolean changerjoueur;
+	boolean changerjoueur;// doit on changer de joueur
 	boolean enCours;// partie en cour
+	boolean finmanche;// a t'on fini la manche ?
 	boolean piochage;// y'as t'il des cartes a piocher ?
+	boolean parManche;// la fin de partie et décidé par nombre de manche (false= on décide par score)
 	Deck [] piles;// pile présente sur la table
 	Hand [] mains;//main des joueur
-	int etape;
+	int totalfin;// sore a obtenir ou nombre de manche a faire avant la fin de partie
+	int manche;// le nombre de manche actuelle
+	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
@@ -26,16 +30,23 @@ public class Jeu extends Observable {
 
 	public Jeu() {
 		enCours = true;
-		piochage= true;
 		changerjoueur=false;
-		etape=0;
 		joueurdominant=0;
-		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
-		Stack<Carte> p =new Stack<Carte>();// variable temporaire
 		mains=new Hand[2];
 		mains[0]=new Hand();
 		mains[1]=new Hand();
+		nouvelleManche();
+	}
+
+	public void nouvelleManche() {
+		finmanche=false;
+		piochage= true;
+		etape=0;
+		mains[0].resetPlis();
+		mains[1].resetPlis();
+		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
+		Stack<Carte> p =new Stack<Carte>();// variable temporaire
 		for (int i=0;i<11;i++) { // remplissage des mains des joueurs
 			mains[0].ajoutCarte(paquet.piocher());
 			mains[1].ajoutCarte(paquet.piocher());
@@ -47,61 +58,82 @@ public class Jeu extends Observable {
 			piles[i]=new Deck(p);// enregistrement de la pile dans le tableau
 			p.clear();//reinitialisation de la pile temporaire
 		}
+		trouve_atout();
 	}
-
+	
 	public void jouer(int i,int n) {
 		if (enCours) {
-			// tour de jeu
-			switch(etape) {
-			case 0:
-			// joueurdominant pose une carte
-				c_dom=mains[n].poserCarte(i);
-				metAJour();
-				etape++;
-				break;
-			case 1:
-				// le second joueur pose une carte en conséquences (limiter par raport a la cartes)
-				c_sub=mains[n].poserCarte(i);
-				metAJour();
-				// calcul de qui remporte le plis
-				int j;
-				j=carte_gagnante();
-				if (j==2) {// celui qui gagne devien joueur dominant
-					joueurdominant = (joueurdominant + 1) % 2;
-					changerjoueur=true;
-				}
-				mains[joueurdominant].addPlis();// incrémente le nombre de plis du vainqueur
-				metAJour();
-				etape++;
-				break;
-			case 2:
-				if (piochage) {//test s'il reste des carte a piocher
-					//s'il reste des cartes a piocher le joueur dominant pioche
-					mains[n].ajoutCarte(piles[i].piocher());
+			if (!finmanche) {
+				// tour de jeu
+				switch(etape) {
+				case 0:
+				// joueurdominant pose une carte
+					c_dom=mains[n].poserCarte(i);
 					metAJour();
 					etape++;
-				}
-				else {
+					break;
+				case 1:
+					// le second joueur pose une carte en conséquences (limiter par raport a la cartes)
+					c_sub=mains[n].poserCarte(i);
+					metAJour();
+					// calcul de qui remporte le plis
+					int j;
+					j=carte_gagnante();
+					if (j==2) {// celui qui gagne devien joueur dominant
+						joueurdominant = (joueurdominant + 1) % 2;
+						changerjoueur=true;
+					}
+					mains[joueurdominant].addPlis();// incrémente le nombre de plis du vainqueur
+					metAJour();
+					etape++;
+					break;
+				case 2:
+					if (piochage) {//test s'il reste des carte a piocher
+						//s'il reste des cartes a piocher le joueur dominant pioche
+						mains[n].ajoutCarte(piles[i].piocher());
+						metAJour();
+						etape++;
+					}
+					else {
+						etape=0;
+					}
+					break;
+				case 3:
+					
+					mains[n].ajoutCarte(piles[i].piocher());
+					metAJour();
+					piochage=!pilesvide();
 					etape=0;
+					break;
 				}
-				break;
-			case 3:
-				
-				mains[n].ajoutCarte(piles[i].piocher());
-				metAJour();
-				piochage=!pilesvide();
-				etape=0;
-				break;
-			}
+				if (mains[0].getnbCarte()==0 && mains[1].getnbCarte()==0) {
+					finmanche=true;
+					if(parManche) {
+						enCours=(manche!=totalfin);
+						int j=vainqueurManche();
+						if (j!=-1) {
+							mains[j].addScore(1);
+						}
+					}
+					else{
+						mains[0].addScore(mains[0].getnbPlis());
+						mains[1].addScore(mains[1].getnbPlis());
+						enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);
+					}
+					if (enCours) {
+						nouvelleManche();
+						manche++;
+					}
+					
+				}		
+			}	
 		}
-		enCours=mains[0].getnbCarte()==0;
+			
 	}
 	
-	public int etape() {
-		return etape;
-	}	
+
 	
-	public int carte_gagnante() {// WARNING j1 coresponde au joueur dominant et j2 a l'autre
+	public int carte_gagnante() {
         //gagnant donne le numéros du joueure gagnant
         int gagnant=-1;
             if (c_dom.getCouleur()==c_sub.getCouleur()){
@@ -133,6 +165,42 @@ public class Jeu extends Observable {
 
         }
 	
+	private void trouve_atout() {
+        int val_max=9;
+        Couleur col=Couleur.Neutre;
+        for (int i=0;i<6;i++) {
+            if (piles[i].topDeck().getValeur()>val_max) {
+                val_max=piles[i].topDeck().getValeur();
+                col=piles[i].topDeck().getCouleur();
+            }
+            else if(piles[i].topDeck().getValeur()==val_max && piles[i].topDeck().getCouleur().getVal()>col.getVal()) {
+                col= piles[i].topDeck().getCouleur();
+            }
+        }
+        atout=col;
+       
+    }
+	
+	private int vainqueurManche() {
+		if (mains[0].getnbPlis()>mains[1].getnbPlis()) {
+			return 0;
+		}
+		if (mains[0].getnbPlis()<mains[1].getnbPlis()) {
+			return 1;
+		}
+		return -1;
+	}
+	
+	public int vainqueurPartie() {
+		if (mains[0].getnbScore()>mains[1].getnbScore()) {
+			return 0;
+		}
+		if (mains[0].getnbScore()<mains[1].getnbScore()) {
+			return 1;
+		}
+		return -1;
+	}
+	
 	public void save(String s){
 		FileOutputStream save;
 		try {
@@ -159,7 +227,10 @@ public class Jeu extends Observable {
 		      e.printStackTrace();
 		    }
 	}
-		
+	
+	public int etape() {
+		return etape;
+	}	
 	
 	public int j_dom() {
 		return joueurdominant;
@@ -187,7 +258,7 @@ public class Jeu extends Observable {
 		return temp;
 	}
 	
-	public boolean peutPiocher(int i) {
+	public boolean peutPiocher(int i) {//verifie que la pile n'est pas vide
 		return !(piles[i].estVide());
 	}
 	
