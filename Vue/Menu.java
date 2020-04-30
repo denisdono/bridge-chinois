@@ -5,6 +5,7 @@
  */
 package Vue;
 
+import Modele.Jeu;
 import Patterns.Observateur;
 import java.awt.Color;
 import java.awt.Font;
@@ -52,7 +53,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     /**
      * Constructor for the Panel0 object
      */
-    public Menu() {
+    public Menu(Jeu j) {
         super();
         his = new Historique();
        

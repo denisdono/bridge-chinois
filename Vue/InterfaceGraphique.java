@@ -25,6 +25,7 @@ package Vue;/*
  *          38401 Saint Martin d'Hères
  */
 
+import Controleur.ControleurMediateur;
 import Modele.Jeu;
 import java.awt.*;
 
@@ -49,10 +50,9 @@ public class InterfaceGraphique implements Runnable {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             JFrame frame = new JFrame("Bridge Chinois");
             frame.setSize((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
-
             frame.setLayout(new FlowLayout());
-            Plateau pl = new Plateau(j);
-            Menu m = new Menu();
+            Plateau pl = new Plateau(j, control);
+            Menu m = new Menu(j);
             frame.add(pl);
             frame.add(m);
 	        

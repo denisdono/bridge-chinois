@@ -70,8 +70,8 @@ public class Jeu extends Observable {
 				case 0:
 				// joueurdominant pose une carte
 					c_dom=mains[n].poserCarte(i);
-					metAJour();
 					etape++;
+					metAJour();
 					break;
 				case 1:
 					// le second joueur pose une carte en conséquences (limiter par raport a la cartes)
@@ -85,8 +85,8 @@ public class Jeu extends Observable {
 						changerjoueur=true;
 					}
 					mains[joueurdominant].addPlis();// incrémente le nombre de plis du vainqueur
-					metAJour();
 					etape++;
+					metAJour();
 					break;
 				case 2:
 					if (piochage) {//test s'il reste des carte a piocher
@@ -102,9 +102,10 @@ public class Jeu extends Observable {
 				case 3:
 					//le deuxième joueure pioche
 					mains[n].ajoutCarte(piles[i].piocher());
-					metAJour();
+					
 					piochage=!pilesvide();//teste si il reste des carte a piocher
 					etape=0;//fini un tour de jeu
+                                        metAJour();
 					break;
 				}
 				if (mains[0].getnbCarte()==0 && mains[1].getnbCarte()==0) {
@@ -333,6 +334,20 @@ public class Jeu extends Observable {
 
         public Deck[] getPiles() {
             return piles;
+        }
+        public int joueurActuelle() {
+        if (etape%2==0) {
+            return joueurdominant;
+        }
+        return (joueurdominant + 1) % 2;
+        }
+
+        public Carte getC_dom() {
+            return c_dom;
+        }
+
+        public Carte getC_sub() {
+            return c_sub;
         }
         
 }
