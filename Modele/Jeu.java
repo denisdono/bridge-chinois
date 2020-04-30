@@ -34,8 +34,8 @@ public class Jeu extends Observable {
 		joueurdominant=0;
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
 		mains=new Hand[2];//cree les main des joueur
-		mains[0]=new Hand();//initialise la main du premier joueur
-		mains[1]=new Hand();//initialise la main du deuxième joueur
+		mains[0]=new Hand();//cree la main du premier joueur
+		mains[1]=new Hand();//cree la main du deuxième joueur
 		nouvelleManche();//initialise une manche
 	}
 
@@ -198,24 +198,31 @@ public class Jeu extends Observable {
     }
 	
 	private int vainqueurManche() {
-		
+		//donne le numéro du joueure gagnant de la manche
 		if (mains[0].getnbPlis()>mains[1].getnbPlis()) {
+			//joeure 1 a gagner 
 			return 0;
 		}
 		if (mains[0].getnbPlis()<mains[1].getnbPlis()) {
+			//joueur 2 a gagner
 			return 1;
 		}
 		return -1;
+		//egaliter
 	}
 	
 	public int vainqueurPartie() {
+		//donne le gagnatnt d'une partie(de plusieure manche)
 		if (mains[0].getnbScore()>mains[1].getnbScore()) {
+			//le joueur 1 a gagner la partie
 			return 0;
 		}
 		if (mains[0].getnbScore()<mains[1].getnbScore()) {
+			//le joueur 2 a gagner la partie
 			return 1;
 		}
 		return -1;
+		//egaliter
 	}
 	
 	public void save(String s){
@@ -246,54 +253,75 @@ public class Jeu extends Observable {
 	}
 	
 	public int etape() {
+		//retourne l'etape actuelle d'un tour
 		return etape;
 	}	
 	
 	public int j_dom() {
+		//renvoi le numero du joueure dominant
 		return joueurdominant;
 	}
 	
 	public void ch_joueur() {
+		//indique qu'il y a u un changement de joueur
 		changerjoueur=false;
 	}
 	
 	public boolean new_dom() {
+		//indique si il faut changer de joueur courant
 		return changerjoueur;
 	}
 
 	public boolean enCours() {
+		//dit si la partie est en cour
 		return enCours;
 	}
 	
+	public boolean MancheCours() {
+		//dit si la manche est en cour
+		return !finmanche;
+	}
+	
 	private boolean pilesvide() {
-		boolean temp = true;
+		//teste si les 6 piles de pioche sont vide
+		boolean temp = false;
 		for (int i=0;i<6;i++) {
-			if (piles[i].estVide()) {
-				temp=false;
+			if (!piles[i].estVide()) {
+				//
+				temp=true;
 			}
 		}
 		return temp;
 	}
 	
-	public boolean peutPiocher(int i) {//verifie que la pile n'est pas vide
+	public boolean peutPiocher(int i) {
+		//verifie que la pile n'est pas vide
 		return !(piles[i].estVide());
 	}
 	
 	public boolean peutJouer(int k ,int j) {
+		//dit si la carte peut etre jouer
 		if (j==joueurdominant) {
+			//si on est le premier a poser on peut jouer nimporte quelle carte
 			return true;
 		}
 		else {
+			//sinon il faut jouer la meme couleure si on peut
 			Carte c=mains[j].voirCarte(k);
 			if (c_dom.getCouleur()==c.getCouleur()) {
+				//on joue la meme couleure
 				return true;
 			}
 			else {
+				//on joue une couleure différente
 				for (int i=0;i<mains[j].getnbCarte();i++) {
+					//on regarde si il existe une carte de meme couleure dans la main que celle qui a ete poser
 					if (mains[j].voirCarte(i).getCouleur()==c.getCouleur()) {
+						//on a trouver une carte de meme couleure que celle qui a ete poser
 						return false;
 					}
 				}
+				//aucune carte de meme couleure que celle qui a ete poser n'a ete trouver
 				return true;
 			}
 		}
