@@ -49,7 +49,6 @@ public class Jeu extends Observable {
 		mains[0].resetPlis();
 		mains[1].resetPlis();
 		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
-		Stack<Carte> p =new Stack<Carte>();// variable temporaire
 		for (int i=0;i<11;i++) { // remplissage des mains des joueurs
 			mains[0].ajoutCarte(paquet.piocher());
 			mains[1].ajoutCarte(paquet.piocher());
@@ -58,8 +57,6 @@ public class Jeu extends Observable {
 			for (int j=0;j<5;j++) {// boucle pour piocher les 5 cartes
 				piles[i].recupCartePile(paquet.piocher());//pioche
 			}
-			piles[i]=new Deck(p);// enregistrement de la pile dans le tableau
-			p.clear();//reinitialisation de la pile temporaire
 		}
 		trouve_atout();
 	}
