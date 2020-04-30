@@ -13,7 +13,8 @@ public enum Couleur {
     Pique(3),
     Coeur(2),
     Carreaux(1),
-    Trefle(0);
+    Trefle(0),
+	Neutre(-1);
     
     private int val;
     Couleur(int val){

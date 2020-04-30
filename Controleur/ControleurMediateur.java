@@ -14,7 +14,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		jeu = j;
 		joueurs = new Joueur[2];
 		for (int i = 0; i < 2; i++)
-			if (i==1 && IA)
+			if (i==1 && IA) // s'il y as une IA le jeu la met en tant que joueur numero2
 				joueurs[i] = new JoueurIA(i, jeu);
 			else
 				joueurs[i] = new JoueurHumain(i, jeu);
@@ -31,7 +31,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	void changeJoueur() {
 		if (jeu.new_dom()){// s'il y as eu un changement du joueur dominant on remet le bon joueur
 			joueurCourant=jeu.j_dom();
-			jeu.ch_joueur();
+			jeu.ch_joueur();//remet la variable du nouveau joueur dominant a false
 		}
 		else {// sinon on fais continuer en alternance
 			joueurCourant = (joueurCourant + 1) % joueurs.length;
