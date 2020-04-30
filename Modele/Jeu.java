@@ -56,7 +56,7 @@ public class Jeu extends Observable {
 		}
 		for (int i=0;i<6;i++) {// boucle sur les six piles
 			for (int j=0;j<5;j++) {// boucle pour piocher les 5 cartes
-				p.push(paquet.piocher());//pioche
+				piles[i].recupCartePile(paquet.piocher());//pioche
 			}
 			piles[i]=new Deck(p);// enregistrement de la pile dans le tableau
 			p.clear();//reinitialisation de la pile temporaire

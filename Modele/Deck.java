@@ -52,6 +52,10 @@ public class Deck {
 		
 	}
 	
+	public void recupCartePile(Carte c) {
+		cartes.push(c);
+	}
+	
 	public Stack<Carte> getCartes() { //recuperer le tas de carte
 		return cartes;
 	}
