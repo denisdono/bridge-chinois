@@ -59,7 +59,7 @@ public class Historique extends JFrame implements Observateur {
         hisPanel.add(ent1);
         hisPanel.add(ent2);
         hisPanel.add(ent3);
-        ////////////////
+        /////////////////
         for(int i = 0; i<16*3;i++){
             JLabel l = new JLabel("vals"+i, SwingConstants.CENTER);
             l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
