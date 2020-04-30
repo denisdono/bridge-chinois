@@ -33,6 +33,9 @@ public class Jeu extends Observable {
 		changerjoueur=false;
 		joueurdominant=0;
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
+		for (int i=0;i<6;i++) {// boucle sur les six piles
+			piles[i]=new Deck();
+		}
 		mains=new Hand[2];//cree les main des joueur
 		mains[0]=new Hand();//cree la main du premier joueur
 		mains[1]=new Hand();//cree la main du deuxième joueur
