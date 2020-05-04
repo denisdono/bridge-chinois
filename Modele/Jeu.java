@@ -19,7 +19,7 @@ public class Jeu extends Observable {
 	boolean parManche;// la fin de partie et décidé par nombre de manche (false= on décide par score)
 	Deck [] piles;// pile présente sur la table
 	Hand [] mains;//main des joueur
-	int totalfin;// sore a obtenir ou nombre de manche a faire avant la fin de partie
+	int totalfin;// score a obtenir ou nombre de manche a faire avant la fin de partie
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
@@ -29,6 +29,8 @@ public class Jeu extends Observable {
 	
 
 	public Jeu() {
+		parManche=false;//////// condition par d�fault
+		totalfin=100;///////////
 		enCours = true;
 		changerjoueur=false;
 		joueurdominant=0;
@@ -158,11 +160,6 @@ public class Jeu extends Observable {
                 }
             }
             else {
-                if (c_dom.getCouleur()==atout) {
-                    //le premier joueur gagne si il y a 1 atout ,les deux joueure on une couleure différente
-                    gagnant=1;
-                }
-                else {
                     //le premier joueure n'a pas d'atout et les deux joueure on une couleure différente
                     if (c_sub.getCouleur()==atout) {
                         gagnant=2;
@@ -170,7 +167,6 @@ public class Jeu extends Observable {
                     else {
                         gagnant=1;
                     }
-                }
             }
             return gagnant;
 
@@ -303,7 +299,7 @@ public class Jeu extends Observable {
 		return !(piles[i].estVide());
 	}
 	
-	public boolean peutJouer(int k ,int j) {
+	public boolean peutJouer(int k ,int j) {//k=indice de la carte j=numero du joueur
 		//dit si la carte peut etre jouer
 		if (j==joueurdominant) {
 			//si on est le premier a poser on peut jouer nimporte quelle carte
