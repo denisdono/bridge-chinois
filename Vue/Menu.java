@@ -42,13 +42,16 @@ class Menu extends JPanel implements ActionListener, Observateur {
     JLabel lbLabel1;
     Historique his;
     private final JLabel lbLabel9;
-    private final JLabel lbLabel10;
+   // private final JLabel lbLabel10;
     private final JLabel lbLabel11;
-    private final JLabel lbLabel14;
+    private final JLabel labelPlis2;
     private final JButton btBut7;
     private final JLabel lbLabel8;
     private final JLabel lbLabel7;
+    JLabel labelPlis1;
     //private final JLabel invisLab;
+    private final JLabel labelScore1;
+    private final JLabel labelScore2;
 
     /**
      * Constructor for the Panel0 object
@@ -80,11 +83,13 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
        
         this.add(lbLabel9);
-
-        lbLabel10 = new JLabel("Joueur 1 : Joueur 2 :");
-        lbLabel10.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
-      
-        this.add(lbLabel10);
+        
+        labelPlis1 = new JLabel("Joueur 1 : 0");
+        labelPlis2 = new JLabel("Joueur 2 : 0");
+        labelPlis2.setBorder( BorderFactory.createEmptyBorder(0,0,10,0) );   
+        this.add(labelPlis1);
+        this.add(labelPlis2);
+        
 
         lbLabel11 = new JLabel("Score");
         lbLabel11.setFont(new Font("Calibri", Font.PLAIN, 24));
@@ -93,12 +98,11 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
        
         this.add(lbLabel11);
-
-        lbLabel14 = new JLabel("Joueur 1 : Joueur 2 :");
-        lbLabel14.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
+        labelScore1 = new JLabel("Joueur 1 : 0");
+        labelScore2 = new JLabel("Joueur 2 : 0");
        
-        this.add(lbLabel14);
-
+        this.add(labelScore1);
+        this.add(labelScore2);
         btBut7 = new JButton("Historique");
         btBut7.addActionListener(this);
        
@@ -124,5 +128,9 @@ class Menu extends JPanel implements ActionListener, Observateur {
     }
     public void indiqueAtout(String atout){
         this.lbLabel8.setText(atout);
+    }
+    public void setPlis(int nbPlis1, int nbPlis2){
+        labelPlis1.setText("Joueur 1 : "+nbPlis1);
+        labelPlis2.setText("Joueur 2 : "+nbPlis2);
     }
 }

@@ -50,6 +50,7 @@ public class Plateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         m.indiqueAtout(jeu.getAtout().name());
+        m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis());
         System.out.println("etape: "+jeu.etape());
         System.out.println("j:"+(jeu.joueurActuelle()+1));
         System.out.println("miseAJour");
@@ -65,6 +66,8 @@ public class Plateau extends JPanel implements Observateur {
         /////////////////////////////
         //Gestion des paquets du centre
         /////////////////////////////
+        JLabel indPioche= new JLabel("Pioches");
+        this.add(indPioche);
         JPanel paquetCentre = new JPanel();
         for (int i = 0; i < 6; i++) {
             JLabel l = new JLabel();
@@ -122,8 +125,8 @@ public class Plateau extends JPanel implements Observateur {
     }
     
     private void creerMainJoueur(int numJ){
-//        JLabel nomJ= new JLabel("Joueur "+(numJ+1));
-//        this.add(nomJ);
+        JLabel nomJ= new JLabel("Joueur "+(numJ+1));
+        this.add(nomJ);
         JPanel main = new JPanel();
         for (int i = 0; i < jeu.getMains()[numJ].getnbCarte(); i++) {
             JLabel l = new JLabel(jeu.getMains()[numJ].getMain()[i].toString());
