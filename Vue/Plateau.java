@@ -117,11 +117,11 @@ public class Plateau extends JPanel implements Observateur {
             JLabel l = new JLabel(jeu.getMains()[numJ].getMain()[i].toString());
             l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             l.setPreferredSize(dimlabel);
-            if(jeu.etape()==numJ)
+            if(jeu.etape()==0 || jeu.etape()==1)
                 l.addMouseListener(new JoueurCarteListener(i, c));
             main.add(l);
         }
-        if(jeu.joueurActuelle()==numJ && jeu.etape()==numJ){
+        if(jeu.joueurActuelle()==numJ && (jeu.etape()==0 || jeu.etape()==1)){
             main.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
         }
         this.add(main);
