@@ -55,16 +55,23 @@ public class Plateau extends JPanel implements Observateur {
         System.out.println("miseAJour");
         this.removeAll();
         
-        
         /////////////////////////////
         //Gestion de la main du joueur 1
         /////////////////////////////
         creerMainJoueur(0);
-
+        JLabel space = new JLabel();
+        space.setPreferredSize(dimlabel);
+        this.add(space);
+        /////////////////////////////
         //Gestion des paquets du centre
+        /////////////////////////////
         JPanel paquetCentre = new JPanel();
         for (int i = 0; i < 6; i++) {
-            JLabel l = new JLabel(jeu.getPiles()[i].topDeck().toString());
+            JLabel l = new JLabel();
+            if(jeu.getPiles()[i].estVide())
+                l.setText("Vide");
+            else
+                l.setText(jeu.getPiles()[i].topDeck().toString());
             l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             l.setPreferredSize(dimlabel);
             if(jeu.etape()==2 || jeu.etape()==3)
@@ -105,6 +112,9 @@ public class Plateau extends JPanel implements Observateur {
         /////////////////////////////
         //Gestion de la main du joueur 2
         /////////////////////////////
+        JLabel space2 = new JLabel();
+        space2.setPreferredSize(dimlabel);
+        this.add(space2);
         creerMainJoueur(1);
 
         //Recharger le panel
@@ -112,12 +122,14 @@ public class Plateau extends JPanel implements Observateur {
     }
     
     private void creerMainJoueur(int numJ){
-         JPanel main = new JPanel();
+//        JLabel nomJ= new JLabel("Joueur "+(numJ+1));
+//        this.add(nomJ);
+        JPanel main = new JPanel();
         for (int i = 0; i < jeu.getMains()[numJ].getnbCarte(); i++) {
             JLabel l = new JLabel(jeu.getMains()[numJ].getMain()[i].toString());
             l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             l.setPreferredSize(dimlabel);
-            if((jeu.etape()==0 || jeu.etape()==1) && jeu.joueurActuelle()==numJ )
+            if((jeu.etape()==0 || jeu.etape()==1) && jeu.joueurActuelle()==numJ && jeu.peutJouer(i, numJ) )
                 l.addMouseListener(new JoueurCarteListener(i, c));
             main.add(l);
         }
