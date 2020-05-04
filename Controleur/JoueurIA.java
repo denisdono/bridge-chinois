@@ -28,7 +28,7 @@ class JoueurIA extends Joueur {
 		}
 		else {
 			while (!jeu.peutPiocher(i)) {
-				i = r.nextInt(jeu.getMains()[num].getnbCarte());
+				i = r.nextInt(6);
 			}
 		}
 		jeu.jouer(i,num);
