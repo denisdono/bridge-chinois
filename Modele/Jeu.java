@@ -19,7 +19,7 @@ public class Jeu extends Observable {
 	boolean parManche;// la fin de partie et décidé par nombre de manche (false= on décide par score)
 	Deck [] piles;// pile présente sur la table
 	Hand [] mains;//main des joueur
-	int totalfin;// sore a obtenir ou nombre de manche a faire avant la fin de partie
+	int totalfin;// score a obtenir ou nombre de manche a faire avant la fin de partie
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
@@ -29,6 +29,8 @@ public class Jeu extends Observable {
 	
 
 	public Jeu() {
+		parManche=false;//////// condition par d�fault
+		totalfin=100;///////////
 		enCours = true;
 		changerjoueur=false;
 		joueurdominant=0;
