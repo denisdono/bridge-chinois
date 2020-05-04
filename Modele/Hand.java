@@ -24,13 +24,18 @@ public class Hand{
 		nbcarte--;
 		for(int j=i;j<nbcarte;j++) {// remet les carte au debut du tableau
 			main[j]=main[j+1];
+			main[j+1]=null;//permet a hand d'avoir carte+null au lieu de que des cartes
+		}
+		
+		if(getnbCarte()==0) {
+			main[0]=null;
 		}
 		return c;// retourn la carte a poser
 	}
 	
 	public void ajoutCarte(Carte c) {// permet d'ajouter une carte a la main
 		if (nbcarte==11) {
-			System.err.print("erreur main pleine");
+			System.err.println("erreur main pleine");
 			return;
 		}
 		else {
