@@ -15,6 +15,32 @@ public class Hand{
 		nbcarte=0;
 	}
 	
+	public void trierMain() {
+		Carte c;
+		int k;
+		for (int i=0; i<nbcarte;i++) {
+			c=main[i];
+			k=i;
+			for (int j=i+1;j<nbcarte;j++) {
+				if (c.getCouleur().getVal()>main[j].getCouleur().getVal()) {
+					c=main[j];
+					k=j;
+				}
+				else if (c.getCouleur().getVal()==main[j].getCouleur().getVal()) {
+					if (c.getValeur()>main[j].getValeur()) {
+						c=main[j];
+						k=j;
+					}
+				}
+			}
+			if (k!=i) {
+				main[k]=main[i];
+				main[i]=c;
+			}
+		}
+	}
+	
+	
 	public Carte voirCarte(int i) {// permet de regarder la carte d'indice i
 		return main[i];
 	}
@@ -24,18 +50,13 @@ public class Hand{
 		nbcarte--;
 		for(int j=i;j<nbcarte;j++) {// remet les carte au debut du tableau
 			main[j]=main[j+1];
-			main[j+1]=null;//permet a hand d'avoir carte+null au lieu de que des cartes
-		}
-		
-		if(getnbCarte()==0) {
-			main[0]=null;
 		}
 		return c;// retourn la carte a poser
 	}
 	
 	public void ajoutCarte(Carte c) {// permet d'ajouter une carte a la main
 		if (nbcarte==11) {
-			System.err.println("erreur main pleine");
+			System.err.print("erreur main pleine");
 			return;
 		}
 		else {

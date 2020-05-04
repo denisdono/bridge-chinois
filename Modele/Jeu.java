@@ -53,6 +53,8 @@ public class Jeu extends Observable {
 			mains[0].ajoutCarte(paquet.piocher());
 			mains[1].ajoutCarte(paquet.piocher());
 		}
+		mains[0].trierMain();
+		mains[1].trierMain();
 		for (int i=0;i<6;i++) {// boucle sur les six piles
 			for (int j=0;j<5;j++) {// boucle pour piocher les 5 cartes
 				piles[i].recupCartePile(paquet.piocher());//pioche
@@ -92,6 +94,7 @@ public class Jeu extends Observable {
 					if (piochage) {//test s'il reste des carte a piocher
 						//s'il reste des cartes a piocher le joueur dominant pioche
 						mains[n].ajoutCarte(piles[i].piocher());
+						mains[n].trierMain();
 						metAJour();
 						etape++;
 					}
@@ -102,7 +105,7 @@ public class Jeu extends Observable {
 				case 3:
 					//le deuxième joueure pioche
 					mains[n].ajoutCarte(piles[i].piocher());
-					
+					mains[n].trierMain();
 					piochage=!pilesvide();//teste si il reste des carte a piocher
 					etape=0;//fini un tour de jeu
                                         metAJour();
@@ -316,7 +319,7 @@ public class Jeu extends Observable {
 				//on joue une couleure différente
 				for (int i=0;i<mains[j].getnbCarte();i++) {
 					//on regarde si il existe une carte de meme couleure dans la main que celle qui a ete poser
-					if (mains[j].voirCarte(i).getCouleur()==c.getCouleur()) {
+					if (mains[j].voirCarte(i).getCouleur()==c_dom.getCouleur()) {
 						//on a trouver une carte de meme couleure que celle qui a ete poser
 						return false;
 					}
@@ -328,6 +331,11 @@ public class Jeu extends Observable {
 		
 	}
 
+		public Couleur getAtout() {
+			return atout;
+		}
+	
+	
         public Hand[] getMains() {
             return mains;
         }
