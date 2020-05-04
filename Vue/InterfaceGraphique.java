@@ -49,10 +49,10 @@ public class InterfaceGraphique implements Runnable {
 	public void run() {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             JFrame frame = new JFrame("Bridge Chinois");
-            frame.setSize((int)screenSize.getWidth()/2, (int)screenSize.getHeight()/2);
+            //frame.setSize((int)screenSize.getWidth()/2+150, (int)screenSize.getHeight()/2+100);
             frame.setLayout(new FlowLayout());
-            Plateau pl = new Plateau(j, control);
             Menu m = new Menu(j);
+            Plateau pl = new Plateau(j, control,m);
             frame.add(pl);
             frame.add(m);
 	        

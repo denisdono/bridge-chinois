@@ -5,8 +5,12 @@
  */
 package Vue;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 
 /**
  *
@@ -27,4 +31,18 @@ public class JoueurCarteListener extends MouseAdapter{
                 System.out.println("indice carte "+indice);
 		
 	}
+        @Override
+        public void mouseEntered(MouseEvent e){
+            System.out.println(((JLabel)e.getSource()).getText());
+            //((JLabel)e.getSource()).setPreferredSize(new Dimension(60,90));
+            ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+        }
+        @Override
+        public void mouseExited(MouseEvent e){
+            System.out.println(((JLabel)e.getSource()).getText());
+            //((JLabel)e.getSource()).setPreferredSize(new Dimension(50,80));
+
+            ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            
+        }
 }

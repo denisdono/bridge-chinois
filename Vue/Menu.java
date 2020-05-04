@@ -122,4 +122,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public void miseAJour() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    public void indiqueAtout(String atout){
+        this.lbLabel8.setText(atout);
+    }
 }
