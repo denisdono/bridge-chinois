@@ -49,6 +49,7 @@ public class Jeu extends Observable {
 		mains[0].resetPlis();
 		mains[1].resetPlis();
 		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
+		paquet.remplirPaquet();
 		for (int i=0;i<11;i++) { // remplissage des mains des joueurs
 			mains[0].ajoutCarte(paquet.piocher());
 			mains[1].ajoutCarte(paquet.piocher());

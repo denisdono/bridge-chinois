@@ -10,6 +10,10 @@ public class Deck {
 	
 	public Deck(){
 		cartes = new Stack<Carte>();
+		
+	}
+	
+	public void remplirPaquet() {
 		Couleur couleur = null;
 		for(int j =0;j<4 ;j++ ) { // creations de toutes les cartes
 			switch(j) {
@@ -30,7 +34,8 @@ public class Deck {
 		}
 		Collections.shuffle(cartes); //melange de la pile 
 	}
-	public Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
+	
+	Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
 		this.cartes=cartes;
 	}
 	
