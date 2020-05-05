@@ -90,20 +90,22 @@ public class Jeu extends Observable {
 						changerjoueur=true;
 					}
 					mains[joueurdominant].addPlis();// incrémente le nombre de plis du vainqueur
-					etape++;
-					metAJour();
-					break;
-				case 2:
 					if (piochage) {//test s'il reste des carte a piocher
-						//s'il reste des cartes a piocher le joueur dominant pioche
-						mains[n].ajoutCarte(piles[i].piocher());
-						mains[n].trierMain();
-						metAJour();
 						etape++;
 					}
 					else {
 						etape=0;
 					}
+					metAJour();
+					break;
+				case 2:
+					
+						//s'il reste des cartes a piocher le joueur dominant pioche
+						mains[n].ajoutCarte(piles[i].piocher());
+						mains[n].trierMain();
+						metAJour();
+						etape++;
+					
 					break;
 				case 3:
 					//le deuxième joueure pioche
@@ -138,7 +140,7 @@ public class Jeu extends Observable {
 						nouvelleManche();
 						manche++;
 					}
-					
+					metAJour();
 				}		
 			}	
 		}
