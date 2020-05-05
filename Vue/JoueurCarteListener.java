@@ -34,13 +34,17 @@ public class JoueurCarteListener extends MouseAdapter{
         @Override
         public void mouseEntered(MouseEvent e){
             //((JLabel)e.getSource()).setPreferredSize(new Dimension(60,90));
+        	((JLabel)e.getSource()).setSize(new Dimension(50,85));
             ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            
         }
+        
+        
         @Override
         public void mouseExited(MouseEvent e){
             //((JLabel)e.getSource()).setPreferredSize(new Dimension(50,80));
 
+        	((JLabel)e.getSource()).setSize(new Dimension(50,80));
             ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            
         }
 }

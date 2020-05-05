@@ -35,7 +35,7 @@ public class Deck {
 		Collections.shuffle(cartes); //melange de la pile 
 	}
 	
-	Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
+	public Deck(Stack<Carte> cartes){ // création d'un deck avec des cartes deja choisis
 		this.cartes=cartes;
 	}
 	
@@ -57,7 +57,7 @@ public class Deck {
 		
 	}
 	
-	public void recupCartePile(Carte c) {
+	public void recupCartePile(Carte c) {// permet de mettre une carte dans la pile
 		cartes.push(c);
 	}
 	
@@ -72,6 +72,11 @@ public class Deck {
 			str = str+it.next()+"\n";
 		}
 		return str;
+	}
+
+	public int getNbCartes() {
+		// TODO Auto-generated method stub
+		return cartes.size();
 	}
         
 	
