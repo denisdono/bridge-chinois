@@ -21,6 +21,7 @@ public class menuBar extends JMenuBar {
 	private JMenuItem regles;
 	menuBar(){
 		ReglesWindow lesRegles = new ReglesWindow();
+		
         menuAction = new JMenu("actions");
         undo = new JMenuItem("undo(crtl+z)");
         menuAction.add(undo);
@@ -38,6 +39,12 @@ public class menuBar extends JMenuBar {
         charger = new JMenuItem("charger");
         menuParametres.add(charger);
         config = new JMenuItem("configuration");
+        config.addActionListener(new ActionListener() { 
+      	  public void actionPerformed(ActionEvent e) { 
+      		  ConfigWindow lesConf = new ConfigWindow();
+      		  lesConf.montrer();
+      		  } 
+      		} );
         menuParametres.add(config);
         regles = new JMenuItem("regles");
         regles.addActionListener(new ActionListener() { 
