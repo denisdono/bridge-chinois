@@ -20,5 +20,18 @@ public class Carte {
 		return str;
 		
 	}
+        public String getResourceName(){
+            String name = "";
+            System.out.println(couleur.toString());
+            switch(couleur.toString()){
+                case "Pique": name+="Spades "; break;
+                case "Carreaux": name+="Diamond ";break;
+                case "Coeur": name+="Hearts "; break;
+                case "Trefle": name+="Clubs "; break;
+                default : System.out.println("Mauvaise couleure"); break;
+            }
+            
+            return name+getValeur()+".png";
+        }
 }
 
