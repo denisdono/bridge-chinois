@@ -41,48 +41,44 @@ class Menu extends JPanel implements ActionListener, Observateur {
     JButton btBut4;
     JLabel lbLabel1;
     Historique his;
-    private final JLabel lbLabel9;
-   // private final JLabel lbLabel10;
-    private final JLabel lbLabel11;
+    private final JLabel labelTitrePlis;
+    private final JLabel labelTitreScore;
     private final JLabel labelPlis2;
-    private final JButton btBut7;
-    private final JLabel lbLabel8;
-    private final JLabel lbLabel7;
+    private final JButton boutHis;
+    private final JLabel labelAtout;
+    private final JLabel labelTitreAtout;
     JLabel labelPlis1;
     //private final JLabel invisLab;
-    private final JLabel labelScore1;
-    private final JLabel labelScore2;
+    private JLabel labelScore1;
+    private JLabel labelScore2;
 
-    /**
-     * Constructor for the Panel0 object
-     */
     public Menu(Jeu j) {
         super();
         his = new Historique();
        
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setBorder( BorderFactory.createEmptyBorder(0,20,0,100)); 
+        labelTitreAtout = new JLabel("Atout");
+        labelTitreAtout.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
+        labelTitreAtout.setFont(new Font("Calibri", Font.PLAIN, 24));
        
-        lbLabel7 = new JLabel("Atout");
-        lbLabel7.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
-        lbLabel7.setFont(new Font("Calibri", Font.PLAIN, 24));
-       
-        this.add(lbLabel7);
+        this.add(labelTitreAtout);
 
-        lbLabel8 = new JLabel("");
+        labelAtout = new JLabel("");
 
         //Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
-        lbLabel8.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
+        labelAtout.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
         //lbLabel8.setIcon(atout);
        
-        this.add(lbLabel8);
+        this.add(labelAtout);
 
-        lbLabel9 = new JLabel("Plis");
-        lbLabel9.setFont(new Font("Calibri", Font.PLAIN, 24));
+        labelTitrePlis = new JLabel("Plis");
+        labelTitrePlis.setFont(new Font("Calibri", Font.PLAIN, 24));
 
-        lbLabel9.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
+        labelTitrePlis.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
 
        
-        this.add(lbLabel9);
+        this.add(labelTitrePlis);
         
         labelPlis1 = new JLabel("Joueur 1 : 0");
         labelPlis2 = new JLabel("Joueur 2 : 0");
@@ -91,22 +87,22 @@ class Menu extends JPanel implements ActionListener, Observateur {
         this.add(labelPlis2);
         
 
-        lbLabel11 = new JLabel("Score");
-        lbLabel11.setFont(new Font("Calibri", Font.PLAIN, 24));
+        labelTitreScore = new JLabel("Score");
+        labelTitreScore.setFont(new Font("Calibri", Font.PLAIN, 24));
 
-        lbLabel11.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
+        labelTitreScore.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
 
        
-        this.add(lbLabel11);
+        this.add(labelTitreScore);
         labelScore1 = new JLabel("Joueur 1 : 0");
         labelScore2 = new JLabel("Joueur 2 : 0");
        
         this.add(labelScore1);
         this.add(labelScore2);
-        btBut7 = new JButton("Historique");
-        btBut7.addActionListener(this);
+        boutHis = new JButton("Historique");
+        boutHis.addActionListener(this);
        
-        this.add(btBut7);
+        this.add(boutHis);
      
     }
 
@@ -115,7 +111,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     @Override
     public void actionPerformed(ActionEvent e) {
        
-        if (e.getSource() == btBut7) {
+        if (e.getSource() == boutHis) {
             System.out.println("historique");
             his.montrer();
             
@@ -127,7 +123,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     public void indiqueAtout(String atout){
-        this.lbLabel8.setText(atout);
+        this.labelAtout.setText(atout);
     }
     public void setPlis(int nbPlis1, int nbPlis2){
         labelPlis1.setText("Joueur 1 : "+nbPlis1);

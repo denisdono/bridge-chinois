@@ -22,29 +22,10 @@ public class Plateau extends JPanel implements Observateur {
         jeu = j;
         jeu.ajouteObservateur(this);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setBorder(BorderFactory.createEmptyBorder(20,100,20,20) ); 
         miseAJour();
         
 
-    }
-
-//    private String createImgName(Carte c) {
-//        return c.getCouleur().getNom() + " "+c.getValeur()+".png";
-//    }
-//      
-    int largeur() {
-        return getWidth();
-    }
-
-    int hauteur() {
-        return getHeight();
-    }
-
-    public int largeurCase() {
-        return largeurCase;
-    }
-
-    public int hauteurCase() {
-        return hauteurCase;
     }
 
     @Override
