@@ -32,40 +32,41 @@ import java.awt.*;
 import javax.swing.*;
 
 public class InterfaceGraphique implements Runnable {
-	Jeu j;
-	CollecteurEvenements control;
-	menuBar menuBar;
-	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
-		j = jeu;
-		control = c;
-		menuBar = new menuBar();  
-	}
 
-	public static void demarrer(Jeu j, CollecteurEvenements control) {
-		SwingUtilities.invokeLater(new InterfaceGraphique(j, control));
-	}
+    Jeu j;
+    CollecteurEvenements control;
+    menuBar menuBar;
 
-	@Override
-	public void run() {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            JFrame frame = new JFrame("Bridge Chinois");
-            //frame.setSize((int)screenSize.getWidth()/2+150, (int)screenSize.getHeight()/2+100);
-            frame.setLayout(new FlowLayout());
-            Menu m = new Menu(j);
-            Plateau pl = new Plateau(j, control,m);
-            frame.add(pl);
-            frame.add(m);
-	        
-	    frame.setJMenuBar(menuBar);
-            //frame.add(menuInGame);
-           
-             
-            Timer chrono = new Timer( 16, new AdaptateurTemps(control));
-            chrono.start();
-            frame.pack();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
+        j = jeu;
+        control = c;
+        menuBar = new menuBar();
+    }
 
-            frame.setVisible(true);
-                
-	}
+    public static void demarrer(Jeu j, CollecteurEvenements control) {
+        SwingUtilities.invokeLater(new InterfaceGraphique(j, control));
+    }
+
+    @Override
+    public void run() {
+        //Creation de la fenetre globale
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        JFrame frame = new JFrame("Bridge Chinois");
+        //frame.setSize((int)screenSize.getWidth()/2+150, (int)screenSize.getHeight()/2+100);
+        frame.setLayout(new FlowLayout());
+        Menu m = new Menu(j);
+        Plateau pl = new Plateau(j, control, m);
+        frame.add(pl);
+        frame.add(m);
+
+        frame.setJMenuBar(menuBar);
+
+        Timer chrono = new Timer(16, new AdaptateurTemps(control));
+        chrono.start();
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setVisible(true);
+
+    }
 }

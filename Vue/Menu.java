@@ -55,66 +55,69 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public Menu(Jeu j) {
         super();
         his = new Historique();
-       
+
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setBorder( BorderFactory.createEmptyBorder(0,20,0,100)); 
+        this.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 100));
+
+        //Affichage de l'atout de la partie
         labelTitreAtout = new JLabel("Atout");
         labelTitreAtout.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
         labelTitreAtout.setFont(new Font("Calibri", Font.PLAIN, 24));
-       
+
         this.add(labelTitreAtout);
 
         labelAtout = new JLabel("");
 
         //Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
-        labelAtout.setBorder( BorderFactory.createEmptyBorder(10,10,10,10) );   
+        labelAtout.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         //lbLabel8.setIcon(atout);
-       
+
         this.add(labelAtout);
 
+        //Affichage du nombre de plis de la partie
         labelTitrePlis = new JLabel("Plis");
         labelTitrePlis.setFont(new Font("Calibri", Font.PLAIN, 24));
 
         labelTitrePlis.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
 
-       
         this.add(labelTitrePlis);
-        
+
         labelPlis1 = new JLabel("Joueur 1 : 0");
         labelPlis2 = new JLabel("Joueur 2 : 0");
-        labelPlis2.setBorder( BorderFactory.createEmptyBorder(0,0,10,0) );   
+        labelPlis2.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         this.add(labelPlis1);
         this.add(labelPlis2);
-        
 
+        //Affichage du score total des joueurs sur plusieurs parties
+        //Non fonctionnel
         labelTitreScore = new JLabel("Score");
         labelTitreScore.setFont(new Font("Calibri", Font.PLAIN, 24));
 
         labelTitreScore.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
 
-       
         this.add(labelTitreScore);
         labelScore1 = new JLabel("Joueur 1 : 0");
         labelScore2 = new JLabel("Joueur 2 : 0");
-       
+
         this.add(labelScore1);
         this.add(labelScore2);
+        //Affichage de l'historique des parties (non fonctionnel)
         boutHis = new JButton("Historique");
         boutHis.addActionListener(this);
-       
+
         this.add(boutHis);
-     
+
     }
 
     /**
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-       
+
         if (e.getSource() == boutHis) {
             System.out.println("historique");
             his.montrer();
-            
+
         }
     }
 
@@ -122,11 +125,15 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public void miseAJour() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public void indiqueAtout(String atout){
+
+    //Indiquer la couleur de l'atout dans le menu
+    public void indiqueAtout(String atout) {
         this.labelAtout.setText(atout);
     }
-    public void setPlis(int nbPlis1, int nbPlis2){
-        labelPlis1.setText("Joueur 1 : "+nbPlis1);
-        labelPlis2.setText("Joueur 2 : "+nbPlis2);
+
+    //Indiquer le nombre de plis remporte par les joueurs
+    public void setPlis(int nbPlis1, int nbPlis2) {
+        labelPlis1.setText("Joueur 1 : " + nbPlis1);
+        labelPlis2.setText("Joueur 2 : " + nbPlis2);
     }
 }
