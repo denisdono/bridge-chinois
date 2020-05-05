@@ -5,10 +5,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,6 +31,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 
 	ButtonGroup dosGroup;
 	ButtonGroup fondGroup;
+	// variables des configurations
 	int selDiff;
 	int selWin;
 	int value;
@@ -40,28 +39,28 @@ public class ConfigWindow extends JFrame implements Observateur {
 	int selFond;
 
 	public ConfigWindow() {
-
+		// recuperations des infos du fichier config
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("config"));
 			selDiff = Integer.parseInt(br.readLine());
-			if(selDiff<0||selDiff>2) {
-				 selDiff=0;
-			 }
+			if (selDiff < 0 || selDiff > 2) {
+				selDiff = 0;
+			}
 			selWin = Integer.parseInt(br.readLine());
-			if(selWin<0||selWin>1) {
-				 selWin=0;
-			 }
+			if (selWin < 0 || selWin > 1) {
+				selWin = 0;
+			}
 			value = Integer.parseInt(br.readLine());
 			selCarte = Integer.parseInt(br.readLine());
-			if(selCarte<0||selCarte>2) {
-				 selCarte=0;
-			 }
+			if (selCarte < 0 || selCarte > 2) {
+				selCarte = 0;
+			}
 			selFond = Integer.parseInt(br.readLine());
-			if(selFond<0||selFond>2) {
-				 selFond=0;
-			 }
+			if (selFond < 0 || selFond > 2) {
+				selFond = 0;
+			}
 			br.close();
-		} catch (IOException e) {
+		} catch (IOException e) {// si le fichier n'est pas trouvé on en crée un avec les configurations de base
 			try {
 				File confile = new File("config");
 				if (confile.createNewFile()) {
@@ -75,11 +74,11 @@ public class ConfigWindow extends JFrame implements Observateur {
 					selCarte = 0;
 					selFond = 0;
 				}
-			} catch (IOException e1) {
+			} catch (IOException e1) {// la création du fichier a echoué
 				System.out.println("impossible de créer un fichier.");
 			}
 		}
-		this.setTitle("Configuration");
+		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((int) screenSize.getWidth() / 5, (int) screenSize.getHeight() / 3 * 2);
 		hisPanel = new JPanel();
@@ -89,7 +88,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 	}
 
 	@Override
-	public void miseAJour() {
+	public void miseAJour() { // création es diffenrentes parties de la fenetre
 		JLabel titre = new JLabel("Configurations");
 		titre.setFont(new Font("Calibri", Font.PLAIN, 24));
 		hisPanel.add(titre);
@@ -102,14 +101,14 @@ public class ConfigWindow extends JFrame implements Observateur {
 		facile.setActionCommand("0");
 		moyenne.setActionCommand("1");
 		difficile.setActionCommand("2");
-		switch(selDiff) {
-		case 0 : 
+		switch (selDiff) {
+		case 0:
 			facile.setSelected(true);
 			break;
-		case 1 :
+		case 1:
 			moyenne.setSelected(true);
 			break;
-		case 2 :
+		case 2:
 			difficile.setSelected(true);
 			break;
 		}
@@ -123,7 +122,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 		hisPanel.add(diff);
 
 		JPanel cond = new JPanel();
-		cond.setLayout(new BoxLayout(cond,BoxLayout.PAGE_AXIS));
+		cond.setLayout(new BoxLayout(cond, BoxLayout.PAGE_AXIS));
 		cond.setBorder(BorderFactory.createTitledBorder("Condition de victoire :"));
 		JPanel radioP = new JPanel();
 		JPanel valueP = new JPanel();
@@ -132,24 +131,23 @@ public class ConfigWindow extends JFrame implements Observateur {
 		JRadioButton manche = new JRadioButton("Nombre de manches");
 		point.setActionCommand("0");
 		manche.setActionCommand("1");
-		
-		switch(selWin) {
-		case 0 : 
+
+		switch (selWin) {
+		case 0:
 			point.setSelected(true);
 			break;
-		case 1 :
+		case 1:
 			manche.setSelected(true);
 			break;
 		}
-		
-		
+
 		JFormattedTextField valueField = new JFormattedTextField();
 		valueField.setValue(new Integer(value));
 		valueField.setColumns(3);
-		
+
 		condGroup.add(point);
 		condGroup.add(manche);
-		
+
 		radioP.add(point);
 		radioP.add(manche);
 		valueP.add(new JLabel("valeur : "));
@@ -168,14 +166,14 @@ public class ConfigWindow extends JFrame implements Observateur {
 		carte1.setActionCommand("0");
 		carte2.setActionCommand("1");
 		carte3.setActionCommand("2");
-		switch(selCarte) {
-		case 0 : 
+		switch (selCarte) {
+		case 0:
 			carte1.setSelected(true);
 			break;
-		case 1 :
+		case 1:
 			carte2.setSelected(true);
 			break;
-		case 2 :
+		case 2:
 			carte3.setSelected(true);
 			break;
 		}
@@ -197,20 +195,19 @@ public class ConfigWindow extends JFrame implements Observateur {
 		fond1.setActionCommand("0");
 		fond2.setActionCommand("1");
 		fond3.setActionCommand("2");
-		
-		switch(selFond) {
-		case 0 : 
+
+		switch (selFond) {
+		case 0:
 			fond1.setSelected(true);
 			break;
-		case 1 :
+		case 1:
 			fond2.setSelected(true);
 			break;
-		case 2 :
+		case 2:
 			fond3.setSelected(true);
 			break;
 		}
-		
-		
+
 		fondGroup.add(fond1);
 		fondGroup.add(fond2);
 		fondGroup.add(fond3);
@@ -223,19 +220,20 @@ public class ConfigWindow extends JFrame implements Observateur {
 		JPanel end = new JPanel();
 		JButton cancel = new JButton("annuler");
 		cancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {// ferme sans modifier le fichier de config
 				setVisible(false);
 				dispose();
 			}
 		});
-		JButton valid = new JButton("valider");
+		JButton valid = new JButton("valider"); // boutton de validation qui stock toutes les infos selectionés dans un
+												// fichier config
 		valid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 selDiff = Integer.parseInt(diffGroup.getSelection().getActionCommand());
-				 selWin = Integer.parseInt(condGroup.getSelection().getActionCommand());
-				 value = Integer.parseInt(valueField.getValue().toString());
-				 selCarte = Integer.parseInt(dosGroup.getSelection().getActionCommand());
-				 selFond = Integer.parseInt(fondGroup.getSelection().getActionCommand());
+				selDiff = Integer.parseInt(diffGroup.getSelection().getActionCommand());
+				selWin = Integer.parseInt(condGroup.getSelection().getActionCommand());
+				value = Integer.parseInt(valueField.getValue().toString());
+				selCarte = Integer.parseInt(dosGroup.getSelection().getActionCommand());
+				selFond = Integer.parseInt(fondGroup.getSelection().getActionCommand());
 				try {
 					FileWriter myWriter = new FileWriter("config");
 					myWriter.write(selDiff + "\n" + selWin + "\n" + value + "\n" + selCarte + "\n" + selFond + "\n");
@@ -254,7 +252,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 						System.out.println("impossible de créer un fichier.");
 					}
 				}
-				setVisible(false);
+				setVisible(false); // ferme la fenetre
 				dispose();
 			}
 		});
