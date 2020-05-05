@@ -20,13 +20,16 @@ class JoueurIA extends Joueur {
 	@Override
 	boolean tempsEcoule() {
 		int i;
-		i = r.nextInt(jeu.getMains()[num].getnbCarte());
 		if (jeu.etape()<2) {
+			i = r.nextInt(jeu.getMains()[num].getnbCarte());
+
 			while (!jeu.peutJouer(i, num)) {
 				i = r.nextInt(jeu.getMains()[num].getnbCarte());
 			}
 		}
 		else {
+			i = r.nextInt(6);
+
 			while (!jeu.peutPiocher(i)) {
 				i = r.nextInt(6);
 			}
