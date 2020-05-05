@@ -110,7 +110,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 			moyenne.setSelected(true);
 			break;
 		case 2 :
-			moyenne.setSelected(true);
+			difficile.setSelected(true);
 			break;
 		}
 		diffGroup.add(facile);
