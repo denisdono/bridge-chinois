@@ -137,14 +137,14 @@ public class Plateau extends JPanel implements Observateur {
         //affichage de toutes les cartes du joueur
         for (int i = 0; i < jeu.getMains()[numJ].getnbCarte(); i++) {
             JLabel l = new JLabel();
-            l.setText(jeu.getMains()[numJ].getMain()[i].toString());
-            l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            //l.setText(jeu.getMains()[numJ].getMain()[i].toString());
+            //l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             l.setPreferredSize(dimlabel);
             ///////////////////////////////////
             //Si on utilise les images
 //            System.out.println(jeu.getMains()[numJ].getMain()[i].getResourceName());
-//            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));;
-//            l.setIcon(img);
+            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));;
+            l.setIcon(img);
             ///////////////////////////////////
             //Si c'est au joueur numJ de jouer et qu'on est a une étape de pioche
             //On active le listener
