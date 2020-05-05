@@ -1,0 +1,1 @@
+for f in Clubs*; do mv -- "$f" "${Clubsf%}.prg"
