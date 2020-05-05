@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -23,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
 
 /**
  * @author Administrator
@@ -73,7 +75,9 @@ class Menu extends JPanel implements ActionListener, Observateur {
         //lbLabel8.setIcon(atout);
 
         this.add(labelAtout);
-
+        JLabel invis = new JLabel();
+        invis.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.add(invis);
         //Affichage du nombre de plis de la partie
         labelTitrePlis = new JLabel("Plis");
         labelTitrePlis.setFont(new Font("Calibri", Font.PLAIN, 24));
@@ -101,6 +105,10 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
         this.add(labelScore1);
         this.add(labelScore2);
+        
+        JLabel invis2 = new JLabel();
+        invis2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.add(invis2);
         //Affichage de l'historique des parties (non fonctionnel)
         boutHis = new JButton("Historique");
         boutHis.addActionListener(this);
@@ -128,7 +136,11 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
     //Indiquer la couleur de l'atout dans le menu
     public void indiqueAtout(String atout) {
-        this.labelAtout.setText(atout);
+        //this.labelAtout.setText(atout);
+        Icon img = new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png"));//.getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+        
+        this.labelAtout.setIcon(img);
+        this.labelAtout.setBorder(new LineBorder(Color.BLACK, 3, true));
     }
 
     //Indiquer le nombre de plis remporte par les joueurs

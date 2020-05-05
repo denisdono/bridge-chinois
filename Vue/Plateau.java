@@ -16,9 +16,11 @@ public class Plateau extends JPanel implements Observateur {
     CollecteurEvenements c;
     Menu m;
     //Dimensions a revoir, adapter a la taille de l'écran
-    private Dimension dimlabel = new Dimension(50, 80);
+    private Dimension dimlabel;
 
     public Plateau(Jeu j, CollecteurEvenements c, Menu m) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        dimlabel = new Dimension(screenSize.width/25,screenSize.height/10);
         this.m = m;
         this.c = c;
         jeu = j;
@@ -37,9 +39,6 @@ public class Plateau extends JPanel implements Observateur {
         //Mise à jour des infos du menu
         m.indiqueAtout(jeu.getAtout().name());
         m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis());
-//        System.out.println("etape: "+jeu.etape());
-//        System.out.println("j:"+(jeu.joueurActuelle()+1));
-//        System.out.println("miseAJour");
 
         //mise a zero du plateau
         this.removeAll();
@@ -61,20 +60,20 @@ public class Plateau extends JPanel implements Observateur {
             JLabel l = new JLabel();
             if (jeu.getPiles()[i].estVide()) {
                 l.setText("Vide");
-                 //SI on est a une étape de pioche
+                 
                
             } else {
                 //version texte
-                l.setText(jeu.getPiles()[i].topDeck().toString());
+                //l.setText(jeu.getPiles()[i].topDeck().toString());
                 //version image
-//                Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getPiles()[i].topDeck().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));
-//                l.setIcon(img);
-                
+                Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getPiles()[i].topDeck().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+                l.setIcon(img);
+                //SI on est a une étape de pioche
                 if (jeu.etape() == 2 || jeu.etape() == 3) {
                     l.addMouseListener(new JoueurCarteListener(i, c));
                 }
             }
-            l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            //l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             l.setPreferredSize(dimlabel);
            
             paquetCentre.add(l);
@@ -90,30 +89,28 @@ public class Plateau extends JPanel implements Observateur {
         JPanel carteJouee = new JPanel();
 
         JLabel joue1 = new JLabel();
-        joue1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        //joue1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         joue1.setPreferredSize(dimlabel);
         carteJouee.add(joue1);
         //Si c'est au deuxieme joueur de jouer une carte, on affiche la première carte
         if (jeu.etape() == 1 || jeu.etape() == 2) {
-            joue1.setText(jeu.getC_dom().toString());
+            //version texte
+            //joue1.setText(jeu.getC_dom().toString());
             //version image
-//            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_dom().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));;
-//            joue1.setIcon(img);
-        } else {
-            joue1.setText("Vide");
+            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_dom().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
+            joue1.setIcon(img);
         }
         JLabel joue2 = new JLabel();
-        joue2.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        //joue2.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         joue2.setPreferredSize(dimlabel);
         //Si le deuxieme joueur a joue, on affiche aussi sa carte
         if (jeu.etape() == 2) {
-            joue2.setText(jeu.getC_sub().toString());
+            //version texte
+            //joue2.setText(jeu.getC_sub().toString());
             //version image
-//            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_sub().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));;
-//            joue2.setIcon(img);
-        } else {
-            joue2.setText("Vide");
-        }
+            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_sub().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
+            joue2.setIcon(img);
+        } 
         carteJouee.add(joue2);
 
         this.add(carteJouee);
@@ -137,13 +134,14 @@ public class Plateau extends JPanel implements Observateur {
         //affichage de toutes les cartes du joueur
         for (int i = 0; i < jeu.getMains()[numJ].getnbCarte(); i++) {
             JLabel l = new JLabel();
+            //version texte
             //l.setText(jeu.getMains()[numJ].getMain()[i].toString());
             //l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            l.setPreferredSize(dimlabel);
+            //l.setPreferredSize(dimlabel);
             ///////////////////////////////////
             //Si on utilise les images
 //            System.out.println(jeu.getMains()[numJ].getMain()[i].getResourceName());
-            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));;
+            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
             l.setIcon(img);
             ///////////////////////////////////
             //Si c'est au joueur numJ de jouer et qu'on est a une étape de pioche
@@ -159,10 +157,5 @@ public class Plateau extends JPanel implements Observateur {
             main.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
         }
         this.add(main);
-    }
-
-    public Icon creerIcone(String resource){
-        Icon i = new ImageIcon(new ImageIcon(resource).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_DEFAULT));
-        return i;
     }
 }
