@@ -7,14 +7,14 @@ public class Carte {
 		this.couleur=couleur;
 		this.valeur=valeur;
 	}
-	public Couleur getCouleur() {
+	public Couleur getCouleur() {// permet de récuperer la couleur de la carte
 		return couleur;
 	}
-	public int getValeur() {
+	public int getValeur() {// permet de récuperer la valeur de la carte
 		return valeur;
 	}
 
-	public String toString() {
+	public String toString() {// permet d'écrire la carte
 		String str = "" ;
 		str = str+" "+getValeur()+" "+getCouleur();
 		return str;

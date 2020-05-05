@@ -330,30 +330,31 @@ public class Jeu extends Observable {
 		
 	}
 
-		public Couleur getAtout() {
+		public Couleur getAtout() {// permet de renvoyer l'atout
 			return atout;
 		}
 	
 	
-        public Hand[] getMains() {
+        public Hand[] getMains() {// permet de renvoyer mains (les donné des joueurs)
             return mains;
         }
 
-        public Deck[] getPiles() {
+        public Deck[] getPiles() {// permet de renvoyer les piles
             return piles;
         }
-        public int joueurActuelle() {
+        
+        public int joueurActuelle() {// permet de renvoyer le joueur courant
         if (etape%2==0) {
             return joueurdominant;
         }
         return (joueurdominant + 1) % 2;
         }
 
-        public Carte getC_dom() {
+        public Carte getC_dom() {// permet de renvoyer la carte du joueur dominant
             return c_dom;
         }
 
-        public Carte getC_sub() {
+        public Carte getC_sub() {// permet de renvoyer la carte du joueur non sdominant
             return c_sub;
         }
         

@@ -14,14 +14,14 @@ public enum Couleur {
     Coeur(2),
     Carreaux(1),
     Trefle(0),
-	Neutre(-1);
+	Neutre(-1);// utiliser pour l'absence d'atout
     
     private int val;
     Couleur(int val){
         this.val = val;
     }
 
-    public int getVal() {
+    public int getVal() {//retourne la valeur de la couleur
         return val;
     }
     

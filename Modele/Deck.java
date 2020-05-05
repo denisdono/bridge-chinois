@@ -57,7 +57,7 @@ public class Deck {
 		
 	}
 	
-	public void recupCartePile(Carte c) {
+	public void recupCartePile(Carte c) {// permet de mettre une carte dans la pile
 		cartes.push(c);
 	}
 	

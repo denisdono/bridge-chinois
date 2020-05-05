@@ -1,6 +1,6 @@
 package Modele;
 
-
+// ici se trouve les donnée du joueur (sa main, ses plis, son score...)
 
 public class Hand{
 	private Carte[] main;//main du joueur 
@@ -15,25 +15,25 @@ public class Hand{
 		nbcarte=0;
 	}
 	
-	public void trierMain() {
+	public void trierMain() {// permet de trier les carte d'une main pour les ordonner
 		Carte c;
 		int k;
-		for (int i=0; i<nbcarte;i++) {
+		for (int i=0; i<nbcarte;i++) {//parcoure toute les cartes
 			c=main[i];
 			k=i;
-			for (int j=i+1;j<nbcarte;j++) {
-				if (c.getCouleur().getVal()>main[j].getCouleur().getVal()) {
+			for (int j=i+1;j<nbcarte;j++) {// parcour toute les carte aprés la carte actuelle
+				if (c.getCouleur().getVal()>main[j].getCouleur().getVal()) {//vérifie si la couleur de la carte et plus faible
 					c=main[j];
 					k=j;
 				}
-				else if (c.getCouleur().getVal()==main[j].getCouleur().getVal()) {
-					if (c.getValeur()>main[j].getValeur()) {
+				else if (c.getCouleur().getVal()==main[j].getCouleur().getVal()) {//vérifie si la carte est de meme couleur 
+					if (c.getValeur()>main[j].getValeur()) {// verifie si la carte et plus faible
 						c=main[j];
 						k=j;
 					}
 				}
 			}
-			if (k!=i) {
+			if (k!=i) {// si il existe une carte plus faible réordonne
 				main[k]=main[i];
 				main[i]=c;
 			}
@@ -93,7 +93,7 @@ public class Hand{
 		score=score+p;
 	}
 
-        public Carte[] getMain() {
+        public Carte[] getMain() {// permet de renvoyer la main(donnée du joueur)
             return main;
         }
 
