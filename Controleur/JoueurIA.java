@@ -6,7 +6,7 @@ import Modele.Jeu;
 
 class JoueurIA extends Joueur {
 	Random r;
-	int niv;
+	int niv;// niveau de l'ia 
 
 
 	
@@ -20,17 +20,15 @@ class JoueurIA extends Joueur {
 	@Override
 	boolean tempsEcoule() {
 		int i;
-		if (jeu.etape()<2) {
+		if (jeu.etape()<2) {// poser une carte
 			i = r.nextInt(jeu.getMains()[num].getnbCarte());
-
-			while (!jeu.peutJouer(i, num)) {
+			while (!jeu.peutJouer(i, num)) {// vérifie que la carte peut etre jouer
 				i = r.nextInt(jeu.getMains()[num].getnbCarte());
 			}
 		}
-		else {
+		else { // piocher
 			i = r.nextInt(6);
-
-			while (!jeu.peutPiocher(i)) {
+			while (!jeu.peutPiocher(i)) {// vérifie qu'on peut piocher
 				i = r.nextInt(6);
 			}
 		}

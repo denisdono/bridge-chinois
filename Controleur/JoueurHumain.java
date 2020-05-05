@@ -9,21 +9,16 @@ class JoueurHumain extends Joueur {
 
 	@Override
 	boolean jeu(int i) {
-		if (jeu.etape()<2) {			// A adapter selon le jeu,
-			// Un coup peut être constitué de plusieurs passages par cette fonction, ex :
-			// - selection d'un pièce + surlignage des coups possibles
-			// - selection de la destination
-			// Autrement dit une machine à état peut aussi être gérée par un objet de cette
-			// classe. Dans le cas du morpion, un clic suffit.
-			if (jeu.peutJouer(i, num)) {
+		if (jeu.etape()<2) {// poser une carte			
+			if (jeu.peutJouer(i, num)) {// v�rifie qu'il peut jouer cette carte
 				jeu.jouer(i,num);
 				return true;
 			} else {
 				return false;
 			}
 		}
-		else {
-			if (jeu.peutPiocher(i)) {
+		else {// piocher une carte
+			if (jeu.peutPiocher(i)) {// v�rifie qu'il peut piocher
 				jeu.jouer(i,num);
 				return true;
 			} else {
