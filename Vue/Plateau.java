@@ -16,8 +16,7 @@ public class Plateau extends JPanel implements Observateur {
     private int largeurCase = 1, hauteurCase = 1;
     private CollecteurEvenements c;
     private Menu m;
-    private JLabel arrowJ1;
-    private JLabel arrowJ2;
+    private ArrayList<JLabel> arrows;
     private ArrayList<JLabel> hand1;
     private ArrayList<JLabel> hand2;
     private ArrayList<JLabel> centreDecks;
@@ -35,6 +34,7 @@ public class Plateau extends JPanel implements Observateur {
         hand2 = new ArrayList<>();
         centreDecks = new ArrayList<>();
         playedCards = new ArrayList<>();
+        arrows = new ArrayList<>();
         hands = new ArrayList<>();
         hands.add(hand1);
         hands.add(hand2);
@@ -52,7 +52,7 @@ public class Plateau extends JPanel implements Observateur {
         // Ajout de la flèche indiquant le tour du joueur 1
         JLabel arrow1Label = new JLabel(); 
         hand1Pane.add(arrow1Label);
-        this.arrowJ1 = arrow1Label;
+        this.arrows.add(arrow1Label);
         
         for (int i = 0; i < 11; i++) {
             JLabel l = new JLabel();
@@ -96,7 +96,7 @@ public class Plateau extends JPanel implements Observateur {
      // Ajout de la flèche indiquant le tour du joueur 2
         JLabel arrow2Label = new JLabel(); 
         hand2Pane.add(arrow2Label);
-        this.arrowJ2 = arrow2Label;
+        this.arrows.add(arrow2Label);
         
         for (int i = 0; i < 11; i++) {
             JLabel l = new JLabel();
@@ -128,13 +128,11 @@ public class Plateau extends JPanel implements Observateur {
     private void majMainJoueur(int numJ) {
     	
     	if(jeu.joueurActuelle() == numJ) {
-    		System.out.println("jecrashici");
-    		Icon imgArrow = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-    		this.arrowJ1.setIcon(imgArrow);
+    		Icon imgArrow = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height/2, Image.SCALE_SMOOTH));
+    		this.arrows.get(numJ).setIcon(imgArrow);
     	}
     	else {
-    		System.out.println("jecrashlà");
-    		this.arrowJ1.setIcon(null);
+    		this.arrows.get(numJ).setIcon(null);
     	}
     	
         for (int i = 0; i < 11; i++) {
@@ -155,6 +153,8 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void majPaquets() {
+    	
+    	
         for (int i = 0; i < 6; i++) {
             if (jeu.getPiles()[i].estVide()) {
                 centreDecks.get(i).setIcon(null);
