@@ -16,6 +16,7 @@ public class TestsDeck {
 	@Before
 	public void init() {
 		pioche = new Deck();
+		pioche.remplirPaquet();
 	}
 	
 	@Test
@@ -76,13 +77,14 @@ public class TestsDeck {
 		Carte carte;//carte qui va etre piochée
 		 
 		Iterator it= pioche.getCartes().iterator();
-		
+		System.out.println("--On vide la pioche");
 		while(it.hasNext()) {//on vide la pioche et on afiche la carte piochée
 			carte = pioche.piocher();			
 		}
 		System.out.println("Taille du deck : "+pioche.getCartes().size());
 		assertTrue(pioche.estVide());
-		System.out.println("On pioche une carte");
+		System.out.println("--On essaye de piocher une carte :");
+		
 		pioche.piocher();
 		System.out.println("OK");
 	}
