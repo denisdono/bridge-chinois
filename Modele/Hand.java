@@ -17,71 +17,26 @@ public class Hand{
 	
 	public void trierMain() {// permet de trier les carte d'une main pour les ordonner
 		Carte c;
-		int k;
+		int k,l,m;
 		for (int i=0; i<nbcarte;i++) {//parcoure toute les cartes
 			c=main[i];
 			k=i;
 			for (int j=i+1;j<nbcarte;j++) {// parcour toute les carte aprés la carte actuelle
-				// c est il du pique ?
-				if (c.getCouleur()==Couleur.Pique) {//oui
-					//l'autre carte est elle du pique ?
-					if (main[j].getCouleur()==Couleur.Pique) {// oui
-						// l'autre carte est elle plus petite ?
-						if (c.getValeur()>main[j].getValeur()) {// oui
-							c=main[j];  // on sauvegarde la nouvelle "plus petite" carte
-							k=j;
-						}
-					}
+				l=c.getCouleur().getVal();
+				m=main[j].getCouleur().getVal();
+				if (l==2) l=4;// rend momentanément le coeur supérieure a pique
+				if (m==2) m=4;
+				if (l>m) {//vérifie si la couleur de la carte et plus faible
+					c=main[j];
+					k=j;
 				}
-				else {// non
-					//l'autre carte est elle du pique ?
-					if (main[j].getCouleur()==Couleur.Pique) {//oui
-						c=main[j];// on sauvegarde la nouvelle "plus petite" carte
+				else if (c.getCouleur().getVal()==main[j].getCouleur().getVal()) {//vérifie si la carte est de meme couleur 
+					if (c.getValeur()>main[j].getValeur()) {// verifie si la carte et plus faible
+						c=main[j];
 						k=j;
 					}
-					//non . c est elle du Carreaux ?
-					else if (c.getCouleur()==Couleur.Carreaux) {//oui
-						// l'autre carte est elle du Carreaux ?
-						if (main[j].getCouleur()==Couleur.Carreaux) {//oui
-							// l'autre carte est elle plus petite ?
-							if (c.getValeur()>main[j].getValeur()) {//oui
-								c=main[j];// on sauvegarde la nouvelle "plus petite" carte
-								k=j;
-							}
-						}
-					}
-					else {// non
-						// l'autre carte est elle du Carreaux ?
-						if (main[j].getCouleur()==Couleur.Carreaux) {//oui
-							c=main[j];// on sauvegarde la nouvelle "plus petite" carte
-							k=j;
-						}
-						//non . c est elle du Trefle ?
-						else if (c.getCouleur()==Couleur.Trefle) {//oui
-							// l'autre carte est elle du Trefle ?
-							if (main[j].getCouleur()==Couleur.Trefle) {//oui
-								// l'autre carte est elle plus petite ?
-								if (c.getValeur()>main[j].getValeur()) {
-									c=main[j];// on sauvegarde la nouvelle "plus petite" carte
-									k=j;
-								}
-							}
-						}
-						else {//non
-							// l'autre carte est elle du Trefle ?
-							if (main[j].getCouleur()==Couleur.Trefle) {//oui
-								c=main[j];// on sauvegarde la nouvelle "plus petite" carte
-								k=j;
-							}
-							//non (les deux sont du coeur) l'autre carte est elle plus petite ? 
-							else if (c.getValeur()>main[j].getValeur()) {//oui
-										c=main[j];// on sauvegarde la nouvelle "plus petite" carte
-										k=j;
-							}
-						}
-					}
 				}
-			}			
+			}
 			if (k!=i) {// si il existe une carte plus faible réordonne
 				main[k]=main[i];
 				main[i]=c;
