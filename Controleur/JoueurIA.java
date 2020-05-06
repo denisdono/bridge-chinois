@@ -76,7 +76,7 @@ class JoueurIA extends Joueur {
 	boolean uniq_atout=true;//pour savoir si on a que des atout en main
 	int moyenne;//la valeur moyenne de notre main
 	int dif;//la difference entre une carte et la moyenne
-	int meme_dif=-1;//pour se rappeler de la diff�rence de la carte choisi a la moyenne
+	int meme_dif=-1;//pour se rappeler de la différence de la carte choisi a la moyenne
 	int k=0;
 	int div=0;//le nombre de carte qui sera utiliser pour la moyenne des carte de la main
 	while (k<jeu.getMains()[num].getnbCarte() && uniq_atout) {
@@ -91,7 +91,7 @@ class JoueurIA extends Joueur {
 			somme=jeu.getMains()[num].voirCarte(i).getValeur()+somme;
 			div++;
 		}
-		else if(jeu.getMains()[num].voirCarte(k).getCouleur()!=jeu.getAtout()) {
+		else if(jeu.getMains()[num].voirCarte(i).getCouleur()!=jeu.getAtout()) {
 			//on a pas que des carte atout en main on ne prend pas en compte 
 			//les carte qui sont des atout por fair la moyenne
 			somme=jeu.getMains()[num].voirCarte(i).getValeur()+somme;
@@ -103,7 +103,7 @@ class JoueurIA extends Joueur {
 		if(indice==-1) {
 			//on pas encore choisi de carte a poser
 			if (uniq_atout || jeu.getMains()[num].voirCarte(i).getCouleur()!=jeu.getAtout()) {
-				//on a que des atout en main on ne diff�renci les carte que par leur valeur
+				//on a que des atout en main on ne différenci les carte que par leur valeur
 				//ou on a une carte qui n'est pas un atout et la choisi
 				dif=jeu.getMains()[num].voirCarte(i).getValeur()-moyenne;
 				meme_dif=dif;
@@ -118,7 +118,7 @@ class JoueurIA extends Joueur {
 			if (dif>0 && dif<meme_dif) {
 				//notre carte est plus proche de la moyenne de la main que la precedente carte choisi
 				if(uniq_atout || jeu.getMains()[num].voirCarte(i).getCouleur()!=jeu.getAtout()) {
-					//on a que des atout en main on ne diff�renci les carte que par leur valeur
+					//on a que des atout en main on ne différenci les carte que par leur valeur
 					//ou on a une carte qui n'est pas un atout et la choisi
 					meme_dif=dif;
 					indice=i;
@@ -246,7 +246,7 @@ class JoueurIA extends Joueur {
 					else {
 					//on a une carte gagnante
 						if (!gagner) {
-							//c'est notre tout premi�re carte gagnante 
+							//c'est notre tout première carte gagnante 
 							//donc c'est la carte quel'on va jouer
 							gagner=true;
 							val=jeu.getMains()[num].voirCarte(i).getValeur();
@@ -273,10 +273,10 @@ class JoueurIA extends Joueur {
 	
 	
 	public int c_gagnante(Carte c1,Carte c2) {
-        //gagnant donne le numéros du joueure gagnant
+        //gagnant donne le numÃ©ros du joueure gagnant
         int gagnant=-1;
             if (c1.getCouleur()==c2.getCouleur()){
-                //si les deux carte sont de même couleure la plus forte l'emporte
+                //si les deux carte sont de mÃªme couleure la plus forte l'emporte
                 if(c1.getValeur()>c2.getValeur()){
                     gagnant=1;
                 }
@@ -285,7 +285,7 @@ class JoueurIA extends Joueur {
                 }
             }
             else {
-                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure différente
+                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure diffÃ©rente
                     if (c2.getCouleur()==jeu.getAtout()) {
                         gagnant=2;
                     }
