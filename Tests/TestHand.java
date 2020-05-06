@@ -16,6 +16,7 @@ public class TestHand {
 		mainj = new Hand();
 		pioche = new Deck();
 		assertEquals(mainj.getnbCarte(),0);//verif main vide
+		pioche.remplirPaquet();
 		Carte c;
 		//initialisation de la main avec 11 cartes
 		for(int i=0;i<11;i++) {
