@@ -13,14 +13,16 @@ import javax.imageio.ImageIO;
 public class Plateau extends JPanel implements Observateur {
 
     Jeu jeu;
-    int largeurCase = 1, hauteurCase = 1;
-    CollecteurEvenements c;
-    Menu m;
-    ArrayList<JLabel> hand1;
-    ArrayList<JLabel> hand2;
-    ArrayList<JLabel> centreDecks;
-    ArrayList<JLabel> playedCards;
-    ArrayList<ArrayList<JLabel>> hands;
+    private int largeurCase = 1, hauteurCase = 1;
+    private CollecteurEvenements c;
+    private Menu m;
+    private JLabel arrowJ1;
+    private JLabel arrowJ2;
+    private ArrayList<JLabel> hand1;
+    private ArrayList<JLabel> hand2;
+    private ArrayList<JLabel> centreDecks;
+    private ArrayList<JLabel> playedCards;
+    private ArrayList<ArrayList<JLabel>> hands;
     //Dimensions a revoir, adapter a la taille de l'Ã©cran
     private Dimension dimlabel;
 
@@ -46,6 +48,12 @@ public class Plateau extends JPanel implements Observateur {
         JLabel nomJ = new JLabel("Joueur 1");
         this.add(nomJ);
         JPanel hand1Pane = new JPanel();
+        
+        // Ajout de la flèche indiquant le tour du joueur 1
+        JLabel arrow1Label = new JLabel(); 
+        hand1Pane.add(arrow1Label);
+        this.arrowJ1 = arrow1Label;
+        
         for (int i = 0; i < 11; i++) {
             JLabel l = new JLabel();
             hand1Pane.add(l);
@@ -84,6 +92,12 @@ public class Plateau extends JPanel implements Observateur {
         JLabel nomJ2 = new JLabel("Joueur 2");
         this.add(nomJ2);
         JPanel hand2Pane = new JPanel();
+        
+     // Ajout de la flèche indiquant le tour du joueur 2
+        JLabel arrow2Label = new JLabel(); 
+        hand2Pane.add(arrow2Label);
+        this.arrowJ2 = arrow2Label;
+        
         for (int i = 0; i < 11; i++) {
             JLabel l = new JLabel();
             hand2Pane.add(l);
@@ -110,7 +124,19 @@ public class Plateau extends JPanel implements Observateur {
         majMainJoueur(1);
         majCarteJouees();
     }
+    
     private void majMainJoueur(int numJ) {
+    	
+    	if(jeu.joueurActuelle() == numJ) {
+    		System.out.println("jecrashici");
+    		Icon imgArrow = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+    		this.arrowJ1.setIcon(imgArrow);
+    	}
+    	else {
+    		System.out.println("jecrashlà");
+    		this.arrowJ1.setIcon(null);
+    	}
+    	
         for (int i = 0; i < 11; i++) {
             if (i < jeu.getMains()[numJ].getnbCarte()) {
                 Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
