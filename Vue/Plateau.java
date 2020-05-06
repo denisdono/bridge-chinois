@@ -7,6 +7,7 @@ import Patterns.Observateur;
 import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Plateau extends JPanel implements Observateur {
@@ -15,21 +16,86 @@ public class Plateau extends JPanel implements Observateur {
     int largeurCase = 1, hauteurCase = 1;
     CollecteurEvenements c;
     Menu m;
+    ArrayList<JLabel> hand1;
+    ArrayList<JLabel> hand2;
+    ArrayList<JLabel> centreDecks;
+    ArrayList<JLabel> playedCards;
+    ArrayList<ArrayList<JLabel>> hands;
     //Dimensions a revoir, adapter a la taille de l'écran
     private Dimension dimlabel;
 
     public Plateau(Jeu j, CollecteurEvenements c, Menu m) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dimlabel = new Dimension(screenSize.width/25,screenSize.height/10);
+        dimlabel = new Dimension(screenSize.width / 25, screenSize.height / 10);
         this.m = m;
         this.c = c;
+        hand1 = new ArrayList<>();
+        hand2 = new ArrayList<>();
+        centreDecks = new ArrayList<>();
+        playedCards = new ArrayList<>();
+        hands = new ArrayList<>();
+        hands.add(hand1);
+        hands.add(hand2);
         jeu = j;
         //On ajoute le plateau dans la liste des observateur
         //Les observateurs seront mis à jour par le jeu dès que nécessaire
         jeu.ajouteObservateur(this);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
-        miseAJour();
+
+        JLabel nomJ = new JLabel("Joueur 1");
+        this.add(nomJ);
+        JPanel hand1Pane = new JPanel();
+        for (int i = 0; i < 11; i++) {
+            JLabel l = new JLabel();
+            hand1Pane.add(l);
+            hand1.add(l);
+        }
+        this.add(hand1Pane);
+        JLabel space = new JLabel();
+        space.setPreferredSize(dimlabel);
+        this.add(space);
+
+        JLabel indPioche = new JLabel("Pioches");
+        this.add(indPioche);
+        JPanel paquetCentrePane = new JPanel();
+        for (int i = 0; i < 6; i++) {
+            JLabel l = new JLabel();
+            paquetCentrePane.add(l);
+            centreDecks.add(l);
+        }
+        this.add(paquetCentrePane);
+
+        JPanel carteJoueePane = new JPanel();
+        JLabel joue1 = new JLabel();
+        joue1.setPreferredSize(dimlabel);
+        carteJoueePane.add(joue1);
+        playedCards.add(joue1);
+
+        JLabel joue2 = new JLabel();
+        joue2.setPreferredSize(dimlabel);
+        carteJoueePane.add(joue2);
+        playedCards.add(joue2);
+        this.add(carteJoueePane);
+        JLabel space2 = new JLabel();
+        space.setPreferredSize(dimlabel);
+        this.add(space2);
+
+        JLabel nomJ2 = new JLabel("Joueur 2");
+        this.add(nomJ2);
+        JPanel hand2Pane = new JPanel();
+        for (int i = 0; i < 11; i++) {
+            JLabel l = new JLabel();
+            hand2Pane.add(l);
+            hand2.add(l);
+        }
+        this.add(hand2Pane);
+        majMainJoueur(0);
+        majPaquets();
+        majMainJoueur(1);
+        majCarteJouees();
+        this.m.indiqueAtout(jeu.getAtout().name());
+        //miseAJour();
 
     }
 
@@ -39,123 +105,74 @@ public class Plateau extends JPanel implements Observateur {
         //Mise à jour des infos du menu
         m.indiqueAtout(jeu.getAtout().name());
         m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis());
+        majMainJoueur(0);
+        majPaquets();
+        majMainJoueur(1);
+        majCarteJouees();
+    }
+    private void majMainJoueur(int numJ) {
+        for (int i = 0; i < 11; i++) {
+            if (i < jeu.getMains()[numJ].getnbCarte()) {
+                Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+                hands.get(numJ).get(i).setIcon(img);
+                if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
+                    if (hands.get(numJ).get(i).getMouseListeners().length == 0) {
+                        hands.get(numJ).get(i).addMouseListener(new JoueurCarteListener(i, c));
+                    }
+                } else if (hands.get(numJ).get(i).getMouseListeners().length > 0) {
+                    hands.get(numJ).get(i).removeMouseListener(hands.get(numJ).get(i).getMouseListeners()[0]);
+                }
+            } else {
+                hands.get(numJ).get(i).setIcon(null);
+            }
+        }
+    }
 
-        //mise a zero du plateau
-        this.removeAll();
-
-        /////////////////////////////
-        //Gestion de la main du joueur 1
-        /////////////////////////////
-        creerMainJoueur(0);
-        JLabel space = new JLabel();
-        space.setPreferredSize(dimlabel);
-        this.add(space);
-        /////////////////////////////
-        //Gestion des paquets du centre
-        /////////////////////////////
-        JLabel indPioche = new JLabel("Pioches");
-        this.add(indPioche);
-        JPanel paquetCentre = new JPanel();
+    private void majPaquets() {
         for (int i = 0; i < 6; i++) {
-            JLabel l = new JLabel();
             if (jeu.getPiles()[i].estVide()) {
-                l.setText("Vide");
-                 
-               
+                centreDecks.get(i).setIcon(null);
+                centreDecks.get(i).setText("Vide");
+                if (centreDecks.get(i).getMouseListeners().length > 0) {
+                    centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
+                }
             } else {
                 //version texte
                 //l.setText(jeu.getPiles()[i].topDeck().toString());
                 //version image
                 Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getPiles()[i].topDeck().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-                l.setIcon(img);
+                centreDecks.get(i).setIcon(img);
+
                 //SI on est a une étape de pioche
                 if (jeu.etape() == 2 || jeu.etape() == 3) {
-                    l.addMouseListener(new JoueurCarteListener(i, c));
+                    if (centreDecks.get(i).getMouseListeners().length == 0) {
+                        centreDecks.get(i).addMouseListener(new JoueurCarteListener(i, c));
+                    }
+                } else if (centreDecks.get(i).getMouseListeners().length > 0) {
+                    centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
                 }
             }
             //l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            l.setPreferredSize(dimlabel);
-           
-            paquetCentre.add(l);
+            centreDecks.get(i).setPreferredSize(dimlabel);
         }
-        if (jeu.etape() == 2 || jeu.etape() == 3) {
-            paquetCentre.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
-        }
-        this.add(paquetCentre);
+    }
 
-        /////////////////////////////
-        //Gestion des 2 cartes jouees
-        /////////////////////////////
-        JPanel carteJouee = new JPanel();
-
-        JLabel joue1 = new JLabel();
-        //joue1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        joue1.setPreferredSize(dimlabel);
-        carteJouee.add(joue1);
-        //Si c'est au deuxieme joueur de jouer une carte, on affiche la première carte
+    private void majCarteJouees() {
+        playedCards.get(0).setIcon(null);
+        playedCards.get(1).setIcon(null);
         if (jeu.etape() == 1 || jeu.etape() == 2) {
             //version texte
             //joue1.setText(jeu.getC_dom().toString());
             //version image
             Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_dom().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
-            joue1.setIcon(img);
+            playedCards.get(0).setIcon(img);
         }
-        JLabel joue2 = new JLabel();
-        //joue2.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        joue2.setPreferredSize(dimlabel);
-        //Si le deuxieme joueur a joue, on affiche aussi sa carte
         if (jeu.etape() == 2) {
             //version texte
             //joue2.setText(jeu.getC_sub().toString());
             //version image
             Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_sub().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
-            joue2.setIcon(img);
-        } 
-        carteJouee.add(joue2);
-
-        this.add(carteJouee);
-
-        /////////////////////////////
-        //Gestion de la main du joueur 2
-        /////////////////////////////
-        JLabel space2 = new JLabel();
-        space2.setPreferredSize(dimlabel);
-        this.add(space2);
-        creerMainJoueur(1);
-
-        //Recharger le panel
-        this.revalidate();
-    }
-
-    private void creerMainJoueur(int numJ) {
-        JLabel nomJ = new JLabel("Joueur " + (numJ + 1));
-        this.add(nomJ);
-        JPanel main = new JPanel();
-        //affichage de toutes les cartes du joueur
-        for (int i = 0; i < jeu.getMains()[numJ].getnbCarte(); i++) {
-            JLabel l = new JLabel();
-            //version texte
-            //l.setText(jeu.getMains()[numJ].getMain()[i].toString());
-            //l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            //l.setPreferredSize(dimlabel);
-            ///////////////////////////////////
-            //Si on utilise les images
-//            System.out.println(jeu.getMains()[numJ].getMain()[i].getResourceName());
-            Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
-            l.setIcon(img);
-            ///////////////////////////////////
-            //Si c'est au joueur numJ de jouer et qu'on est a une étape de pioche
-            //On active le listener
-            if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
-                l.addMouseListener(new JoueurCarteListener(i, c));
-            }
-            main.add(l);
+            playedCards.get(1).setIcon(img);
         }
-        //Si c'est au joueur numJ de jouer et qu'on est a une étape de pioche
-        //La main du joueur est en surbrillance
-        if (jeu.joueurActuelle() == numJ && (jeu.etape() == 0 || jeu.etape() == 1)) {
-            main.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
-        }
-        this.add(main);
     }
 }
