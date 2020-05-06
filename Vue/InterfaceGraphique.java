@@ -40,7 +40,7 @@ public class InterfaceGraphique implements Runnable {
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
-        menuBar = new menuBar();
+        menuBar = new menuBar(c);
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements control) {
