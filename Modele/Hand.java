@@ -17,12 +17,16 @@ public class Hand{
 	
 	public void trierMain() {// permet de trier les carte d'une main pour les ordonner
 		Carte c;
-		int k;
+		int k,l,m;
 		for (int i=0; i<nbcarte;i++) {//parcoure toute les cartes
 			c=main[i];
 			k=i;
 			for (int j=i+1;j<nbcarte;j++) {// parcour toute les carte aprés la carte actuelle
-				if (c.getCouleur().getVal()>main[j].getCouleur().getVal()) {//vérifie si la couleur de la carte et plus faible
+				l=c.getCouleur().getVal();
+				m=main[j].getCouleur().getVal();
+				if (l==2) l=4;// rend momentanément le coeur supérieure a pique
+				if (m==2) m=4;
+				if (l>m) {//vérifie si la couleur de la carte et plus faible
 					c=main[j];
 					k=j;
 				}

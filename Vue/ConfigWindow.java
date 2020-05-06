@@ -28,13 +28,14 @@ public class ConfigWindow extends JFrame implements Observateur {
 	JPanel hisPanel;
 	ButtonGroup diffGroup;
 	ButtonGroup condGroup;
-
+	ButtonGroup showGroup;
 	ButtonGroup dosGroup;
 	ButtonGroup fondGroup;
 	// variables des configurations
 	int selDiff;
 	int selWin;
 	int value;
+	int showCarte;
 	int selCarte;
 	int selFond;
 
@@ -51,6 +52,11 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selWin = 0;
 			}
 			value = Integer.parseInt(br.readLine());
+			showCarte = Integer.parseInt(br.readLine());
+			if (showCarte < 0 || showCarte > 1) {
+				showCarte = 0;
+			}
+			
 			selCarte = Integer.parseInt(br.readLine());
 			if (selCarte < 0 || selCarte > 2) {
 				selCarte = 0;
@@ -66,11 +72,12 @@ public class ConfigWindow extends JFrame implements Observateur {
 				if (confile.createNewFile()) {
 					System.out.println("Création d'un fichier config.");
 					FileWriter myWriter = new FileWriter("config");
-					myWriter.write("0\n0\n100\n0\n0\n");
+					myWriter.write("0\n0\n100\n0\n0\n0\n");
 					myWriter.close();
 					selDiff = 0;
 					selWin = 0;
 					value = 100;
+					showCarte = 0;
 					selCarte = 0;
 					selFond = 0;
 				}
@@ -156,6 +163,29 @@ public class ConfigWindow extends JFrame implements Observateur {
 		cond.add(valueP);
 
 		hisPanel.add(cond);
+		
+		JPanel show = new JPanel();
+		show.setBorder(BorderFactory.createTitledBorder("Montrer les cartes de l'adversaire :"));
+		showGroup = new ButtonGroup();
+		JRadioButton yes = new JRadioButton("oui");
+		JRadioButton no = new JRadioButton("non");
+		yes.setActionCommand("0");
+		no.setActionCommand("1");
+
+		switch (showCarte) {
+		case 0:
+			yes.setSelected(true);
+			break;
+		case 1:
+			no.setSelected(true);
+			break;
+		}
+		showGroup.add(yes);
+		showGroup.add(no);
+		
+		show.add(yes);
+		show.add(no);
+		hisPanel.add(show);
 
 		JPanel dos = new JPanel();
 		dos.setBorder(BorderFactory.createTitledBorder("Dos de carte :"));
@@ -232,11 +262,12 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selDiff = Integer.parseInt(diffGroup.getSelection().getActionCommand());
 				selWin = Integer.parseInt(condGroup.getSelection().getActionCommand());
 				value = Integer.parseInt(valueField.getValue().toString());
+				showCarte = Integer.parseInt(showGroup.getSelection().getActionCommand());
 				selCarte = Integer.parseInt(dosGroup.getSelection().getActionCommand());
 				selFond = Integer.parseInt(fondGroup.getSelection().getActionCommand());
 				try {
 					FileWriter myWriter = new FileWriter("config");
-					myWriter.write(selDiff + "\n" + selWin + "\n" + value + "\n" + selCarte + "\n" + selFond + "\n");
+					myWriter.write(selDiff + "\n" + selWin + "\n" + value +"\n" +showCarte+ "\n" + selCarte + "\n" + selFond + "\n");
 					myWriter.close();
 				} catch (IOException e1) {
 					try {
@@ -245,7 +276,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 							System.out.println("Création d'un fichier config.");
 							FileWriter myWriter = new FileWriter("config");
 							myWriter.write(
-									selDiff + "\n" + selWin + "\n" + value + "\n" + selCarte + "\n" + selFond + "\n");
+									selDiff + "\n" + selWin + "\n" + value +"\n" +showCarte+ "\n" + selCarte + "\n" + selFond + "\n");
 							myWriter.close();
 						}
 					} catch (IOException e2) {

@@ -69,7 +69,7 @@ public class Deck {
 		String str = "Deck : \n";
 		Iterator it = cartes.iterator();
 		while(it.hasNext()) {
-			str = str+it.next()+"\n";
+			str = str+it.next()+" ";
 		}
 		return str;
 	}
