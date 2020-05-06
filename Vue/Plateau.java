@@ -24,6 +24,7 @@ public class Plateau extends JPanel implements Observateur {
     private ArrayList<ArrayList<JLabel>> hands;
     //Dimensions a revoir, adapter a la taille de l'écran
     private Dimension dimlabel;
+    private int etapePrecedente;
 
     public Plateau(Jeu j, CollecteurEvenements c, Menu m) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,6 +43,7 @@ public class Plateau extends JPanel implements Observateur {
         //On ajoute le plateau dans la liste des observateur
         //Les observateurs seront mis à jour par le jeu dès que nécessaire
         jeu.ajouteObservateur(this);
+        m.setTaille(new Dimension(300, dimlabel.height*7));
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
 
@@ -49,7 +51,7 @@ public class Plateau extends JPanel implements Observateur {
         this.add(nomJ);
         JPanel hand1Pane = new JPanel();
         
-        // Ajout de la fl�che indiquant le tour du joueur 1
+        // Ajout de la fl�che indiquant le tour du joueur 1
         JLabel arrow1Label = new JLabel(); 
         hand1Pane.add(arrow1Label);
         this.arrows.add(arrow1Label);
@@ -61,7 +63,7 @@ public class Plateau extends JPanel implements Observateur {
         }
         this.add(hand1Pane);
         JLabel space = new JLabel();
-        space.setPreferredSize(dimlabel);
+        space.setPreferredSize(new Dimension(dimlabel.width, dimlabel.height/2));
         this.add(space);
 
         JLabel indPioche = new JLabel("Pioches");
@@ -86,14 +88,14 @@ public class Plateau extends JPanel implements Observateur {
         playedCards.add(joue2);
         this.add(carteJoueePane);
         JLabel space2 = new JLabel();
-        space.setPreferredSize(dimlabel);
+        space2.setPreferredSize(new Dimension(dimlabel.width, dimlabel.height/2));
         this.add(space2);
 
         JLabel nomJ2 = new JLabel("Joueur 2");
         this.add(nomJ2);
         JPanel hand2Pane = new JPanel();
         
-     // Ajout de la fl�che indiquant le tour du joueur 2
+     // Ajout de la fl�che indiquant le tour du joueur 2
         JLabel arrow2Label = new JLabel(); 
         hand2Pane.add(arrow2Label);
         this.arrows.add(arrow2Label);
@@ -118,7 +120,11 @@ public class Plateau extends JPanel implements Observateur {
     public void miseAJour() {
         //Mise à jour des infos du menu
         m.indiqueAtout(jeu.getAtout().name());
-        m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis());
+        m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(), jeu.getMains()[1].getnbScore());
+        if(etapePrecedente==1){
+            m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(), dimlabel);
+        }
+        etapePrecedente=jeu.etape();
         majMainJoueur(0);
         majPaquets();
         majMainJoueur(1);

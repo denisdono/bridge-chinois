@@ -64,8 +64,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
         his = new Historique();
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setMinimumSize(new Dimension(250, 200));
-        this.setBorder(BorderFactory.createEmptyBorder(0, 70, 0, 100));
+        
+        //this.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 50));
         Font titreFont = new Font("Calibri", Font.PLAIN, 24);
         //Affichage du dernier plis
         labelTitreDernierPlis = new JLabel("Dernier Plis");
@@ -142,7 +142,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         boutHis.addActionListener(this);
 
         this.add(boutHis);
-
+        
     }
 
     /**
@@ -191,5 +191,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
         dernierCarte1.setIcon(img);
         dernierCarte2.setIcon(img2);
+    }
+    public void setTaille(Dimension d){
+        this.setPreferredSize(d);
     }
 }
