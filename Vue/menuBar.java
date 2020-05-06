@@ -8,7 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 public class menuBar extends JMenuBar { // menu du haut 
-
+	private CollecteurEvenements c;
 	private JMenu menuParametres;
 	private JMenu menuAction;
 	private JMenuItem sauvegarder;
@@ -20,11 +20,17 @@ public class menuBar extends JMenuBar { // menu du haut
 	private JMenuItem config;
 	private JMenuItem regles;
 
-	menuBar() {
+	menuBar( CollecteurEvenements c) {
+		this.c=c;
 		ReglesWindow lesRegles = new ReglesWindow();
 
 		menuAction = new JMenu("actions");
 		undo = new JMenuItem("undo(crtl+z)");
+		undo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.annule();
+			}
+		});
 		menuAction.add(undo);
 		redo = new JMenuItem("redo(crtl+y)");
 		menuAction.add(redo);
