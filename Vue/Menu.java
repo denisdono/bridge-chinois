@@ -8,6 +8,7 @@ package Vue;
 import Modele.Jeu;
 import Patterns.Observateur;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
@@ -63,7 +64,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
         his = new Historique();
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 100));
+        this.setMinimumSize(new Dimension(250, 200));
+        this.setBorder(BorderFactory.createEmptyBorder(0, 70, 0, 100));
         Font titreFont = new Font("Calibri", Font.PLAIN, 24);
         //Affichage du dernier plis
         labelTitreDernierPlis = new JLabel("Dernier Plis");
@@ -78,8 +80,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
         JPanel paneDernierPlis = new JPanel();
         //paneDernierPlis.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         //lbLabel8.setIcon(atout);
-        dernierCarte1 = new JLabel("carte1");
-        dernierCarte2 = new JLabel("carte2");
+        dernierCarte1 = new JLabel();
+        dernierCarte2 = new JLabel();
         paneDernierPlis.add(dernierCarte1);
         paneDernierPlis.add(dernierCarte2);
         this.add(paneDernierPlis);
@@ -180,5 +182,14 @@ class Menu extends JPanel implements ActionListener, Observateur {
         
         labelScore1.setText("Joueur 1 : " + score1);
         labelScore2.setText("Joueur 2 : " + score2);
+    }
+    public void setResDernierPlis(int jWin, String carte1, String carte2, Dimension dim){
+        labelDernierPlisGagnant.setText("Joueur "+(jWin+1)+" emporte");
+        System.out.println("carte1"+carte1+"-carte2"+carte2);
+        Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(carte1)).getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
+        Icon img2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(carte2)).getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
+
+        dernierCarte1.setIcon(img);
+        dernierCarte2.setIcon(img2);
     }
 }
