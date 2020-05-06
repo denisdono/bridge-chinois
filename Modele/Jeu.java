@@ -43,6 +43,7 @@ public class Jeu extends Observable {
 			if(Integer.parseInt(br.readLine())==1) {
 				parManche=true;
 			}
+			else parManche=false;
 			
 			totalfin = Integer.parseInt(br.readLine());
 			
