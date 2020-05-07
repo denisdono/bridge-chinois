@@ -91,6 +91,7 @@ public class Jeu extends Observable {
 		enCours = true;
 		changerjoueur=false;
 		joueurdominant=0;
+		manche=1;
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table
 		for (int i=0;i<6;i++) {// boucle sur les six piles
 			piles[i]=new Deck();
@@ -161,8 +162,8 @@ public class Jeu extends Observable {
 						//s'il reste des cartes a piocher le joueur dominant pioche
 						mains[n].ajoutCarte(piles[i].piocher());
 						mains[n].trierMain();
-						etape++;
 						metAJour();
+						etape++;
 					
 					break;
 				case 3:
@@ -171,7 +172,7 @@ public class Jeu extends Observable {
 					mains[n].trierMain();
 					piochage=!pilesvide();//teste si il reste des carte a piocher
 					etape=0;//fini un tour de jeu
-					metAJour();
+                                        metAJour();
 					break;
 				}
 				if (mains[0].getnbCarte()==0 && mains[1].getnbCarte()==0) {
@@ -336,6 +337,10 @@ public class Jeu extends Observable {
 	public boolean enCours() {
 		//dit si la partie est en cour
 		return enCours;
+	}
+	
+	public int getMancheactuelle() {// renvoie le numéro de la manche actuelle
+		return manche;
 	}
 	
 	public boolean MancheCours() {
