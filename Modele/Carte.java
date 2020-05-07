@@ -22,7 +22,7 @@ public class Carte {
 	}
         public String getResourceName(){
             String name = "";
-            System.out.println(couleur.toString());
+            //System.out.println(couleur.toString());
             switch(couleur.toString()){
                 case "Pique": name+="Spades "; break;
                 case "Carreaux": name+="Diamond ";break;

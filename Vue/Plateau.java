@@ -106,6 +106,7 @@ public class Plateau extends JPanel implements Observateur {
             hand2.add(l);
         }
         this.add(hand2Pane);
+        majFleche();
         majMainJoueur(0);
         majPaquets();
         majMainJoueur(1);
@@ -125,6 +126,7 @@ public class Plateau extends JPanel implements Observateur {
             m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(), dimlabel);
         }
         etapePrecedente=jeu.etape();
+        majFleche();
         majMainJoueur(0);
         majPaquets();
         majMainJoueur(1);
@@ -133,13 +135,6 @@ public class Plateau extends JPanel implements Observateur {
     
     private void majMainJoueur(int numJ) {
     	
-    	if(jeu.joueurActuelle() == numJ) {
-    		Icon imgArrow = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height/2, Image.SCALE_SMOOTH));
-    		this.arrows.get(numJ).setIcon(imgArrow);
-    	}
-    	else {
-    		this.arrows.get(numJ).setIcon(null);
-    	}
     	
         for (int i = 0; i < 11; i++) {
             if (i < jeu.getMains()[numJ].getnbCarte()) {
@@ -206,5 +201,13 @@ public class Plateau extends JPanel implements Observateur {
             Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_sub().getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));;
             playedCards.get(1).setIcon(img);
         }
+    }
+    
+    private void majFleche() {
+    	Icon imgArrow = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height/2, Image.SCALE_SMOOTH));
+    	
+    		this.arrows.get(jeu.joueurActuelle()).setIcon(imgArrow);
+    		System.out.println("joueur actif : " + jeu.joueurActuelle() + "\n");
+    		this.arrows.get((jeu.joueurActuelle()+1)%2).setIcon(null);
     }
 }

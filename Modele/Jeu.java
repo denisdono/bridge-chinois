@@ -161,8 +161,8 @@ public class Jeu extends Observable {
 						//s'il reste des cartes a piocher le joueur dominant pioche
 						mains[n].ajoutCarte(piles[i].piocher());
 						mains[n].trierMain();
-						metAJour();
 						etape++;
+						metAJour();
 					
 					break;
 				case 3:
@@ -171,7 +171,7 @@ public class Jeu extends Observable {
 					mains[n].trierMain();
 					piochage=!pilesvide();//teste si il reste des carte a piocher
 					etape=0;//fini un tour de jeu
-                                        metAJour();
+					metAJour();
 					break;
 				}
 				if (mains[0].getnbCarte()==0 && mains[1].getnbCarte()==0) {
