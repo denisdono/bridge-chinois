@@ -34,6 +34,10 @@ public class Jeu extends Observable {
 	
 
 	public Jeu() {
+		start();
+	}
+		
+	public void start() {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("config"));
 			diff = Integer.parseInt(br.readLine());
@@ -95,8 +99,9 @@ public class Jeu extends Observable {
 		mains[0]=new Hand();//cree la main du premier joueur
 		mains[1]=new Hand();//cree la main du deuxiÃ¨me joueur
 		nouvelleManche();//initialise une manche
+		metAJour();
 	}
-
+	
 	public void nouvelleManche() {
 		finmanche=false;
 		piochage= true;
