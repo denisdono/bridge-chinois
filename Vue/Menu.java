@@ -58,6 +58,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     private final JLabel labelDernierPlisGagnant;
     private final JLabel dernierCarte1;
     private final JLabel dernierCarte2;
+    private final JLabel invis0;
 
     public Menu(Jeu j) {
         super();
@@ -82,12 +83,12 @@ class Menu extends JPanel implements ActionListener, Observateur {
         //lbLabel8.setIcon(atout);
         dernierCarte1 = new JLabel();
         dernierCarte2 = new JLabel();
+        invis0 = new JLabel();
+        paneDernierPlis.add(invis0);
         paneDernierPlis.add(dernierCarte1);
         paneDernierPlis.add(dernierCarte2);
         this.add(paneDernierPlis);
-        JLabel invis0 = new JLabel();
-        invis0.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        this.add(invis0);
+        
 
         //Affichage de l'atout de la partie
         labelTitreAtout = new JLabel("Atout");
@@ -192,7 +193,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
         dernierCarte1.setIcon(img);
         dernierCarte2.setIcon(img2);
     }
-    public void setTaille(Dimension d){
+    public void setTaille(Dimension d, Dimension dimLab){
         this.setPreferredSize(d);
+        invis0.setPreferredSize(dimLab);
     }
 }

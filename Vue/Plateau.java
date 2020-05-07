@@ -43,10 +43,10 @@ public class Plateau extends JPanel implements Observateur {
         //On ajoute le plateau dans la liste des observateur
         //Les observateurs seront mis à jour par le jeu dès que nécessaire
         jeu.ajouteObservateur(this);
-        m.setTaille(new Dimension(300, dimlabel.height*7));
+        m.setTaille(new Dimension(dimlabel.width*4, dimlabel.height*7), new Dimension((int)(dimlabel.width*1.6),dimlabel.height));
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
-
+       // this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
+        this.setPreferredSize(new Dimension(dimlabel.width*14, dimlabel.height*7));
         JLabel nomJ = new JLabel("Joueur 1");
         this.add(nomJ);
         JPanel hand1Pane = new JPanel();
@@ -138,7 +138,14 @@ public class Plateau extends JPanel implements Observateur {
     	
         for (int i = 0; i < 11; i++) {
             if (i < jeu.getMains()[numJ].getnbCarte()) {
-                Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+                Icon img;
+                if(!jeu.isShowCarte() && numJ != jeu.joueurActuelle()){
+                    img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+
+                } else {
+                    img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+                    
+                }
                 hands.get(numJ).get(i).setIcon(img);
                 if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
                     if (hands.get(numJ).get(i).getMouseListeners().length == 0) {
