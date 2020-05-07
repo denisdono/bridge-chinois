@@ -52,6 +52,10 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selWin = 0;
 			}
 			value = Integer.parseInt(br.readLine());
+			if (value<=0) {
+				if (selWin==1)value=12;
+				else value=100;
+			}
 			showCarte = Integer.parseInt(br.readLine());
 			if (showCarte < 0 || showCarte > 1) {
 				showCarte = 0;
