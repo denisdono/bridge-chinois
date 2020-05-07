@@ -20,6 +20,7 @@ public class StartingMenu  extends JFrame {
 	public StartingMenu(){
 		
 		menuBar menuBar = new menuBar();
+		setJMenuBar(menuBar);
 		JPanel mainPanel= new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 		JLabel titre = new JLabel("Bridge Chinois");
