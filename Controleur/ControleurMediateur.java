@@ -39,6 +39,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 		}
 	}
 
+	public void recommencer() {
+		jeu.start();
+	}
+	
 	public void tictac() {
 		if (jeu.enCours()) {
 			if (decompte == 0) {
