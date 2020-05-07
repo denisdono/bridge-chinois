@@ -39,6 +39,11 @@ public class menuBar extends JMenuBar { // menu du haut
 		conceed = new JMenuItem("abandonner");
 		menuAction.add(conceed);
 		restart = new JMenuItem("recomencer");
+		restart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.recommencer();
+			}
+		});
 		menuAction.add(restart);
 		add(menuAction);
 
