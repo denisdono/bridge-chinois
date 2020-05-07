@@ -7,8 +7,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class menuBar extends JMenuBar { // menu du haut 
+public class menuBar extends JMenuBar { // menu du haut
 	private CollecteurEvenements c;
+	private boolean menu;
 	private JMenu menuParametres;
 	private JMenu menuAction;
 	private JMenu menuHelp;
@@ -22,15 +23,19 @@ public class menuBar extends JMenuBar { // menu du haut
 	private JMenuItem config;
 	private JMenuItem regles;
 
-	menuBar( CollecteurEvenements c) {
-		this.c=c;
-		ReglesWindow lesRegles = new ReglesWindow();
+	menuBar() {
+		completeIHM();
+	}
+
+	menuBar(CollecteurEvenements c) {
+		this.c = c;
+		
 
 		menuAction = new JMenu("actions");
 		undo = new JMenuItem("undo(crtl+z)");
 		undo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//c.annule();
+				// c.annule();
 			}
 		});
 		menuAction.add(undo);
@@ -39,14 +44,15 @@ public class menuBar extends JMenuBar { // menu du haut
 		conceed = new JMenuItem("abandonner");
 		menuAction.add(conceed);
 		restart = new JMenuItem("recomencer");
-		restart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				c.recommencer();
-			}
-		});
 		menuAction.add(restart);
 		add(menuAction);
 
+		completeIHM();
+
+	}
+
+	public void completeIHM() {
+		
 		menuParametres = new JMenu("parametres");
 		sauvegarder = new JMenuItem("sauvegarder");
 		menuParametres.add(sauvegarder);
@@ -59,26 +65,22 @@ public class menuBar extends JMenuBar { // menu du haut
 				lesConf.montrer();
 			}
 		});
-		
-		
+
 		menuParametres.add(config);
-		
-		
-		
 
 		add(menuParametres);
-		
-		menuHelp=new JMenu("aide");
+
+		menuHelp = new JMenu("aide");
 
 		regles = new JMenuItem("regles");
 		regles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ReglesWindow lesRegles = new ReglesWindow();
 				lesRegles.montrer();
 			}
 		});
 		menuHelp.add(regles);
 		add(menuHelp);
-		
 	}
 
 	public JMenu getMenuParametres() {
