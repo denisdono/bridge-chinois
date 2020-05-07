@@ -50,6 +50,10 @@ public class Jeu extends Observable {
 			else parManche=false;
 			
 			totalfin = Integer.parseInt(br.readLine());
+			if (totalfin<=0) {
+				if (parManche)totalfin=12;
+				else totalfin=100;
+			}
 			
 			if (Integer.parseInt(br.readLine())==0) {
 				showCarte=true;
