@@ -140,6 +140,7 @@ public class Plateau extends JPanel implements Observateur {
             chgtManche = true;
             this.removeAll();
             this.revalidate();
+            this.repaint();
             showFinManche();
         } else {
             m.setNumManche(jeu.getMancheactuelle());
@@ -283,5 +284,6 @@ public class Plateau extends JPanel implements Observateur {
         this.removeAll();
         this.creerPlateau();
         this.revalidate();
+        this.repaint();
     }
 }
