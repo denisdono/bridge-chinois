@@ -35,6 +35,7 @@ public class Jeu extends Observable {
 	
 
 	public Jeu() {
+		IA=false;
 		start();
 	}
 		
@@ -430,6 +431,10 @@ public class Jeu extends Observable {
         
         public void activeIA() {
         	IA=true;
+        }
+        
+        public void desactiveIA() {
+        	IA=false;
         }
         
         public boolean getIA() {
