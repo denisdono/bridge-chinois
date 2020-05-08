@@ -7,11 +7,18 @@ import Modele.Carte;
 
 
  public class IASimple extends Joueur {
-	 int inutile;
+	 int valCar;//notre plus puissante carte de carreaux
+	 int valCoeur;//notre plus puissante carte de coeur
+	 int valPiq;//notre plus puissante carte de pique
+	 int valTre;//notre plus puissante carte de trefle
+	 Couleur maxQ;//la couleur dont on a le plus de carte
 	 
 	 IASimple(int n,Jeu p){
 		super(n,p);
-		inutile=-1;
+		valCar=0;
+		valCoeur=0;
+		valPiq=0;
+		valTre=0;
 	 }
 
 	
@@ -25,7 +32,12 @@ import Modele.Carte;
 			//si on pose en premier 
 			//on va poser notre carte la plus proche de la moyenne des valeur de carte de notre main 
 			//en ne posant des carte atout que si on a pas le choix
-			rep=poser_premier_simple();
+			if(jeu.getAtout()!=Couleur.Neutre) {
+				rep=poser_premier_simple();
+			}
+			else {
+				rep=poser_premier_simpleSansAtout();
+			}
 			break;
 		case 1:
 			//si on pose en deuxieme
@@ -35,7 +47,12 @@ import Modele.Carte;
 			break;
 		case 2:
 		case 3:
-			rep=piocher();
+			if(jeu.getAtout()!=Couleur.Neutre) {
+				rep=piocher();
+			}
+			else {
+				rep=piocherSansAtout();
+			}
 			//nous allons piocher la plus puissante carte atout que nous trouverons 
 			//si il n'y a pas de carte atout on va piocher la plus forte carte toute couleur confondue 
 			//trouver
@@ -57,6 +74,7 @@ import Modele.Carte;
 		int k=0;
 		int div=0;//le nombre de carte qui sera utiliser pour la moyenne des carte de la main
 		while (k<jeu.getMains()[num].getnbCarte() && uniq_atout) {
+			//regarde si on a uniquement des carte atout
 			if(jeu.getMains()[num].voirCarte(k).getCouleur()!=jeu.getAtout()) {
 				uniq_atout=false;
 			}
@@ -264,4 +282,157 @@ import Modele.Carte;
 
 
         }
+	
+	boolean poser_premier_simpleSansAtout() {
+		ModifVal();
+		int indice =-1;//l'indice de la carte qu'on va jouer
+		int somme=0;//somme de toutes les valeurs de carte qu'on a en main
+		int moyenne;//la valeur moyenne de notre main
+		int dif;//la difference entre une carte et la moyenne
+		int meme_dif=-1;//pour se rappeler de la différence de la carte choisi a la moyenne
+
+		int div=0;//le nombre de carte qui sera utiliser pour la moyenne des carte de la main
+		for (int i=0;i<jeu.getMains()[num].getnbCarte();i++) {
+			if (maxQ==jeu.getMains()[num].voirCarte(i).getCouleur()) {
+				//on fait la moyenne des carte de la couleur qu'on a en plus grande quantiter
+				somme=jeu.getMains()[num].voirCarte(i).getValeur()+somme;
+				div++;
+			}
+		}
+		moyenne=somme/div;
+		for (int i=0;i<jeu.getMains()[num].getnbCarte();i++) {
+			if(indice==-1) {
+				//on pas encore choisi de carte a poser
+				if (jeu.getMains()[num].voirCarte(i).getCouleur()==maxQ) {
+					//on prens la première cate qui est de la couleur que l'on veut poser
+					dif=jeu.getMains()[num].voirCarte(i).getValeur()-moyenne;
+					meme_dif=dif;
+					indice=i;
+				}
+			}
+			else {
+				//on a deja selectionner une carte
+				dif=jeu.getMains()[num].voirCarte(i).getValeur()-moyenne;
+				if (dif>0 && dif<meme_dif) {
+					//notre carte est plus proche de la moyenne de la main que la precedente carte choisi
+					if(jeu.getMains()[num].voirCarte(i).getCouleur()==maxQ) {
+						//on trouve une carte de la couleur choisi plus adapter
+						meme_dif=dif;
+						indice=i;
+					}
+				}
+			}
+		}
+		jeu.jouer(indice, num);
+		return true;
+		}
+		
+	
+	public boolean piocherSansAtout() {
+		ModifVal();
+		int indice=-1;//indice de quelle pioche poser
+		int val=-1;//la valeur de notre carte a piocher
+		boolean piocher=false;//on a deja une carte piochable
+		Deck[] pile=jeu.getPiles();//recupere tout les piles
+		boolean colbloquer=false;//si il nous manque une couleur 
+		//et qu'on a croiser une carte asser puissante de catte couleur 
+		//on ne peut plus piocher de carte de couleur non prioritaire
+		for(int i=0;i<6;i++) {
+			if (jeu.peutPiocher(i)) {
+				if(!piocher) {
+				//on pas encor de carte a piocher on prend la premiere disponible
+					indice=i;
+					val=pile[i].topDeck().getValeur();
+					piocher=true;
+					if((valTre==0 && pile[i].topDeck().getCouleur()==Couleur.Trefle) 
+							||(valCar==0 && pile[i].topDeck().getCouleur()==Couleur.Carreaux) 
+							||(valCoeur==0 && pile[i].topDeck().getCouleur()==Couleur.Coeur) 
+							|| ((valPiq==0 && pile[i].topDeck().getCouleur()==Couleur.Pique))) {
+						colbloquer=true;
+					}
+				}
+				else {
+				//on a deja une carte piocher on va essayer de trouver une meilleur carte a piocher
+					if (((valTre==0 && pile[i].topDeck().getCouleur()==Couleur.Trefle) 
+							||(valCar==0 && pile[i].topDeck().getCouleur()==Couleur.Carreaux) 
+							||(valCoeur==0 && pile[i].topDeck().getCouleur()==Couleur.Coeur) 
+							|| ((valPiq==0 && pile[i].topDeck().getCouleur()==Couleur.Pique))) 
+							&& pile[i].topDeck().getValeur()>7){
+						//nous avons pas de carte d'une des quatre couleur et 
+						//la carte que nous regardon est de catte couleur 
+						if(!colbloquer){
+							// on a pas encor choisi de carte a couleur prioritaire
+							indice=i;
+							val=pile[i].topDeck().getValeur();
+							colbloquer=true;
+							
+						}
+						else if(val<pile[i].topDeck().getValeur()) {
+							//on prend la carte de couleur prioritaire que si elle est 
+							//plus forte que la carte choisi precedament
+							indice=i;
+							val=pile[i].topDeck().getValeur();
+						}
+						
+					}
+					else if(val<pile[i].topDeck().getValeur() && !colbloquer) {
+						//la carte que l'on regarde est plus forte que la carte que l'on a choisi de piocher							//la carte a piocher que l'on regarde est un atout plus forte 
+						//que la notre choix actuelle de carte a piocher
+							indice=i;
+							val=pile[i].topDeck().getValeur();
+					}
+				}
+			}
+		}
+	jeu.jouer(indice, num);
+	return true;
+	}
+	
+	void ModifVal(){
+		int nbCar=0;
+		int nbCoeur=0;
+		int nbPiq=0;
+		int nbTre=0;
+		//met a jour la plus puissante carte de chaque couleure
+		for (int i=0;i<jeu.getMains()[num].getnbCarte();i++) {
+			if(jeu.getMains()[num].voirCarte(i).getCouleur()==Couleur.Trefle) {
+				//nous avons une carte de trefle et vérifions si c'est la plus puissante
+				valTre=Math.max(valTre,jeu.getMains()[num].voirCarte(i).getValeur());
+				nbTre++;
+			}
+			else if(jeu.getMains()[num].voirCarte(i).getCouleur()==Couleur.Carreaux) {
+				//nous avons une carte de Carreaux et vérifions si c'est la plus puissante
+				valCar=Math.max(valCar,jeu.getMains()[num].voirCarte(i).getValeur());
+				nbCar++;
+			}
+			else if(jeu.getMains()[num].voirCarte(i).getCouleur()==Couleur.Coeur) {
+				//nous avons une carte de Coeur et vérifions si c'est la plus puissante
+				valCoeur=Math.max(valCoeur,jeu.getMains()[num].voirCarte(i).getValeur());
+				nbCoeur++;
+			}
+			else {
+				//nous avons une carte de Pique et vérifions si c'est la plus puissante
+				valPiq=Math.max(valPiq,jeu.getMains()[num].voirCarte(i).getValeur());
+				nbPiq++;
+			}
+		}
+		int maxC=Math.max(Math.max(nbCar,nbCoeur),Math.max(nbPiq,nbTre));
+		//le nombre de carte max toutcouleur confondue
+		if(nbCar==maxC) {
+			//on plus de carreaux que d'autre couleur
+			maxQ=Couleur.Carreaux;
+		}
+		else if(nbTre==maxC) {
+			//on plus de tefle que d'autre couleur
+			maxQ=Couleur.Trefle;
+		}
+		else if(nbCoeur==maxC) {
+			//on plus de coeur que d'autre couleur
+			maxQ=Couleur.Coeur;
+		}
+		else {
+			//on plus de pique que d'autre couleur
+			maxQ=Couleur.Pique;
+		}
+	}
 }
