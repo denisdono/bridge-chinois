@@ -59,6 +59,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
     private final JLabel dernierCarte1;
     private final JLabel dernierCarte2;
     private final JLabel invis0;
+    private final JLabel labelTitreManche;
+    
 
     public Menu(Jeu j) {
         super();
@@ -68,6 +70,11 @@ class Menu extends JPanel implements ActionListener, Observateur {
         
         //this.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 50));
         Font titreFont = new Font("Calibri", Font.PLAIN, 24);
+        //Affichage du n°manche
+        labelTitreManche = new JLabel("Manche n ");
+        labelTitreManche.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
+        labelTitreManche.setFont(titreFont);
+        this.add(labelTitreManche);
         //Affichage du dernier plis
         labelTitreDernierPlis = new JLabel("Dernier Plis");
         labelTitreDernierPlis.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
@@ -196,5 +203,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public void setTaille(Dimension d, Dimension dimLab){
         this.setPreferredSize(d);
         invis0.setPreferredSize(dimLab);
+    }
+    public void setNumManche(int n){
+        labelTitreManche.setText("Manche n "+n);
     }
 }
