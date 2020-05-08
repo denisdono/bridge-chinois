@@ -31,7 +31,7 @@ public class Jeu extends Observable {
 	Carte c_sub;// carte jouer par l'autre joueur
 	int diff;// dificulter de l'ia
 	boolean showCarte;// carte visible
-	boolean IA;// présence d'une IA
+	boolean IA;// prï¿½sence d'une IA
 	
 
 	public Jeu() {
@@ -168,8 +168,8 @@ public class Jeu extends Observable {
 						//s'il reste des cartes a piocher le joueur dominant pioche
 						mains[n].ajoutCarte(piles[i].piocher());
 						mains[n].trierMain();
-						metAJour();
 						etape++;
+						metAJour();
 					
 					break;
 				case 3:
@@ -347,7 +347,7 @@ public class Jeu extends Observable {
 		return enCours;
 	}
 	
-	public int getMancheactuelle() {// renvoie le numéro de la manche actuelle
+	public int getMancheactuelle() {// renvoie le numï¿½ro de la manche actuelle
 		return manche;
 	}
 	
