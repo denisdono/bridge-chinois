@@ -31,6 +31,7 @@ public class Jeu extends Observable {
 	Carte c_sub;// carte jouer par l'autre joueur
 	int diff;
 	boolean showCarte;
+	boolean IA;
 	
 
 	public Jeu() {
@@ -425,6 +426,14 @@ public class Jeu extends Observable {
 
         public Carte getC_sub() {// permet de renvoyer la carte du joueur non sdominant
             return c_sub;
+        }
+        
+        public void activeIA() {
+        	IA=true;
+        }
+        
+        public boolean getIA() {
+        	return IA;
         }
         
 }
