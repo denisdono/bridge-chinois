@@ -14,8 +14,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 		jeu = j;
 		joueurs = new Joueur[2];
 		for (int i = 0; i < 2; i++)
-			if (i==1 && IA) // s'il y as une IA le jeu la met en tant que joueur numero2
+			if (i==1 && IA) { // s'il y as une IA le jeu la met en tant que joueur numero2
 				joueurs[i] = new JoueurIA(i, jeu);
+				jeu.activeIA();
+			}
 			else
 				joueurs[i] = new JoueurHumain(i, jeu);
 	}
