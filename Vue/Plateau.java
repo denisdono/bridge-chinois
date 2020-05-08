@@ -147,7 +147,7 @@ public class Plateau extends JPanel implements Observateur {
             showFinManche();
         } else {
             m.setNumManche(jeu.getMancheactuelle());
-            m.indiqueAtout(jeu.getAtout().name());
+            m.indiqueAtout(jeu.getAtout().name(), dimlabel);
             m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(), jeu.getMains()[1].getnbScore());
             if (etapePrecedente == 1) {
                 m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(), dimlabel);
@@ -284,8 +284,10 @@ public class Plateau extends JPanel implements Observateur {
         JLabel finRemporte;
         if (lastnbPlis1 > lastnbPlis2) {
             finRemporte = new JLabel("Remportee par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2);
-        } else {
+        } else if(lastnbPlis1 < lastnbPlis2){
             finRemporte = new JLabel("Remportee par le joueur 2 avec " + lastnbPlis2 + " plis a " + lastnbPlis1);
+        } else{
+            finRemporte = new JLabel("Egalité sur cette manche");
         }
         finManchePane.add(finRemporte);
 

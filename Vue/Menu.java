@@ -171,13 +171,13 @@ class Menu extends JPanel implements ActionListener, Observateur {
     }
 
     //Indiquer la couleur de l'atout dans le menu
-    public void indiqueAtout(String atout) {
+    public void indiqueAtout(String atout, Dimension d) {
         //this.labelAtout.setText(atout);
         Icon img;
         if(atout == "Neutre"){
             this.labelAtout.setText("Manche sans atout");
         } else{
-            img = new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png"));//.getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+            img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png")).getImage().getScaledInstance(d.width, d.height, Image.SCALE_SMOOTH));
             this.labelAtout.setIcon(img);
             this.labelAtout.setBorder(new LineBorder(Color.BLACK, 3, true));
         }
