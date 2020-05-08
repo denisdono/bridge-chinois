@@ -210,7 +210,9 @@ public class Jeu extends Observable {
 			
 	}
 	
-
+	public boolean isShowCarte() {
+		return showCarte;
+	}
 	
 	public int carte_gagnante() {
         //gagnant donne le numÃ©ros du joueure gagnant
