@@ -29,11 +29,13 @@ public class Jeu extends Observable {
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
-	int diff;
-	boolean showCarte;
+	int diff;// dificulter de l'ia
+	boolean showCarte;// carte visible
+	boolean IA;// pr�sence d'une IA
 	
 
 	public Jeu() {
+		IA=false;
 		start();
 	}
 		
@@ -210,7 +212,9 @@ public class Jeu extends Observable {
 			
 	}
 	
-
+	public boolean isShowCarte() {
+		return showCarte;
+	}
 	
 	public int carte_gagnante() {
         //gagnant donne le numÃ©ros du joueure gagnant
@@ -423,6 +427,18 @@ public class Jeu extends Observable {
 
         public Carte getC_sub() {// permet de renvoyer la carte du joueur non sdominant
             return c_sub;
+        }
+        
+        public void activeIA() {//l'ia est active
+        	IA=true;
+        }
+        
+        public void desactiveIA() {// l'ia n'est pas active
+        	IA=false;
+        }
+        
+        public boolean getIA() {// renvoie si l'ia est active
+        	return IA;
         }
         
 }
