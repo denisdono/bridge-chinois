@@ -29,9 +29,9 @@ public class Jeu extends Observable {
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
-	int diff;
-	boolean showCarte;
-	boolean IA;
+	int diff;// dificulter de l'ia
+	boolean showCarte;// carte visible
+	boolean IA;// présence d'une IA
 	
 
 	public Jeu() {
@@ -429,15 +429,15 @@ public class Jeu extends Observable {
             return c_sub;
         }
         
-        public void activeIA() {
+        public void activeIA() {//l'ia est active
         	IA=true;
         }
         
-        public void desactiveIA() {
+        public void desactiveIA() {// l'ia n'est pas active
         	IA=false;
         }
         
-        public boolean getIA() {
+        public boolean getIA() {// renvoie si l'ia est active
         	return IA;
         }
         
