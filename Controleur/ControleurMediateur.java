@@ -40,6 +40,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 			decompte = lenteurAttente;
 		}
 	}
+	
+	public void abandonner() {
+		jeu.giveUp();
+		changeJoueur();
+	}
 
 	public void recommencer() {
 		jeu.start();

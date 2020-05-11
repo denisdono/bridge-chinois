@@ -127,7 +127,7 @@ import Modele.Carte;
 		int indice=0;//la position de notre carte a jouer
 		Couleur col=jeu.getMains()[num].voirCarte(0).getCouleur();//la couleur de la carte a jouer
 		int val=jeu.getMains()[num].voirCarte(0).getValeur();//la valeur de notre carte a jouer
-		boolean gagner=c_gagnante(jeu.getC_dom(),jeu.getMains()[num].voirCarte(0))==2;
+		boolean gagner=jeu.carte_gagnante(jeu.getC_dom(),jeu.getMains()[num].voirCarte(0))==2;
 		boolean jouable=jeu.peutJouer(0, num);//sert a savoir si a deja trouver une carte jouable
 		for (int i=1;i<jeu.getMains()[num].getnbCarte();i++) {//pour toutes les cartes de la main 
 			if (jeu.peutJouer(i, num)) {
@@ -137,12 +137,12 @@ import Modele.Carte;
 					val=jeu.getMains()[num].voirCarte(i).getValeur();
 					col=jeu.getMains()[num].voirCarte(i).getCouleur();
 					indice=i;
-					gagner=c_gagnante(jeu.getC_dom(),jeu.getMains()[num].voirCarte(i))==2;
+					gagner=jeu.carte_gagnante(jeu.getC_dom(),jeu.getMains()[num].voirCarte(i))==2;
 					jouable=true;
 				}
 				else {
 					//on avait deja une carte jouable
-					if(c_gagnante(jeu.getC_dom(),jeu.getMains()[num].voirCarte(i))==1) {
+					if(jeu.carte_gagnante(jeu.getC_dom(),jeu.getMains()[num].voirCarte(i))==1) {
 						//notre carte a tester est perdante
 						if(!gagner) {
 							//si on a pas encors de carte gagnante
@@ -257,31 +257,7 @@ import Modele.Carte;
 	}
 	
 	
-	public int c_gagnante(Carte c1,Carte c2) {
-        //gagnant donne le numéros du joueure gagnant
-        int gagnant=-1;
-            if (c1.getCouleur()==c2.getCouleur()){
-                //si les deux carte sont de même couleure la plus forte l'emporte
-                if(c1.getValeur()>c2.getValeur()){
-                    gagnant=1;
-                }
-                else {
-                    gagnant=2;
-                }
-            }
-            else {
-                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure différente
-                    if (c2.getCouleur()==jeu.getAtout()) {
-                        gagnant=2;
-                    }
-                    else {
-                        gagnant=1;
-                    }
-            }
-            return gagnant;
 
-
-        }
 	
 	boolean poser_premier_simpleSansAtout() {
 		ModifVal();

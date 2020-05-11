@@ -25,7 +25,6 @@ package Vue;/*
  *          38401 Saint Martin d'Hères
  */
 
-import Controleur.ControleurMediateur;
 import Modele.Jeu;
 import java.awt.*;
 

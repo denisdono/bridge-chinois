@@ -39,6 +39,10 @@ public class Deck {
 		this.cartes=cartes;
 	}
 	
+	public void videPaquet() {// vide la pile
+		cartes.clear();
+	}
+	
 	public boolean estVide() { //voir si le deck est vide
 		return cartes.empty();
 	}
@@ -53,8 +57,6 @@ public class Deck {
 			System.out.println("La pioche est vide");
 		}
 		return carte;
-			
-		
 	}
 	
 	public void recupCartePile(Carte c) {// permet de mettre une carte dans la pile

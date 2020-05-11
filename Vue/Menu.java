@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,10 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -65,7 +63,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public Menu(Jeu j) {
         super();
         his = new Historique();
-        
+
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         //this.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 50));
@@ -82,7 +80,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
         this.add(labelTitreDernierPlis);
 
-        labelDernierPlisGagnant = new JLabel("");
+        labelDernierPlisGagnant = new JLabel("Le joueur n l'emporte");
         this.add(labelDernierPlisGagnant);
         //Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
         JPanel paneDernierPlis = new JPanel();
@@ -205,15 +203,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         invis0.setPreferredSize(dimLab);
     }
     public void setNumManche(int n){
-        labelTitreManche.setText("Manche "+n);
-    }
-
-    void removeLastPlis() {
-        dernierCarte1.setIcon(null);
-        dernierCarte2.setIcon(null);
-        labelDernierPlisGagnant.setText("");
-    }
-     public void ajouterManche(int numManche, int nbPlis1, int nbPlis2, int s1, int s2){
-            his.ajouterManche(numManche, nbPlis1, nbPlis2, s1, s2);
+        labelTitreManche.setText("Manche n "+n);
     }
 }
+
