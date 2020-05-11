@@ -212,6 +212,47 @@ public class Jeu extends Observable {
 			
 	}
 	
+	public void giveUp() {
+		finmanche=true;
+		changerjoueur=true;
+		mains[0].videMain();
+		mains[1].videMain();
+		for (int i=0;i<6;i++) {// boucle sur les six piles
+			piles[i].videPaquet();
+		}
+		if(parManche) {
+			//si on compte par nombre de manche
+			enCours=(manche!=totalfin);//on vÃ©rifie si on fini la partie
+			if (IA && joueurActuelle()==1) {
+				//si c'est une ia c'est l'autre joueur qui as abandonner
+				mains[1].addScore(1);
+				joueurdominant=1;
+			}
+			else {//sinon on concid�re que c'est le joueur actuelle qui abandonne
+				mains[(joueurActuelle()+1)%2].addScore(1);
+				joueurdominant=(joueurActuelle()+1)%2;
+			}
+		}
+		else{
+			if (IA && joueurActuelle()==1) {
+				//si c'est une ia c'est l'autre joueur qui as abandonner
+				mains[1].addScore(26);
+				joueurdominant=1;
+			}
+			else {//sinon on concid�re que c'est le joueur actuelle qui abandonne
+				mains[(joueurActuelle()+1)%2].addScore(26);
+				joueurdominant=(joueurActuelle()+1)%2;
+			}
+			enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);//on vÃ©rifie si on fini la partie
+		}
+		if (enCours) {
+			//si la partie n'est pas fini on lance une nouvelle manche
+			nouvelleManche();
+			manche++;
+		}
+		metAJour();
+	}		
+	
 	public boolean isShowCarte() {
 		return showCarte;
 	}

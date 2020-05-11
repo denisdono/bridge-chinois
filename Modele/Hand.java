@@ -69,6 +69,10 @@ public class Hand{
 		}
 	}
 	
+	public void videMain() {// permet de vider la mains
+		nbcarte=0;
+	}
+	
 	public int getnbCarte() {// obtenir le nombre de carte du joueur 
 		return nbcarte;
 	}
