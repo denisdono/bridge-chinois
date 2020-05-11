@@ -5,20 +5,13 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import com.sun.prism.Image;
-
 import Controleur.ControleurMediateur;
 import Modele.Jeu;
-import Patterns.Observateur;
+
 
 public class StartingMenu  extends JFrame {
 	

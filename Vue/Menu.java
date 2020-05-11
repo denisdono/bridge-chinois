@@ -14,10 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -206,11 +203,5 @@ class Menu extends JPanel implements ActionListener, Observateur {
     }
     public void setNumManche(int n){
         labelTitreManche.setText("Manche n "+n);
-    }
-
-    void removeLastPlis() {
-        dernierCarte1.setIcon(null);
-        dernierCarte2.setIcon(null);
-        labelDernierPlisGagnant.setText("");
     }
 }
