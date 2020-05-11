@@ -207,4 +207,10 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public void setNumManche(int n){
         labelTitreManche.setText("Manche n "+n);
     }
+
+    void removeLastPlis() {
+        dernierCarte1.setIcon(null);
+        dernierCarte2.setIcon(null);
+        labelDernierPlisGagnant.setText("");
+    }
 }

@@ -141,6 +141,7 @@ public class Plateau extends JPanel implements Observateur {
         if (manchePrec != jeu.getMancheactuelle()) {
             System.out.println("changement de manche");
             chgtManche = true;
+            m.removeLastPlis();
             this.removeAll();
             this.revalidate();
             this.repaint();
