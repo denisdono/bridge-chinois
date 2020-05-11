@@ -205,5 +205,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public void setNumManche(int n){
         labelTitreManche.setText("Manche n "+n);
     }
+    public void ajouterManche(int numManche, int nbPlis1, int nbPlis2, int s1, int s2){
+            his.ajouterManche(numManche, nbPlis1, nbPlis2, s1, s2);
+    }
 }
 
