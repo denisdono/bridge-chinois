@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,19 +26,16 @@ import javax.swing.SwingConstants;
 public class Historique extends JFrame implements Observateur {
 
     JPanel hisPanel;
+    private final JLabel tot1;
+    private final JLabel tot2;
 
     public Historique() {
         this.setTitle("Historique");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize((int) screenSize.getWidth() / 3, (int) screenSize.getHeight() / 4);
-
-        miseAJour();
-    }
-
-    @Override
-    public void miseAJour() {
-
-        hisPanel = new JPanel(new GridLayout(18, 3));
+        this.setSize((int) screenSize.getWidth() / 3, (int) screenSize.getHeight() / 3);
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
+        hisPanel = new JPanel(new GridLayout(0, 3));
         JLabel titre = new JLabel("Historique");
         titre.setFont(new Font("Calibri", Font.PLAIN, 24));
         hisPanel.add(titre);
@@ -56,17 +54,70 @@ public class Historique extends JFrame implements Observateur {
         hisPanel.add(ent1);
         hisPanel.add(ent2);
         hisPanel.add(ent3);
-        ////////////////////////
-        //Tableau de l'historique
-        for (int i = 0; i < 16 * 3; i++) {
-            JLabel l = new JLabel("vals" + i, SwingConstants.CENTER);
-            l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            hisPanel.add(l);
-        }
+        
         JScrollPane scrollPane = new JScrollPane(hisPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        this.add(scrollPane);
+        container.add(scrollPane);
+        
+        JPanel total = new JPanel(new GridLayout(1, 3));
+        JLabel tot = new JLabel("Total", SwingConstants.CENTER);
+        tot1 = new JLabel("0", SwingConstants.CENTER);
+        tot2 = new JLabel("0", SwingConstants.CENTER);
+        tot.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tot1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tot2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        total.add(tot);
+        total.add(tot1);
+        total.add(tot2);
+        container.add(total);
+        this.add(container);
+    }
 
+    @Override
+    public void miseAJour() {
+
+//        hisPanel = new JPanel(new GridLayout(0, 3));
+//        JLabel titre = new JLabel("Historique");
+//        titre.setFont(new Font("Calibri", Font.PLAIN, 24));
+//        hisPanel.add(titre);
+//        JLabel invLab = new JLabel("");
+//        JLabel invLab2 = new JLabel("");
+//        hisPanel.add(invLab);
+//        hisPanel.add(invLab2);
+//        ///////////////////////
+//        //Entete tableau
+//        JLabel ent1 = new JLabel("Manche num", SwingConstants.CENTER);
+//        ent1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        JLabel ent2 = new JLabel("Joueur 1", SwingConstants.CENTER);
+//        ent2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        JLabel ent3 = new JLabel("Joueur 2", SwingConstants.CENTER);
+//        ent3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        hisPanel.add(ent1);
+//        hisPanel.add(ent2);
+//        hisPanel.add(ent3);
+//        ////////////////////////
+//        //Tableau de l'historique
+//        for (int i = 0; i < 16 * 3; i++) {
+//            JLabel l = new JLabel("vals" + i, SwingConstants.CENTER);
+//            l.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//            hisPanel.add(l);
+//        }
+//        JScrollPane scrollPane = new JScrollPane(hisPanel);
+//        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+//        this.add(scrollPane);
+    }
+ public void ajouterManche(int numManche, int nbPlis1, int nbPlis2, int score1, int score2){
+            JLabel l1 = new JLabel(""+numManche, SwingConstants.CENTER);
+            l1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            hisPanel.add(l1);
+            JLabel l2 = new JLabel(""+nbPlis1, SwingConstants.CENTER);
+            l2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            hisPanel.add(l2);
+            JLabel l3 = new JLabel(""+nbPlis2, SwingConstants.CENTER);
+            l3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            hisPanel.add(l3);
+            tot1.setText(""+score1);
+            tot2.setText(""+score2);
     }
 
     public void montrer() {
