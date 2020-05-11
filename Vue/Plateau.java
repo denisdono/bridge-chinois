@@ -180,6 +180,8 @@ public class Plateau extends JPanel implements Observateur {
 	}
 
 	private void majMainJoueur(int numJ) {
+		
+		ImageIcon icon2;
 
 		for (int i = 0; i < 11; i++) {
 			if (i < jeu.getMains()[numJ].getnbCarte()) {
@@ -194,10 +196,28 @@ public class Plateau extends JPanel implements Observateur {
 //                }
 				// Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
 				// hands.get(numJ).get(i).setIcon(img);
-				ImageIcon icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
-						.getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage()
+				
+				
+				if(jeu.getShowCarte()== false && 
+				  ((jeu.getIA() == true && numJ == 1) || 
+				  (jeu.getIA() == false && jeu.joueurActuelle() != numJ ))) {
+					
+						icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
+								.getResource("Back Blue 1.png")).getImage()
 								.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-				hands.get(numJ).get(i).setIcon(icon2);
+					
+				}else {
+					
+					
+							icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
+							.getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage()
+							.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+					
+				}
+					hands.get(numJ).get(i).setIcon(icon2);
+				
+				
+				
 				if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
 
 					if (hands.get(numJ).get(i).getMouseListeners().length == 0) {

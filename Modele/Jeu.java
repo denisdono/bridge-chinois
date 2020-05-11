@@ -482,4 +482,9 @@ public class Jeu extends Observable {
         	return IA;
         }
         
+        public boolean getShowCarte() {
+        	return this.showCarte;
+        }
+        
+        
 }
