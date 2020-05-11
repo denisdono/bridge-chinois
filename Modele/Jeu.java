@@ -149,7 +149,7 @@ public class Jeu extends Observable {
 					metAJour();
 					// calcul de qui remporte le plis
 					int j;
-					jcarte_gagnante(c_dom,c_sub);
+					j=carte_gagnante(c_dom,c_sub);
 					if (j==2) {// celui qui gagne devien joueur dominant
 						joueurdominant = (joueurdominant + 1) % 2;
 						changerjoueur=true;
