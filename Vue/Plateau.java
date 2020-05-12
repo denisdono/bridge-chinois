@@ -31,7 +31,7 @@ public class Plateau extends JPanel implements Observateur {
 	// Dimensions a revoir, adapter a la taille de l'écran
 	private Dimension dimlabel;
 	private int etapePrecedente;
-	private int manchePrec = 1;
+	private int manchePrec = 0;
 	private boolean chgtManche = false;
 	private int lastnbPlis1 = 0;
 	private int lastnbPlis2 = 0;
@@ -43,17 +43,19 @@ public class Plateau extends JPanel implements Observateur {
 		dimlabel = new Dimension(screenSize.width / 25, screenSize.height / 10);
 		this.m = m;
 		this.c = c;
-		//setLayout(new BorderLayout());
-        //add(new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png"))));
+		// setLayout(new BorderLayout());
+		// add(new JLabel(new
+		// ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png"))));
 		setLayout(new BorderLayout());
-       
+
 		jeu = j;
 		// On ajoute le plateau dans la liste des observateur
 		// Les observateurs seront mis à jour par le jeu dès que nécessaire
 		jeu.ajouteObservateur(this);
 		m.setTaille(new Dimension(dimlabel.width * 4, dimlabel.height * 7),
 				new Dimension((int) (dimlabel.width * 1.6), dimlabel.height));
-		
+		background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background.jpg")));
+
 		// this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
 		this.setPreferredSize(new Dimension(dimlabel.width * 14, dimlabel.height * 7));
 		creerPlateau();
@@ -76,21 +78,21 @@ public class Plateau extends JPanel implements Observateur {
 		hands = new ArrayList<>();
 		hands.add(hand1);
 		hands.add(hand2);
-		
+
 		System.out.println("creerplat");
-		
-		background=new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background.jpg")));
-	    add(background);   
-	    background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
-		
+
+		add(background);
+		background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
+
 		JLabel nomJ = new JLabel("Joueur 1");
-		
+
 		background.add(nomJ);
-		
+
 		JPanel hand1Pane = new JPanel();
 		hand1Pane.setOpaque(false);
 		// Ajout de la fl�che indiquant le tour du joueur 1
 		JLabel arrow1Label = new JLabel();
+		arrow1Label.setPreferredSize(dimlabel);
 		hand1Pane.add(arrow1Label);
 		this.arrows.add(arrow1Label);
 
@@ -139,6 +141,7 @@ public class Plateau extends JPanel implements Observateur {
 
 		// Ajout de la fl�che indiquant le tour du joueur 2
 		JLabel arrow2Label = new JLabel();
+		arrow2Label.setPreferredSize(dimlabel);
 		hand2Pane.add(arrow2Label);
 		this.arrows.add(arrow2Label);
 
@@ -160,7 +163,8 @@ public class Plateau extends JPanel implements Observateur {
 		if (manchePrec != jeu.getMancheactuelle()) {
 			System.out.println("changement de manche");
 			chgtManche = true;
-                        m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(), jeu.getMains()[1].getnbScore());
+			m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(),
+					jeu.getMains()[1].getnbScore());
 			this.removeAll();
 			this.revalidate();
 			this.repaint();
@@ -187,7 +191,7 @@ public class Plateau extends JPanel implements Observateur {
 	}
 
 	private void majMainJoueur(int numJ) {
-		
+
 		ImageIcon icon2;
 
 		for (int i = 0; i < 11; i++) {
@@ -203,28 +207,23 @@ public class Plateau extends JPanel implements Observateur {
 //                }
 				// Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
 				// hands.get(numJ).get(i).setIcon(img);
-				
-				
-				if(jeu.getShowCarte()== false && 
-				  ((jeu.getIA() == true && numJ == 1) || 
-				  (jeu.getIA() == false && jeu.joueurActuelle() != numJ ))) {
-					
-						icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
-								.getResource("Back Blue 1.png")).getImage()
-								.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-					
-				}else {
-					
-					
-							icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
+
+				if (jeu.getShowCarte() == false && ((jeu.getIA() == true && numJ == 1)
+						|| (jeu.getIA() == false && jeu.joueurActuelle() != numJ))) {
+
+					icon2 = new ImageIcon(
+							new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage()
+									.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+
+				} else {
+
+					icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
 							.getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage()
-							.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-					
+									.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
+
 				}
-					hands.get(numJ).get(i).setIcon(icon2);
-				
-				
-				
+				hands.get(numJ).get(i).setIcon(icon2);
+
 				if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
 
 					if (hands.get(numJ).get(i).getMouseListeners().length == 0) {
@@ -337,23 +336,33 @@ public class Plateau extends JPanel implements Observateur {
 
 	private void showFinManche() {
 		JPanel finManchePane = new JPanel();
-		finManchePane.setLayout(new BoxLayout(finManchePane, BoxLayout.PAGE_AXIS));
-		finManchePane.setFont(new Font("Calibri", Font.PLAIN, 28));
-		JLabel finJ = new JLabel("La manche " + (jeu.getMancheactuelle() - 1) + " est terminee");
-		finJ.setFont(new Font("Calibri", Font.PLAIN, 28));
-		finManchePane.add(finJ);
+		background.removeAll();
+		finManchePane.setLayout(new BorderLayout());
+		finManchePane.add(background);
+		background.setLayout(new BorderLayout());
+		JPanel textPan= new JPanel();
+		textPan.setLayout(new BorderLayout());
+		//JLabel finJ = new JLabel("La manche " + (jeu.getMancheactuelle() - 1) + " est terminee\n");
+		//finJ.setFont(new Font("Calibri", Font.PLAIN, 28));
+		//finJ.setHorizontalAlignment(JLabel.CENTER);
+		//finJ.setVerticalAlignment(JLabel.CENTER);
+		//textPan.add(finJ,BorderLayout.NORTH);
 		JLabel finRemporte;
 		if (lastnbPlis1 > lastnbPlis2) {
-			finRemporte = new JLabel("Remportee par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2);
+			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Remportée par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2+"<html>");
 		} else if (lastnbPlis1 < lastnbPlis2) {
-			finRemporte = new JLabel("Remportee par le joueur 2 avec " + lastnbPlis2 + " plis a " + lastnbPlis1);
+			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Remportée par le joueur 2 avec " + lastnbPlis2 + " plis a " + lastnbPlis1+"<html>");
 		} else {
-			finRemporte = new JLabel("Egalité sur cette manche");
+			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Egalité sur cette manche<html>");
 		}
-		finManchePane.add(finRemporte);
-
+		finRemporte.setFont(new Font("Calibri", Font.PLAIN, 28));
+		finRemporte.setHorizontalAlignment(JLabel.CENTER);
+		finRemporte.setVerticalAlignment(JLabel.CENTER);
+		background.add(finRemporte, BorderLayout.CENTER);
+		
 		JButton contBout = new JButton("Continuer la partie");
-		finManchePane.add(contBout);
+		contBout.setFont(new Font("Calibri", Font.PLAIN, 28));
+		background.add(contBout, BorderLayout.SOUTH);
 		this.add(finManchePane);
 		this.revalidate();
 		final Plateau p = this;
@@ -366,6 +375,7 @@ public class Plateau extends JPanel implements Observateur {
 	}
 
 	private void initNouvelleManche() {
+		background.removeAll();
 		this.removeAll();
 		this.creerPlateau();
 		this.revalidate();
