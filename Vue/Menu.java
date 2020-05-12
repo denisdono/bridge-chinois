@@ -9,6 +9,7 @@ package Vue;
 import Modele.Jeu;
 import Patterns.Observateur;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import javax.swing.BorderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -66,35 +68,43 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
-        //this.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 50));
+        this.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         Font titreFont = new Font("Calibri", Font.PLAIN, 24);
         //Affichage du n°manche
-        labelTitreManche = new JLabel("Manche n ");
+        labelTitreManche = new JLabel("Manche n");
+        labelTitreManche.setAlignmentX(Component.LEFT_ALIGNMENT);
         labelTitreManche.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
         labelTitreManche.setFont(titreFont);
         this.add(labelTitreManche);
         //Affichage du dernier plis
-        labelTitreDernierPlis = new JLabel("Dernier Plis");
+        labelTitreDernierPlis = new JLabel("Dernier plis");
         labelTitreDernierPlis.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
         labelTitreDernierPlis.setFont(titreFont);
 
         this.add(labelTitreDernierPlis);
 
-        labelDernierPlisGagnant = new JLabel("Le joueur n l'emporte");
+        labelDernierPlisGagnant = new JLabel(" ");
         this.add(labelDernierPlisGagnant);
-        //Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
         JPanel paneDernierPlis = new JPanel();
-        //paneDernierPlis.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        paneDernierPlis.setAlignmentX(Component.LEFT_ALIGNMENT);
+        paneDernierPlis.setBorder(BorderFactory.createLineBorder(Color.BLACK,0));
         //lbLabel8.setIcon(atout);
         dernierCarte1 = new JLabel();
         dernierCarte2 = new JLabel();
-        invis0 = new JLabel();
-        paneDernierPlis.add(invis0);
+        //ATTENTION PAS RECREER LA DIM, PRENDRE DANS PLATEAU
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = new Dimension(screenSize.width / 25, screenSize.height / 10);
+        Icon back = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
+
+        dernierCarte1.setIcon(back);
+        dernierCarte2.setIcon(back);
+        
         paneDernierPlis.add(dernierCarte1);
         paneDernierPlis.add(dernierCarte2);
         this.add(paneDernierPlis);
         
-
+        invis0 = new JLabel(" ");
+        this.add(invis0);
         //Affichage de l'atout de la partie
         labelTitreAtout = new JLabel("Atout");
         labelTitreAtout.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
@@ -104,16 +114,17 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
         labelAtout = new JLabel("");
 
-        //Icon atout = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Clubs 1.png"));
         labelAtout.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        //lbLabel8.setIcon(atout);
-
-        this.add(labelAtout);
+        labelAtout.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JPanel paneAtout = new JPanel();
+        paneAtout.setAlignmentX(Component.LEFT_ALIGNMENT);
+        paneAtout.add(labelAtout);
+        this.add(paneAtout);
         JLabel invis = new JLabel();
         invis.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         this.add(invis);
         //Affichage du nombre de plis de la partie
-        labelTitrePlis = new JLabel("Plis");
+        labelTitrePlis = new JLabel("Nombre de plis");
         labelTitrePlis.setFont(titreFont);
 
         labelTitrePlis.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
@@ -127,8 +138,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         this.add(labelPlis2);
 
         //Affichage du score total des joueurs sur plusieurs parties
-        //Non fonctionnel
-        labelTitreScore = new JLabel("Score");
+        labelTitreScore = new JLabel("Score total");
         labelTitreScore.setFont(titreFont);
 
         labelTitreScore.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
@@ -170,14 +180,16 @@ class Menu extends JPanel implements ActionListener, Observateur {
 
     //Indiquer la couleur de l'atout dans le menu
     public void indiqueAtout(String atout, Dimension d) {
-        //this.labelAtout.setText(atout);
+        this.labelAtout.setText("");
         Icon img;
         if(atout == "Neutre"){
-            this.labelAtout.setText("Manche sans atout");
+            this.labelAtout.setIcon(null);
+            this.labelAtout.setText("Sans atout");
         } else{
-            img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png")).getImage().getScaledInstance(d.width, d.height, Image.SCALE_SMOOTH));
+            int borderSize =2;
+            img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png")).getImage().getScaledInstance(d.width-borderSize, d.height-borderSize, Image.SCALE_SMOOTH));
             this.labelAtout.setIcon(img);
-            this.labelAtout.setBorder(new LineBorder(Color.BLACK, 3, true));
+            this.labelAtout.setBorder(new LineBorder(Color.BLACK, borderSize, true));
         }
     }
 
@@ -199,11 +211,13 @@ class Menu extends JPanel implements ActionListener, Observateur {
         dernierCarte2.setIcon(img2);
     }
     public void setTaille(Dimension d, Dimension dimLab){
-        this.setPreferredSize(d);
-        invis0.setPreferredSize(dimLab);
+        //this.setPreferredSize(d);
+        //invis0.setPreferredSize(dimLab);
+//        dernierCarte1.setPreferredSize(dimLab);
+//        dernierCarte2.setPreferredSize(dimLab);
     }
     public void setNumManche(int n){
-        labelTitreManche.setText("Manche n "+n);
+        labelTitreManche.setText("Manche "+n);
     }
     public void ajouterManche(int numManche, int nbPlis1, int nbPlis2, int s1, int s2){
             his.ajouterManche(numManche, nbPlis1, nbPlis2, s1, s2);
