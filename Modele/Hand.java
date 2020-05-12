@@ -1,8 +1,14 @@
 package Modele;
 
-// ici se trouve les donnée du joueur (sa main, ses plis, son score...)
+import java.io.Serializable;
 
-public class Hand{
+// ici se trouve les donnï¿½e du joueur (sa main, ses plis, son score...)
+
+public class Hand implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Carte[] main;//main du joueur 
 	private int nbcarte;// nombre de carte du joueur
 	private int plis;// nombre de plis du joueur (dans une manche)
@@ -15,29 +21,37 @@ public class Hand{
 		nbcarte=0;
 	}
 	
+	public Hand(Hand h) {
+		main = h.getMain().clone();
+		
+		plis = h.plis;
+		score =h.score;
+		nbcarte = h.nbcarte;
+	}
+	
 	public void trierMain() {// permet de trier les carte d'une main pour les ordonner
 		Carte c;
 		int k,l,m;
 		for (int i=0; i<nbcarte;i++) {//parcoure toute les cartes
 			c=main[i];
 			k=i;
-			for (int j=i+1;j<nbcarte;j++) {// parcour toute les carte aprés la carte actuelle
+			for (int j=i+1;j<nbcarte;j++) {// parcour toute les carte aprï¿½s la carte actuelle
 				l=c.getCouleur().getVal();
 				m=main[j].getCouleur().getVal();
-				if (l==2) l=4;// rend momentanément le coeur supérieure a pique
+				if (l==2) l=4;// rend momentanï¿½ment le coeur supï¿½rieure a pique
 				if (m==2) m=4;
-				if (l>m) {//vérifie si la couleur de la carte et plus faible
+				if (l>m) {//vï¿½rifie si la couleur de la carte et plus faible
 					c=main[j];
 					k=j;
 				}
-				else if (c.getCouleur().getVal()==main[j].getCouleur().getVal()) {//vérifie si la carte est de meme couleur 
+				else if (c.getCouleur().getVal()==main[j].getCouleur().getVal()) {//vï¿½rifie si la carte est de meme couleur 
 					if (c.getValeur()>main[j].getValeur()) {// verifie si la carte et plus faible
 						c=main[j];
 						k=j;
 					}
 				}
 			}
-			if (k!=i) {// si il existe une carte plus faible réordonne
+			if (k!=i) {// si il existe une carte plus faible rï¿½ordonne
 				main[k]=main[i];
 				main[i]=c;
 			}
@@ -101,8 +115,27 @@ public class Hand{
 		score=score+p;
 	}
 
-        public Carte[] getMain() {// permet de renvoyer la main(donnée du joueur)
+        public Carte[] getMain() {// permet de renvoyer la main(donnï¿½e du joueur)
             return main;
         }
+       
+        public void afficherMain() {
+        	for(int i=0;i<main.length;i++) {
+        		System.out.print(main[i]+" ");
+        	}
+        }
+        
+        public String laMain() {
+        	String str ="";
+        	for(int i=0;i<main.length;i++) {
+        		str = str+main[i]+" ";
+        	}
+        	return str;
+        }
+
+		public void setPlis(int i) {
+			// TODO Auto-generated method stub
+			plis =i;
+		}
 
 }

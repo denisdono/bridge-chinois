@@ -6,4 +6,8 @@ public interface CollecteurEvenements {
 	void tictac();
 	void recommencer();
 	void abandonner();
+	void annule();
+	void refait();
+	void sauvegarde();
+	void charge() throws ClassNotFoundException;
 }

@@ -35,12 +35,17 @@ public class menuBar extends JMenuBar { // menu du haut
 		undo = new JMenuItem("undo(crtl+z)");
 		undo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// c.annule();
+				 c.annule();
 			}
 		});
 		menuAction.add(undo);
 		redo = new JMenuItem("redo(crtl+y)");
 		menuAction.add(redo);
+		redo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 c.refait();
+			}
+		});
 		conceed = new JMenuItem("abandonner");
 		menuAction.add(conceed);
 		restart = new JMenuItem("recomencer");
@@ -60,9 +65,23 @@ public class menuBar extends JMenuBar { // menu du haut
 		
 		menuParametres = new JMenu("parametres");
 		sauvegarder = new JMenuItem("sauvegarder");
+		sauvegarder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 c.sauvegarde();
+			}
+		});
 		menuParametres.add(sauvegarder);
 		charger = new JMenuItem("charger");
 		menuParametres.add(charger);
+		charger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 try {
+					c.charge();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		config = new JMenuItem("configuration");
 		config.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

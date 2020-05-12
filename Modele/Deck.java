@@ -1,11 +1,16 @@
 package Modele;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class Deck {
+public class Deck implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Stack<Carte> cartes;
 	
 	public Deck(){
@@ -39,8 +44,9 @@ public class Deck {
 		this.cartes=cartes;
 	}
 	
-	public void videPaquet() {// vide la pile
-		cartes.clear();
+	public Deck(Deck d) {
+		this.cartes = new Stack<Carte>();
+		this.cartes.addAll(d.getCartes());
 	}
 	
 	public boolean estVide() { //voir si le deck est vide
@@ -57,10 +63,16 @@ public class Deck {
 			System.out.println("La pioche est vide");
 		}
 		return carte;
+			
+		
 	}
 	
 	public void recupCartePile(Carte c) {// permet de mettre une carte dans la pile
 		cartes.push(c);
+	}
+	
+	public void videPaquet() {// vide la pile
+		cartes.clear();
 	}
 	
 	public Stack<Carte> getCartes() { //recuperer le tas de carte
@@ -68,7 +80,7 @@ public class Deck {
 	}
 	
 	public String toString() {
-		String str = "Deck : \n";
+		String str = "\nDeck : ";
 		Iterator it = cartes.iterator();
 		while(it.hasNext()) {
 			str = str+it.next()+" ";
