@@ -1,5 +1,8 @@
 package Controleur;
 
+import java.io.IOException;
+
+import Modele.Coup;
 import Modele.Jeu;
 import Vue.CollecteurEvenements;
 
@@ -22,6 +25,40 @@ public class ControleurMediateur implements CollecteurEvenements {
 				joueurs[i] = new JoueurHumain(i, jeu);
 	}
 
+	
+	public void annule() {
+		Coup c = jeu.historique.getPasse().peek();//rajouter try ctch
+		jeu.annuler();
+		joueurCourant = c.getJoueur();	
+	}
+
+	public void refait() {
+
+			Coup c = jeu.refaire(joueurCourant);
+			changeJoueur();
+			System.out.print("Joueur courant"+joueurCourant);
+			jeu.metAJour();
+
+	}
+	
+	@Override
+	public void sauvegarde() {
+		jeu.save("laSauvegarde");
+	}
+	
+	@Override
+	public void charge() throws ClassNotFoundException {
+		try {
+			jeu.load("laSauvegarde");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void clicSouris(int i) {
 		// Lors d'un clic, on le transmet au joueur courant.

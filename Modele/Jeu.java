@@ -12,6 +12,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class Jeu extends Observable {
@@ -29,10 +31,16 @@ public class Jeu extends Observable {
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
+	Carte c_0;//carte piochée par le joueur dominant
+	Carte c_1;//carte piochée par l'autre joueur
 	int diff;// dificulter de l'ia
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
-	
+	int ind;//sert a determiner quelle carte posé dans la pioche
+	public boolean annulation;
+	int jca;
+	boolean debut;
+	public Historique historique;
 
 	public Jeu() {
 		IA=false;
@@ -62,6 +70,7 @@ public class Jeu extends Observable {
 			}else {
 				showCarte=false;
 			}
+			
 			
 			
 //			selCarte = Integer.parseInt(br.readLine());
@@ -94,6 +103,10 @@ public class Jeu extends Observable {
 		}
 //		parManche=false;//////// condition par dÃ©fault
 //		totalfin=100;///////////
+		debut = true;
+		historique = new Historique();
+		annulation = false;
+		
 		enCours = true;
 		changerjoueur=false;
 		joueurdominant=0;
@@ -110,6 +123,9 @@ public class Jeu extends Observable {
 	}
 	
 	public void nouvelleManche() {
+//		c_dom = new Carte(2,Couleur.Trefle);//permet d'annuler après le 1er coup sinon ca bug
+//		c_sub = new Carte(2,Couleur.Trefle);
+		//decommenter les 2 lignes au dessus pour voir le bug
 		finmanche=false;
 		piochage= true;
 		etape=0;
@@ -129,9 +145,30 @@ public class Jeu extends Observable {
 			}
 		}
 		trouve_atout();
+		
+		Coup c1 ;
+		Deck [] pi= new Deck[6];
+		for (int k=0;k<6;k++) {// boucle sur les six piles
+			pi[k]=new Deck(piles[k]);
+		}
+		Hand h1=new Hand(mains[0]);
+		Hand h2=new Hand(mains[1]);
+			c1 =  new Coup(0,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+			historique.ajouterCoup(c1);
 	}
 	
 	public void jouer(int i,int n) {
+		annulation=false;
+		//creation par copie pour les coups
+		Hand h1=new Hand(mains[0]);
+		Hand h2=new Hand(mains[1]);
+		Deck [] pi= new Deck[6];
+		for (int k=0;k<6;k++) {// boucle sur les six piles
+			pi[k]=new Deck(piles[k]);
+		}
+		//
+		Coup c1 ;
+		ind=i;
 		if (enCours) {
 			//tant que la condition de victoire par nombre de plis gagner ou de mancher gagner n'est pas atteinte
 			if (!finmanche) {
@@ -140,12 +177,23 @@ public class Jeu extends Observable {
 				case 0:
 				// joueurdominant pose une carte
 					c_dom=mains[n].poserCarte(i);
+					h1=new Hand(mains[0]);
+					h2=new Hand(mains[1]);
+					for (int k=0;k<6;k++) {// boucle sur les six piles
+						pi[k]=new Deck(piles[k]);
+					}
+					//on passe n en parametre mais il faudrait passer joueur_actuel()
+					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+					historique.ajouterCoup(c1);
 					etape++;
 					metAJour();
 					break;
 				case 1:
 					// le second joueur pose une carte en consÃƒÂ©quences (limiter par raport a la cartes)
 					c_sub=mains[n].poserCarte(i);
+					for (int k=0;k<6;k++) {// boucle sur les six piles
+						pi[k]=new Deck(piles[k]);
+					}
 					metAJour();
 					// calcul de qui remporte le plis
 					int j;
@@ -155,6 +203,13 @@ public class Jeu extends Observable {
 						changerjoueur=true;
 					}
 					mains[joueurdominant].addPlis();// incrÃƒÂ©mente le nombre de plis du vainqueur
+					h1=new Hand(mains[0]);
+					h2=new Hand(mains[1]);
+					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+				
+					historique.ajouterCoup(c1);
+					
+					
 					if (piochage) {//test s'il reste des carte a piocher
 						etape++;
 					}
@@ -168,14 +223,33 @@ public class Jeu extends Observable {
 						//s'il reste des cartes a piocher le joueur dominant pioche
 						mains[n].ajoutCarte(piles[i].piocher());
 						mains[n].trierMain();
+						h1=new Hand(mains[0]);
+						h2=new Hand(mains[1]);
+						for (int k=0;k<6;k++) {// boucle sur les six piles
+							pi[k]=new Deck(piles[k]);
+						}
+						c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+						
+						historique.ajouterCoup(c1);
 						etape++;
 						metAJour();
 					
+						
 					break;
 				case 3:
 					//le deuxiÃƒÂ¨me joueure pioche
 					mains[n].ajoutCarte(piles[i].piocher());
 					mains[n].trierMain();
+					
+					for (int k=0;k<6;k++) {// boucle sur les six piles
+						pi[k]=new Deck(piles[k]);
+					}
+
+					h1=new Hand(mains[0]);
+					h2=new Hand(mains[1]);
+					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+					historique.ajouterCoup(c1);
+					
 					piochage=!pilesvide();//teste si il reste des carte a piocher
 					etape=0;//fini un tour de jeu
                                         metAJour();
@@ -209,8 +283,102 @@ public class Jeu extends Observable {
 				}		
 			}	
 		}
-			
+			historique.affiherPasse();
 	}
+	
+	public void annuler() {
+		annulation = true;
+		if(historique.getPasse().size()==1) {
+			return;
+		}else {
+			
+		Coup cj;//coup joué
+		Coup cpeek;//coup au sommet
+		System.out.print("historique avant annule:");
+		//historique.affiherPasse();
+		 cj = historique.defaire();
+		 cpeek= historique.getPasse().peek();
+		System.out.println("main :");
+		 //c.main1.afficherMain();
+			historique.setAuPasse(true);
+			this.changerjoueur = cj.isChangerjoueur();// doit on changer de joueur OK
+			this.enCours = cpeek.isEnCours();// partie en cour OK
+			this.finmanche = cpeek.isFinmanche();// a t'on fini la manche ?
+			this.piochage = cpeek.isPiochage();// y'as t'il des cartes a piocher ?
+			this.parManche = cpeek.isParManche();// la fin de partie et décidé par nombre de manche (false= on décide par score)
+			this.mains[0] = new Hand(cpeek.getMain1());//pour creer pas par reference :    ^) OK
+			this.mains[1] = new Hand(cpeek.getMain2()); // OK
+			for(int i=0;i<piles.length;i++) {
+				this.piles[i] = new Deck(cpeek.getPiles()[i]);//pb copie OK
+			}
+			
+			this.totalfin = cpeek.getTotalfin();// score a obtenir ou nombre de manche a faire avant la fin de partie PK
+			this.manche = cpeek.getManche();// le nombre de manche actuelle OK
+			this.etape = cj.getEtape();// etape actuelle d'un tour de jeu OK
+			this.joueurdominant =cpeek.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
+			this.atout = cpeek.getAtout();// l'atout de la manche OK
+			this.c_dom = cpeek.getC_dom();// carte jouer par le joueur dominant OK
+			this.c_sub = cpeek.getC_sub();// carte jouer par l'autre joueur OK
+			
+			
+			this.diff=cpeek.getDiff();
+			this.showCarte = cpeek.isShowCarte();
+			this.IA =cpeek.isIA();
+			System.out.println();
+
+			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
+			
+			historique.affiherPasse();
+			historique.afficherFutur();
+			metAJour();
+
+			
+	
+	}
+	}
+	
+	public Coup refaire(int n) {//reste a corriger bug joueur actuel
+		annulation = true;
+		jca=n;
+		Coup cj;//coup joué
+		//Coup cpeek;//coup au sommet
+		System.out.print("historique avant refaire:");
+		historique.afficherFutur();
+		 cj = historique.refaire();
+		// cpeek= historique.getPasse().peek();
+		System.out.println("main :");
+		 //c.main1.afficherMain();
+			//historique.setAuPasse(true);
+			this.changerjoueur = cj.isChangerjoueur();// doit on changer de joueur OK
+			this.enCours = cj.isEnCours();// partie en cour OK
+			this.finmanche = cj.isFinmanche();// a t'on fini la manche ?
+			this.piochage = cj.isPiochage();// y'as t'il des cartes a piocher ?
+			this.parManche = cj.isParManche();// la fin de partie et décidé par nombre de manche (false= on décide par score)
+			this.mains[0] = new Hand(cj.getMain1());//pour creer pas par reference :    ^) OK
+			this.mains[1] = new Hand(cj.getMain2()); // OK
+			for(int i=0;i<piles.length;i++) {
+				this.piles[i] = new Deck(cj.getPiles()[i]);//pb copie OK
+			}
+			
+			this.totalfin = cj.getTotalfin();// score a obtenir ou nombre de manche a faire avant la fin de partie PK
+			this.manche = cj.getManche();// le nombre de manche actuelle OK
+			this.etape = cj.getEtape();// etape actuelle d'un tour de jeu OK
+			this.joueurdominant =cj.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
+			this.atout = cj.getAtout();// l'atout de la manche OK
+			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
+			this.c_sub = cj.getC_sub();// carte jouer par l'autre joueur OK
+			
+			System.out.println();
+
+			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
+			
+			historique.affiherPasse();
+			historique.afficherFutur();
+			System.out.println("Joueur act: "+joueurActuelle());
+			metAJour();
+			return cj;
+	}
+
 	
 	public void giveUp() {
 		finmanche=true;
@@ -341,9 +509,32 @@ public class Jeu extends Observable {
 		try {
 			save = new FileOutputStream(new File(s));
 	    BufferedOutputStream bsave = new BufferedOutputStream(save);
+	    ObjectOutputStream osave = new ObjectOutputStream(save);
+	   // DataOutputStream dsave = new DataOutputStream(save);
 	    //bsave.write(1);
-	    // donnÃƒÂƒÃ‚Â©e a sauvegarder
-		bsave.close();
+	    osave.writeBoolean(changerjoueur);// doit on changer de joueur
+	    osave.writeBoolean(enCours);// partie en cour
+	    osave.writeBoolean(finmanche);// a t'on fini la manche ?
+	    osave.writeBoolean(piochage);// y'as t'il des cartes a piocher ?
+	    osave.writeBoolean(parManche);// la fin de partie et décidé par nombre de manche (false= on décide par score)
+		osave.writeObject(piles);// pile présente sur la table
+		osave.writeObject(mains);//main des joueur
+		osave.writeInt(totalfin);// score a obtenir ou nombre de manche a faire avant la fin de partie
+		osave.writeInt(manche);// le nombre de manche actuelle
+		osave.writeInt(etape);// etape actuelle d'un tour de jeu
+		osave.writeInt(joueurdominant);// quel joueur à la main (premier a jouer/piocher)
+		osave.writeObject(atout);// l'atout de la manche
+		osave.writeObject(c_dom);// carte jouer par le joueur dominant 
+		osave.writeObject(c_sub);// carte jouer par l'autre joueur
+		osave.writeObject(c_0);//carte piochée par le joueur dominant
+		osave.writeObject(c_1);//carte piochée par l'autre joueur
+		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
+		osave.writeBoolean(annulation);
+		osave.writeObject(historique);
+		
+	    // donnÃ©e a sauvegarder
+		osave.close();
+		System.out.println("Partie sauvegardée");
 		} catch (IOException e) {	
 			System.err.println("Impossible de sauvegarder dans " + s);
 			System.err.println(e.toString());
@@ -351,17 +542,40 @@ public class Jeu extends Observable {
 		}
 	}
 	
-	public void load(String s) {
+	public void load(String s) throws ClassNotFoundException, IOException {
 		 try {
 		      FileInputStream save = new FileInputStream(new File(s));
 		      BufferedInputStream bsave = new BufferedInputStream(save);
-		      //bsave.read();
-		      // donnÃƒÂƒÃ‚Â©e a lire
-		      bsave.close();
+		      ObjectInputStream osave = new ObjectInputStream(save);
+		     
+		    changerjoueur =  osave.readBoolean();// doit on changer de joueur
+		  	enCours =  osave.readBoolean();;// partie en cour
+		  	finmanche = osave.readBoolean();;// a t'on fini la manche ?
+		  	piochage =  osave.readBoolean();;// y'as t'il des cartes a piocher ?
+		  	parManche =  osave.readBoolean();;// la fin de partie et décidé par nombre de manche (false= on décide par score)
+		  	piles = (Deck[])osave.readObject();// pile présente sur la table
+		  	mains = (Hand[]) osave.readObject();//main des joueur
+		  	totalfin = osave.readInt();// score a obtenir ou nombre de manche a faire avant la fin de partie
+		  	manche = osave.readInt();// le nombre de manche actuelle
+		  	etape = osave.readInt();// etape actuelle d'un tour de jeu
+		  	joueurdominant = osave.readInt();// quel joueur à la main (premier a jouer/piocher)
+		  	atout = (Couleur)osave.readObject();// l'atout de la manche
+		  	c_dom = (Carte) osave.readObject();// carte jouer par le joueur dominant 
+		  	c_sub = (Carte) osave.readObject();// carte jouer par l'autre joueur
+		  	c_0 = (Carte) osave.readObject();;//carte piochée par le joueur dominant
+		  	c_1 = (Carte) osave.readObject();;//carte piochée par l'autre joueur
+		  	ind = osave.readInt();;//sert a determiner quelle carte posé dans la pioche
+		  	annulation = osave.readBoolean();
+		  	historique = (Historique) osave.readObject();
+		      osave.close();
+		      metAJour();
+				System.out.println("Partie chargée");
+
 		  } catch (IOException e) {
 		      e.printStackTrace();
 		    }
 	}
+	
 	
 	public int etape() {
 		//retourne l'etape actuelle d'un tour

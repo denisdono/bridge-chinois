@@ -18,7 +18,7 @@
 		<link>
 			<name>cartes</name>
 			<type>2</type>
-			<location>C:/Users/Emmanuel/Desktop/Projet final/bridge-chinois/Ressources/cartes</location>
+			<location>/home/tommy/recup2/bridge-chinois/Ressources/cartes</location>
 		</link>
 	</linkedResources>
 </projectDescription>
