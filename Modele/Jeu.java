@@ -277,8 +277,8 @@ public class Jeu extends Observable {
 					if (enCours) {
 						//si la partie n'est pas fini on lance une nouvelle manche
 						nouvelleManche();
-						manche++;
 					}
+					manche++;
 					metAJour();
 				}		
 			}	
