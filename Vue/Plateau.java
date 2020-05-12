@@ -46,16 +46,14 @@ public class Plateau extends JPanel implements Observateur {
 		//setLayout(new BorderLayout());
         //add(new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png"))));
 		setLayout(new BorderLayout());
-        background=new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background.jpg")));
-        add(background);
-        background.setLayout(new FlowLayout());
+       
 		jeu = j;
 		// On ajoute le plateau dans la liste des observateur
 		// Les observateurs seront mis à jour par le jeu dès que nécessaire
 		jeu.ajouteObservateur(this);
 		m.setTaille(new Dimension(dimlabel.width * 4, dimlabel.height * 7),
 				new Dimension((int) (dimlabel.width * 1.6), dimlabel.height));
-		background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
+		
 		// this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
 		this.setPreferredSize(new Dimension(dimlabel.width * 14, dimlabel.height * 7));
 		creerPlateau();
@@ -78,9 +76,17 @@ public class Plateau extends JPanel implements Observateur {
 		hands = new ArrayList<>();
 		hands.add(hand1);
 		hands.add(hand2);
+		
 		System.out.println("creerplat");
+		
+		background=new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background.jpg")));
+	    add(background);   
+	    background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
+		
 		JLabel nomJ = new JLabel("Joueur 1");
+		
 		background.add(nomJ);
+		
 		JPanel hand1Pane = new JPanel();
 		hand1Pane.setOpaque(false);
 		// Ajout de la fl�che indiquant le tour du joueur 1
@@ -348,7 +354,7 @@ public class Plateau extends JPanel implements Observateur {
 
 		JButton contBout = new JButton("Continuer la partie");
 		finManchePane.add(contBout);
-		background.add(finManchePane);
+		this.add(finManchePane);
 		this.revalidate();
 		final Plateau p = this;
 		contBout.addActionListener(new ActionListener() {
