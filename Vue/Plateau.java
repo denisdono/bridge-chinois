@@ -52,8 +52,8 @@ public class Plateau extends JPanel implements Observateur {
 		// On ajoute le plateau dans la liste des observateur
 		// Les observateurs seront mis à jour par le jeu dès que nécessaire
 		jeu.ajouteObservateur(this);
-		m.setTaille(new Dimension(dimlabel.width * 4, dimlabel.height * 7),
-				new Dimension((int) (dimlabel.width * 1.6), dimlabel.height));
+//		m.setTaille(new Dimension(dimlabel.width * 4, dimlabel.height * 7),
+//				new Dimension((int) (dimlabel.width * 1.6), dimlabel.height));
 		background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background.jpg")));
 
 		// this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
@@ -197,17 +197,6 @@ public class Plateau extends JPanel implements Observateur {
 		for (int i = 0; i < 11; i++) {
 			if (i < jeu.getMains()[numJ].getnbCarte()) {
 
-				// Si on veut montrer les cartes ou non
-//                if (numJ ==1 && jeu.getIA()) {
-//                    icon = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-//
-//                } else {
-//                    icon = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-//
-//                }
-				// Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
-				// hands.get(numJ).get(i).setIcon(img);
-
 				if (jeu.getShowCarte() == false && ((jeu.getIA() == true && numJ == 1)
 						|| (jeu.getIA() == false && jeu.joueurActuelle() != numJ))) {
 
@@ -225,17 +214,15 @@ public class Plateau extends JPanel implements Observateur {
 				hands.get(numJ).get(i).setIcon(icon2);
 
 				if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
-
-					if (hands.get(numJ).get(i).getMouseListeners().length == 0) {
+                                        //Ajout des listeners de carte si necessaire
+					if (hands.get(numJ).get(i).getMouseListeners().length == 0 && !(jeu.getIA() && jeu.joueurActuelle()==1)) {
 						hands.get(numJ).get(i).addMouseListener(new JoueurCarteListener(i, c));
 
 					}
 				} else {
+                                        //Grisage des cartes
 					if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ
-							&& !jeu.peutJouer(i, numJ)) {
-						// ImageIcon icon = new ImageIcon(new
-						// ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage().getScaledInstance(dimlabel.width,
-						// dimlabel.height, Image.SCALE_SMOOTH));
+							&& !jeu.peutJouer(i, numJ) && !(jeu.getIA() && jeu.joueurActuelle()==1)) {					
 						Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon2.getImage()));
 						hands.get(numJ).get(i).setIcon(img);
 					}
@@ -263,9 +250,7 @@ public class Plateau extends JPanel implements Observateur {
 					centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
 				}
 			} else {
-				// version texte
-				// l.setText(jeu.getPiles()[i].topDeck().toString());
-				// version image
+	
 				Icon img = new ImageIcon(new ImageIcon(
 						ClassLoader.getSystemClassLoader().getResource(jeu.getPiles()[i].topDeck().getResourceName()))
 								.getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
@@ -273,14 +258,13 @@ public class Plateau extends JPanel implements Observateur {
 
 				// SI on est a une étape de pioche
 				if (jeu.etape() == 2 || jeu.etape() == 3) {
-					if (centreDecks.get(i).getMouseListeners().length == 0) {
+					if (centreDecks.get(i).getMouseListeners().length == 0 && !(jeu.getIA() &&jeu.joueurActuelle()==1)) {
 						centreDecks.get(i).addMouseListener(new JoueurCarteListener(i, c));
 					}
 				} else if (centreDecks.get(i).getMouseListeners().length > 0) {
 					centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
 				}
 			}
-			// l.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 			centreDecks.get(i).setPreferredSize(dimlabel);
 		}
 	}
@@ -289,11 +273,7 @@ public class Plateau extends JPanel implements Observateur {
 		playedCards.get(0).setIcon(null);
 		playedCards.get(1).setIcon(null);
 		if (jeu.etape() == 1 || jeu.etape() == 2) {
-			// version texte
-			// joue1.setText(jeu.getC_dom().toString());
-			// version image
-			// ImageIcon icon = new
-			// ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_dom().getResourceName()));;
+		
 			ImageIcon icon = new ImageIcon(
 					new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_dom().getResourceName()))
 							.getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
@@ -301,9 +281,7 @@ public class Plateau extends JPanel implements Observateur {
 			playedCards.get(0).setIcon(icon);
 		}
 		if (jeu.etape() == 2) {
-			// version texte
-			// joue2.setText(jeu.getC_sub().toString());
-			// version image
+
 			Icon img = new ImageIcon(
 					new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_sub().getResourceName()))
 							.getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
@@ -320,19 +298,6 @@ public class Plateau extends JPanel implements Observateur {
 		System.out.println("joueur actif : " + jeu.joueurActuelle() + "\n");
 		this.arrows.get((jeu.joueurActuelle() + 1) % 2).setIcon(null);
 	}
-
-//	@Override
-//	protected void paintComponent(Graphics g) {
-//		super.paintComponent(g); // paint the background image and scale it to fill the entire space
-//		BufferedImage image;
-//		 try {                
-//	          image = ImageIO.read(ClassLoader.getSystemClassLoader().getResource("Background.jpg"));
-//	       } catch (IOException ex) {
-//	    	   System.out.println("ca marche pas");
-//	            image = null;
-//	       }
-//		g.drawImage(image,0,0,this);
-//	}
 
 	private void showFinManche() {
 		JPanel finManchePane = new JPanel();
