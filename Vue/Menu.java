@@ -182,7 +182,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     public void indiqueAtout(String atout, Dimension d) {
         this.labelAtout.setText("");
         Icon img;
-        if(atout == "Neutre" || atout == "Coeur" || atout == "Pique"){
+        if(atout == "Neutre"){
             this.labelAtout.setIcon(null);
             this.labelAtout.setText("Sans atout");
         } else{
