@@ -37,11 +37,13 @@ public class Plateau extends JPanel implements Observateur {
 	private int lastnbPlis2 = 0;
 	private JLabel indPioche;
 	private JLabel background;
+	private JFrame frame;
 
-	public Plateau(Jeu j, CollecteurEvenements c, Menu m, Dimension d) {
+	public Plateau(Jeu j, CollecteurEvenements c, Menu m, Dimension d, JFrame frame) {
 		dimlabel = d;
 		this.m = m;
 		this.c = c;
+		this.frame=frame;
 		// setLayout(new BorderLayout());
 		// add(new JLabel(new
 		// ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png"))));
@@ -68,7 +70,7 @@ public class Plateau extends JPanel implements Observateur {
 		// repaint();
 	}
 
-	public void creerPlateau() {
+	public void creerPlateau() { 
 		hand1 = new ArrayList<>();
 		hand2 = new ArrayList<>();
 		centreDecks = new ArrayList<>();
@@ -167,7 +169,12 @@ public class Plateau extends JPanel implements Observateur {
 			this.removeAll();
 			this.revalidate();
 			this.repaint();
-			showFinManche();
+			if(jeu.enCours()) {
+				showFinManche();
+			}
+			else {
+				showFinPartie();
+			}
 		} else {
 			m.setNumManche(jeu.getMancheactuelle());
 			m.indiqueAtout(jeu.getAtout().name(), dimlabel);
@@ -337,8 +344,72 @@ public class Plateau extends JPanel implements Observateur {
 			}
 		});
 	}
+	private void showFinPartie() {
+		this.manchePrec=1;
+		JPanel finManchePane = new JPanel();
+		background.removeAll();
+		finManchePane.setLayout(new BorderLayout());
+		finManchePane.add(background);
+		background.setLayout(new BorderLayout());
+		JPanel textPan= new JPanel();
+		textPan.setLayout(new BorderLayout());
+		//JLabel finJ = new JLabel("La manche " + (jeu.getMancheactuelle() - 1) + " est terminee\n");
+		//finJ.setFont(new Font("Calibri", Font.PLAIN, 28));
+		//finJ.setHorizontalAlignment(JLabel.CENTER);
+		//finJ.setVerticalAlignment(JLabel.CENTER);
+		//textPan.add(finJ,BorderLayout.NORTH);
+		JLabel finRemporte;
+		if (lastnbPlis1 > lastnbPlis2) {
+			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La partie est terminée</p>"+"Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " plis a " +  jeu.getMains()[1].getnbScore()+"<html>");
+		} else if (lastnbPlis1 < lastnbPlis2) {
+			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La partie est terminée</p>"+"Remportée par le joueur 2 avec un score de" + jeu.getMains()[1].getnbScore() + " plis a " + jeu.getMains()[0].getnbScore()+"<html>");
+		} else {
+			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Egalité <html>");
+		}
+		finRemporte.setFont(new Font("Calibri", Font.PLAIN, 28));
+		finRemporte.setHorizontalAlignment(JLabel.CENTER);
+		finRemporte.setVerticalAlignment(JLabel.CENTER);
+		background.add(finRemporte, BorderLayout.CENTER);
+		JPanel ButtonP = new JPanel();
+		ButtonP.setLayout(new GridLayout(1,2));
+		JButton menuButton = new JButton("Retour au menu");
+		menuButton.setFont(new Font("Calibri", Font.PLAIN, 28));
+		ButtonP.add(menuButton);
+		JButton restartButton = new JButton("Recommencer");
+		restartButton.setFont(new Font("Calibri", Font.PLAIN, 28));
+		ButtonP.add(restartButton);
+		background.add(ButtonP, BorderLayout.SOUTH);
+		
+		this.add(finManchePane);
+		this.revalidate();
+		final Plateau p = this;
+		menuButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StartingMenu m = new StartingMenu();
+				m.setSize(500,500);
+				m.setVisible(true);
+				frame.setVisible(false);
+				frame.dispose();
+			}
+		});
+		restartButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				initNouvellePartie();
+			}
+		});
+	}
 
 	private void initNouvelleManche() {
+		background.removeAll();
+		this.removeAll();
+		this.creerPlateau();
+		this.revalidate();
+		this.repaint();
+	}
+	private void initNouvellePartie() {
+		jeu.start();
 		background.removeAll();
 		this.removeAll();
 		this.creerPlateau();
