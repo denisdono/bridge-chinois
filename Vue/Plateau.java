@@ -38,9 +38,8 @@ public class Plateau extends JPanel implements Observateur {
 	private JLabel indPioche;
 	private JLabel background;
 
-	public Plateau(Jeu j, CollecteurEvenements c, Menu m) {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		dimlabel = new Dimension(screenSize.width / 25, screenSize.height / 10);
+	public Plateau(Jeu j, CollecteurEvenements c, Menu m, Dimension d) {
+		dimlabel = d;
 		this.m = m;
 		this.c = c;
 		// setLayout(new BorderLayout());

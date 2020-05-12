@@ -17,13 +17,10 @@ import javax.swing.BorderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
-import java.awt.Toolkit;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JToggleButton;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
@@ -33,16 +30,6 @@ import javax.swing.border.LineBorder;
  */
 class Menu extends JPanel implements ActionListener, Observateur {
 
-    JPanel pnPanel4;
-    ButtonGroup rbgPanel4;
-    JButton btBut0;
-    JButton btBut1;
-    JButton btBut2;
-    JButton btBut3;
-    JToggleButton tbtTglBut0;
-    JToggleButton tbtTglBut1;
-    JButton btBut4;
-    JLabel lbLabel1;
     Historique his;
     private final JLabel labelTitrePlis;
     private final JLabel labelTitreScore;
@@ -51,7 +38,6 @@ class Menu extends JPanel implements ActionListener, Observateur {
     private final JLabel labelAtout;
     private final JLabel labelTitreAtout;
     JLabel labelPlis1;
-    //private final JLabel invisLab;
     private JLabel labelScore1;
     private JLabel labelScore2;
     private final JLabel labelTitreDernierPlis;
@@ -62,7 +48,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
     private final JLabel labelTitreManche;
     
 
-    public Menu(Jeu j) {
+    public Menu(Jeu j, Dimension dim) {
         super();
         his = new Historique();
 
@@ -88,12 +74,9 @@ class Menu extends JPanel implements ActionListener, Observateur {
         JPanel paneDernierPlis = new JPanel();
         paneDernierPlis.setAlignmentX(Component.LEFT_ALIGNMENT);
         paneDernierPlis.setBorder(BorderFactory.createLineBorder(Color.BLACK,0));
-        //lbLabel8.setIcon(atout);
         dernierCarte1 = new JLabel();
         dernierCarte2 = new JLabel();
-        //ATTENTION PAS RECREER LA DIM, PRENDRE DANS PLATEAU
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension dim = new Dimension(screenSize.width / 25, screenSize.height / 10);
+        
         Icon back = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
 
         dernierCarte1.setIcon(back);
@@ -210,12 +193,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         dernierCarte1.setIcon(img);
         dernierCarte2.setIcon(img2);
     }
-    public void setTaille(Dimension d, Dimension dimLab){
-        //this.setPreferredSize(d);
-        //invis0.setPreferredSize(dimLab);
-//        dernierCarte1.setPreferredSize(dimLab);
-//        dernierCarte2.setPreferredSize(dimLab);
-    }
+
     public void setNumManche(int n){
         labelTitreManche.setText("Manche "+n);
     }
