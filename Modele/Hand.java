@@ -99,6 +99,10 @@ public class Hand implements Serializable{
 		plis++ ;
 	}
 	
+	public void maxPlis(){// met le nombre de plis maximal
+		plis=26;
+	}
+	
 	public void resetPlis() {// remet les plis a 0
 		plis=0 ;
 	}
