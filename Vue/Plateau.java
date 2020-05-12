@@ -31,7 +31,7 @@ public class Plateau extends JPanel implements Observateur {
 	// Dimensions a revoir, adapter a la taille de l'écran
 	private Dimension dimlabel;
 	private int etapePrecedente;
-	private int manchePrec = 0;
+	private int manchePrec = 1;
 	private boolean chgtManche = false;
 	private int lastnbPlis1 = 0;
 	private int lastnbPlis2 = 0;
