@@ -63,7 +63,7 @@ class Menu extends JPanel implements ActionListener, Observateur {
         labelTitreManche.setFont(titreFont);
         this.add(labelTitreManche);
         //Affichage du dernier plis
-        labelTitreDernierPlis = new JLabel("Dernier plis");
+        labelTitreDernierPlis = new JLabel("Dernier pli");
         labelTitreDernierPlis.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, Color.BLACK));
         labelTitreDernierPlis.setFont(titreFont);
 
