@@ -260,7 +260,7 @@ public class Jeu extends Observable {
 					finmanche=true;
 					if(parManche) {
 						//si on compte par nombre de manche
-						enCours=(manche!=totalfin);//on vÃƒÂ©rifie si on fini la partie
+						enCours=(manche<totalfin);//on vÃƒÂ©rifie si on fini la partie
 						int j=vainqueurManche();
 						if (j!=-1) {
 							//si il n'y a pas ÃƒÂ©galiter on incrÃƒÂ©mente le score du vaiqueur
@@ -381,52 +381,53 @@ public class Jeu extends Observable {
 
 	
 	public void giveUp() {
-		finmanche=true;
-		changerjoueur=true;
-		mains[0].videMain();
-		mains[1].videMain();
-		for (int i=0;i<6;i++) {// boucle sur les six piles
-			piles[i].videPaquet();
-		}
-		if(parManche) {
-			//si on compte par nombre de manche
-			enCours=(manche!=totalfin);//on vÃƒÂ©rifie si on fini la partie
-			if (IA && joueurActuelle()==1) {
-				//si c'est une ia c'est l'autre joueur qui as abandonner
-				mains[1].addScore(1);
-				mains[0].resetPlis();
-				mains[1].maxPlis();
-				joueurdominant=1;
-			}
-			else {//sinon on concidère que c'est le joueur actuelle qui abandonne
-				mains[(joueurActuelle()+1)%2].addScore(1);
-				joueurdominant=(joueurActuelle()+1)%2;
-				mains[joueurActuelle()].resetPlis();
-				mains[(joueurActuelle()+1)%2].maxPlis();
-			}
-		}
-		else{
-			if (IA && joueurActuelle()==1) {
-				//si c'est une ia c'est l'autre joueur qui as abandonner
-				mains[1].addScore(26);
-				mains[0].resetPlis();
-				mains[1].maxPlis();
-				joueurdominant=1;
-			}
-			else {//sinon on concidère que c'est le joueur actuelle qui abandonne
-				mains[(joueurActuelle()+1)%2].addScore(26);
-				joueurdominant=(joueurActuelle()+1)%2;
-				mains[joueurActuelle()].resetPlis();
-				mains[(joueurActuelle()+1)%2].maxPlis();
-			}
-			enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);//on vÃƒÂ©rifie si on fini la partie
-		}
 		if (enCours) {
-			//si la partie n'est pas fini on lance une nouvelle manche
-			nouvelleManche();
+			changerjoueur=true;
+			mains[0].videMain();
+			mains[1].videMain();
+			finmanche=true;
+			etape=0;
+			for (int i=0;i<6;i++) {// boucle sur les six piles
+				piles[i].videPaquet();
+			}
+			if(parManche) {
+				//si on compte par nombre de manche
+				enCours=(manche<totalfin);//on vÃƒÂ©rifie si on fini la partie
+				if (IA && joueurActuelle()==1) {
+					//si c'est une ia c'est l'autre joueur qui as abandonner
+					mains[1].addScore(1);
+					mains[0].resetPlis();
+					mains[1].maxPlis();
+				}
+				else {//sinon on concidère que c'est le joueur actuelle qui abandonne
+					mains[(joueurActuelle()+1)%2].addScore(1);
+					mains[joueurActuelle()].resetPlis();
+					mains[(joueurActuelle()+1)%2].maxPlis();
+				}
+			}
+			else{
+				if (IA && joueurActuelle()==1) {
+					//si c'est une ia c'est l'autre joueur qui as abandonner
+					mains[1].addScore(26);
+					mains[0].resetPlis();
+					mains[1].maxPlis();
+				}
+				else {//sinon on concidère que c'est le joueur actuelle qui abandonne
+					mains[(joueurActuelle()+1)%2].addScore(26);
+					mains[joueurActuelle()].resetPlis();
+					mains[(joueurActuelle()+1)%2].maxPlis();
+				}
+				enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);//on vÃƒÂ©rifie si on fini la partie
+			}
+			if (enCours) {
+				//si la partie n'est pas fini on lance une nouvelle manche
+				nouvelleManche();
+			}
+			joueurdominant=manche%2;
 			manche++;
+			metAJour();
+			
 		}
-		metAJour();
 	}		
 	
 	public boolean isShowCarte() {
