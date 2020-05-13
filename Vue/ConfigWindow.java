@@ -70,11 +70,11 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selFond = 0;
 			}
 			br.close();
-		} catch (IOException e) {// si le fichier n'est pas trouvé on en crée un avec les configurations de base
+		} catch (IOException e) {// si le fichier n'est pas trouvï¿½ on en crï¿½e un avec les configurations de base
 			try {
 				File confile = new File("config");
 				if (confile.createNewFile()) {
-					System.out.println("Création d'un fichier config.");
+					System.out.println("Crï¿½ation d'un fichier config.");
 					FileWriter myWriter = new FileWriter("config");
 					myWriter.write("0\n0\n100\n0\n0\n0\n");
 					myWriter.close();
@@ -85,26 +85,26 @@ public class ConfigWindow extends JFrame implements Observateur {
 					selCarte = 0;
 					selFond = 0;
 				}
-			} catch (IOException e1) {// la création du fichier a echoué
-				System.out.println("impossible de créer un fichier.");
+			} catch (IOException e1) {// la crï¿½ation du fichier a echouï¿½
+				System.out.println("impossible de crï¿½er un fichier.");
 			}
 		}
 		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize((int) screenSize.getWidth() / 5, (int) screenSize.getHeight() / 3 * 2);
+		this.setSize(400, (int) screenSize.getHeight() / 3 * 2);
 		hisPanel = new JPanel();
 		hisPanel.setLayout(new BoxLayout(hisPanel, BoxLayout.PAGE_AXIS));
-
+                setLocationRelativeTo(null);
 		miseAJour();
 	}
 
 	@Override
-	public void miseAJour() { // création es diffenrentes parties de la fenetre
+	public void miseAJour() { // crï¿½ation es diffenrentes parties de la fenetre
 		JLabel titre = new JLabel("Configurations");
 		titre.setFont(new Font("Calibri", Font.PLAIN, 24));
 		hisPanel.add(titre);
 		JPanel diff = new JPanel();
-		diff.setBorder(BorderFactory.createTitledBorder("Difficulté IA :"));
+		diff.setBorder(BorderFactory.createTitledBorder("Difficultï¿½ IA :"));
 		diffGroup = new ButtonGroup();
 		JRadioButton facile = new JRadioButton("facile");
 		JRadioButton moyenne = new JRadioButton("moyenne");
@@ -259,7 +259,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 				dispose();
 			}
 		});
-		JButton valid = new JButton("valider"); // boutton de validation qui stock toutes les infos selectionés dans un
+		JButton valid = new JButton("valider"); // boutton de validation qui stock toutes les infos selectionï¿½s dans un
 												// fichier config
 		valid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -277,18 +277,19 @@ public class ConfigWindow extends JFrame implements Observateur {
 					try {
 						File confile = new File("config");
 						if (confile.createNewFile()) {
-							System.out.println("Création d'un fichier config.");
+							System.out.println("Crï¿½ation d'un fichier config.");
 							FileWriter myWriter = new FileWriter("config");
 							myWriter.write(
 									selDiff + "\n" + selWin + "\n" + value +"\n" +showCarte+ "\n" + selCarte + "\n" + selFond + "\n");
 							myWriter.close();
 						}
 					} catch (IOException e2) {
-						System.out.println("impossible de créer un fichier.");
+						System.out.println("impossible de crï¿½er un fichier.");
 					}
 				}
 				setVisible(false); // ferme la fenetre
 				dispose();
+                                FenetreAvertissement avert = new FenetreAvertissement("Les modifications seront prises en compte Ã  la prochaine manche");
 			}
 		});
 

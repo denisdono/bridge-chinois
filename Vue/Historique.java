@@ -33,6 +33,7 @@ public class Historique extends JFrame {
         this.setTitle("Historique");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize((int) screenSize.getWidth() / 3, (int) screenSize.getHeight() / 3);
+        setLocationRelativeTo(null);
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
         hisPanel = new JPanel(new GridLayout(0, 3));

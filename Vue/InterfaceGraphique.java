@@ -65,6 +65,7 @@ public class InterfaceGraphique implements Runnable {
         Timer chrono = new Timer(16, new AdaptateurTemps(control));
         chrono.start();
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setVisible(true);

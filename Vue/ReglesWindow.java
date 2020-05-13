@@ -44,6 +44,7 @@ public class ReglesWindow extends JFrame {
         JScrollPane scrollPane = new JScrollPane(reglePane);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         this.add(scrollPane);
+        setLocationRelativeTo(null);
     }
 
     public void montrer() {
