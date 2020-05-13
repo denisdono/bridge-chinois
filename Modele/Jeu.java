@@ -101,8 +101,6 @@ public class Jeu extends Observable {
 				System.out.println("impossible de crÃ©er un fichier.");
 			}
 		}
-//		parManche=false;//////// condition par dÃ©fault
-//		totalfin=100;///////////
 		debut = true;
 		historique = new Historique();
 		annulation = false;
