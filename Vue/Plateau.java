@@ -55,7 +55,7 @@ public class Plateau extends JPanel implements Observateur {
 		jeu.ajouteObservateur(this);
 //		m.setTaille(new Dimension(dimlabel.width * 4, dimlabel.height * 7),
 //				new Dimension((int) (dimlabel.width * 1.6), dimlabel.height));
-		background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background.jpg")));
+		
 
 		// this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
 		this.setPreferredSize(new Dimension(dimlabel.width * 14, dimlabel.height * 7));
@@ -71,6 +71,7 @@ public class Plateau extends JPanel implements Observateur {
 	}
 
 	public void creerPlateau() { 
+		background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background"+jeu.getSelFond()+".jpg")));
 		hand1 = new ArrayList<>();
 		hand2 = new ArrayList<>();
 		centreDecks = new ArrayList<>();
@@ -180,7 +181,7 @@ public class Plateau extends JPanel implements Observateur {
 			m.indiqueAtout(jeu.getAtout().name(), dimlabel);
 			m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),
 					jeu.getMains()[1].getnbScore());
-			if (etapePrecedente == 1) {
+			if (etapePrecedente == 1 && jeu.getC_sub()!=null && jeu.getC_dom()!=null ) {
 				m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(),
 						dimlabel);
 			}
