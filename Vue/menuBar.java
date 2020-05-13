@@ -3,9 +3,11 @@ package Vue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
 public class menuBar extends JMenuBar { // menu du haut
 	private CollecteurEvenements c;
@@ -22,14 +24,15 @@ public class menuBar extends JMenuBar { // menu du haut
 	private JMenuItem restart;
 	private JMenuItem config;
 	private JMenuItem regles;
-
+	private JMenuItem menuB;
+	private JFrame frame;
 	menuBar() {
 		completeIHM();
 	}
 
-	menuBar(CollecteurEvenements c) {
+	menuBar(CollecteurEvenements c, JFrame frame) {
 		this.c = c;
-		
+		this.frame = frame;
 
 		menuAction = new JMenu("actions");
 		undo = new JMenuItem("undo(crtl+z)");
@@ -46,13 +49,26 @@ public class menuBar extends JMenuBar { // menu du haut
 				 c.refait();
 			}
 		});
-		conceed = new JMenuItem("abandonner");
+		conceed = new JMenuItem("abandonner la manche");
 		conceed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				c.abandonner();
 			}
 		});
 		menuAction.add(conceed);
+		
+		menuB = new JMenuItem("retour au menu");
+		menuB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StartingMenu m = new StartingMenu();
+				m.setSize(500,500);
+				m.setVisible(true);
+				frame.setVisible(false);
+				frame.dispose();
+			}
+		});
+		menuAction.add(menuB);
+		
 		restart = new JMenuItem("recomencer");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
