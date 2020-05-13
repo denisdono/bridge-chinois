@@ -39,7 +39,7 @@ public class InterfaceGraphique implements Runnable {
     InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
         j = jeu;
         control = c;
-        menuBar = new menuBar(c);
+        
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements control) {
@@ -50,6 +50,7 @@ public class InterfaceGraphique implements Runnable {
     public void run() {
         //Creation de la fenetre globale
         JFrame frame = new JFrame("Bridge Chinois");
+        menuBar = new menuBar(control,frame);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new FlowLayout());
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

@@ -320,9 +320,9 @@ public class Plateau extends JPanel implements Observateur {
 		//textPan.add(finJ,BorderLayout.NORTH);
 		JLabel finRemporte;
 		if (lastnbPlis1 > lastnbPlis2) {
-			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Remportée par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2+"<html>");
+			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Remportée par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2+"<html>");
 		} else if (lastnbPlis1 < lastnbPlis2) {
-			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Remportée par le joueur 2 avec " + lastnbPlis2 + " plis a " + lastnbPlis1+"<html>");
+			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Remportée par le joueur 2 avec " + lastnbPlis2 + " plis a " + lastnbPlis1+"<html>");
 		} else {
 			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>"+"Egalité sur cette manche<html>");
 		}
@@ -360,9 +360,9 @@ public class Plateau extends JPanel implements Observateur {
 		//textPan.add(finJ,BorderLayout.NORTH);
 		JLabel finRemporte;
 		if (lastnbPlis1 > lastnbPlis2) {
-			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La partie est terminée</p>"+"Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " plis a " +  jeu.getMains()[1].getnbScore()+"<html>");
+			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " a " +  jeu.getMains()[1].getnbScore()+"<html>");
 		} else if (lastnbPlis1 < lastnbPlis2) {
-			finRemporte = new JLabel("<html><p style=\"font-size:30px\">La partie est terminée</p>"+"Remportée par le joueur 2 avec un score de" + jeu.getMains()[1].getnbScore() + " plis a " + jeu.getMains()[0].getnbScore()+"<html>");
+			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Remportée par le joueur 2 avec un score de" + jeu.getMains()[1].getnbScore() + " a " + jeu.getMains()[0].getnbScore()+"<html>");
 		} else {
 			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Egalité <html>");
 		}
