@@ -34,7 +34,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		this.c = c;
 		this.frame = frame;
 
-		menuAction = new JMenu("actions");
+		menuAction = new JMenu("Actions");
 		undo = new JMenuItem("undo(crtl+z)");
 		undo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -49,7 +49,7 @@ public class menuBar extends JMenuBar { // menu du haut
 				 c.refait();
 			}
 		});
-		conceed = new JMenuItem("abandonner la manche");
+		conceed = new JMenuItem("Abandonner la manche");
 		conceed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				c.abandonner();
@@ -57,7 +57,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		});
 		menuAction.add(conceed);
 		
-		menuB = new JMenuItem("retour au menu");
+		menuB = new JMenuItem("Retour au menu");
 		menuB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				StartingMenu m = new StartingMenu();
@@ -69,7 +69,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		});
 		menuAction.add(menuB);
 		
-		restart = new JMenuItem("recomencer");
+		restart = new JMenuItem("Recomencer");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				c.recommencer();
@@ -84,15 +84,15 @@ public class menuBar extends JMenuBar { // menu du haut
 
 	public void completeIHM() {
 		
-		menuParametres = new JMenu("parametres");
-		sauvegarder = new JMenuItem("sauvegarder");
+		menuParametres = new JMenu("Paramètres");
+		sauvegarder = new JMenuItem("Sauvegarder");
 		sauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 c.sauvegarde();
 			}
 		});
 		menuParametres.add(sauvegarder);
-		charger = new JMenuItem("charger");
+		charger = new JMenuItem("Charger");
 		menuParametres.add(charger);
 		charger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -103,7 +103,7 @@ public class menuBar extends JMenuBar { // menu du haut
 				}
 			}
 		});
-		config = new JMenuItem("configuration");
+		config = new JMenuItem("Configuration");
 		config.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConfigWindow lesConf = new ConfigWindow();
@@ -115,9 +115,9 @@ public class menuBar extends JMenuBar { // menu du haut
 
 		add(menuParametres);
 
-		menuHelp = new JMenu("aide");
+		menuHelp = new JMenu("Aide");
 
-		regles = new JMenuItem("regles");
+		regles = new JMenuItem("Règles");
 		regles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ReglesWindow lesRegles = new ReglesWindow();
