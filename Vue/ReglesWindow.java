@@ -25,7 +25,7 @@ public class ReglesWindow extends JFrame {
         JLabel regles = new JLabel();
         regles.setText("<html><h1 style=\"text-decoration:underline;\">Règles</h1><h2>Principe</h2> Le bridge chinois est un jeu de cartes à 2 joueurs.<br>"
                 + "On utilise un jeu de 52 cartes. L'ordre des cartes et des couleurs est le même qu'au bridge (as, roi, dame, valet, dix, ...deux, et pique, coeur, carreau, trèfle).<br>"
-                + "Les joueurs recoivent 11 cartes chacun, les autres cartes sont réparties en 6 piles de 5 cartes, avec la première de chaque piles face visible.<br>  L'atout est fixé par la carte découverte la plus forte. Dans le cas où aucune de ces cartes n'est supérieure ou égale à 10, la manche se joue sant atout.<br>"
+                + "Les joueurs recoivent 11 cartes chacun, les autres cartes sont réparties en 6 piles de 5 cartes, avec la première de chaque pile face visible.<br>  L'atout est fixé par la carte découverte la plus forte. Dans le cas où aucune de ces cartes n'est supérieure ou égale à 10, la manche se joue sant atout.<br>"
                 + "<h2>But du jeu</h2>Le but du jeu est de réaliser le plus de plis possible.<br> Chaque pli est constitué de 2 cartes, chacune posée par un joueur, choisie parmi les cartes qu'il a en main.<br> Le pli est gagné par le joueur qui:<br>"
                 + "<ul><li> a posé la carte la plus forte, si les deux cartes sont de même couleur,</li>"
                 + "<li>a coupé (joué un atout) si l'une des deux cartes est un atout,</li>"
@@ -39,7 +39,7 @@ public class ReglesWindow extends JFrame {
                 + "Lorsque les piles sont épuisées, la manche continue selon les mêmes règles, mais le nombre de cartes en main diminue.<br>"
                 + "La manche se termine lorsqu'il ne reste plus de cartes.<br>"
                 + "<h2>Comptage des points</h2>À la fin de la manche, on compte les plis et chacun se voit attribuer le nombre de points correspondant (1 point par pli).<br>"
-                + "La partie se joue en un nombre de points ou en un nombre de manches qui a été fixé à l'avance (par exemple 100 points, ou 12 manches).<br>Dans le cas oû le nombre de manches est fixé, il est préférable de choisir un nombre pair, car le donneur a un certain avantage.<br><br><br><html> ");
+                + "La partie se joue en un nombre de points ou en un nombre de manches qui a été fixé à l'avance (par exemple 100 points, ou 12 manches).<br>Dans le cas où le nombre de manches est fixé, il est préférable de choisir un nombre pair, car le donneur a un certain avantage.<br><br><br><html> ");
         reglePane.add(regles);
         JScrollPane scrollPane = new JScrollPane(reglePane);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);

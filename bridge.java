@@ -9,10 +9,6 @@ import java.util.Iterator;
 
 public class bridge {
 	public static void main(String[] args) {
-		StartingMenu m = new StartingMenu();
-		m.setSize(500,500);
-                m.setLocationRelativeTo(null);
-		m.setVisible(true);
-		
+		StartingMenu m = new StartingMenu();	
 	}
 }

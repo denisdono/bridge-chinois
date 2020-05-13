@@ -18,7 +18,9 @@ public class StartingMenu extends JFrame {
 
     public StartingMenu() {
         setTitle("Menu principal");
-        
+        setSize(500,500);
+        setLocationRelativeTo(null);
+    
         menuBar menuBar = new menuBar();
         setJMenuBar(menuBar);
         mainPanel = new JPanel();
@@ -60,7 +62,7 @@ public class StartingMenu extends JFrame {
         });
         mainPanel.add(confB, BorderLayout.SOUTH);    
         add(mainPanel);
-               
+        setVisible(true);       
     }
     
 }
