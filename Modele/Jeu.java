@@ -40,6 +40,8 @@ public class Jeu extends Observable {
 	public boolean annulation;
 	int jca;
 	boolean debut;
+	int selCarte;
+	int selFond;
 	public Historique historique;
 
 	public Jeu() {
@@ -73,14 +75,14 @@ public class Jeu extends Observable {
 			
 			
 			
-//			selCarte = Integer.parseInt(br.readLine());
-//			if (selCarte < 0 || selCarte > 2) {
-//				selCarte = 0;
-//			}
-//			selFond = Integer.parseInt(br.readLine());
-//			if (selFond < 0 || selFond > 2) {
-//				selFond = 0;
-//			}
+			selCarte = Integer.parseInt(br.readLine());
+			if (selCarte < 0 || selCarte > 2) {
+				selCarte = 0;
+			}
+			selFond = Integer.parseInt(br.readLine());
+			if (selFond < 0 || selFond > 2) {
+				selFond = 0;
+			}
 			br.close();
 		} catch (IOException e) {// si le fichier n'est pas trouvÃ© on en crÃ©e un avec les configurations de base
 			try {
@@ -94,8 +96,8 @@ public class Jeu extends Observable {
 					parManche = false;
 					totalfin = 100;
 					showCarte=true;
-//					selCarte = 0;
-//					selFond = 0;
+					selCarte = 0;
+					selFond = 0;
 				}
 			} catch (IOException e1) {// la crÃ©ation du fichier a echouÃ©
 				System.out.println("impossible de crÃ©er un fichier.");
@@ -706,7 +708,12 @@ public class Jeu extends Observable {
         public boolean getShowCarte() {
         	return this.showCarte;
         }
-        
+        public int getSelCarte() {
+        	return selCarte;
+        }
+        public int getSelFond() {
+        	return selFond;
+        }
         
         
 }
