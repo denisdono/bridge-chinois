@@ -595,6 +595,9 @@ public class Jeu extends Observable {
 		    }
 	}
 	
+	public int niveauIA() {
+		return diff;
+	}
 	
 	public int etape() {
 		//retourne l'etape actuelle d'un tour
