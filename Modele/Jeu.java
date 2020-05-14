@@ -160,6 +160,7 @@ public class Jeu extends Observable {
 	
 	public void jouer(int i,int n) {
 		annulation=false;
+		historique.getFutur().clear();
 		joueurdominantpred=joueurdominant;
 		//creation par copie pour les coups
 		Hand h1=new Hand(mains[0]);
