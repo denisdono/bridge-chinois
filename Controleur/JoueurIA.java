@@ -9,12 +9,12 @@ class JoueurIA extends Joueur{
 	
 	JoueurIA(int n, Jeu p) {
 		super (n,p);
-		niv=2;
+		niv=p.niveauIA();
 		switch (niv) {
-		case 1:
+		case 0:
 			ia =new IARandom(n,p);
 			break;
-		case 2:
+		case 1:
 			ias=new IASimple (n,p);
 			break;
 		default :
@@ -26,10 +26,10 @@ class JoueurIA extends Joueur{
 	boolean tempsEcoule() {
 		boolean rep=false;
 		switch (niv) {
-		case 1:
+		case 0:
 			rep=ia.IAJeu();
 			break;
-		case 2:
+		case 1:
 			rep=ias.IAjeu();
 			break;
 		default :
