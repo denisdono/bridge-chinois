@@ -16,6 +16,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	public ControleurMediateur(Jeu j, boolean IA) {
 		jeu = j;
 		joueurs = new Joueur[2];
+		changeJoueur();
 		for (int i = 0; i < 2; i++)
 			if (i==1 && IA) { // s'il y as une IA le jeu la met en tant que joueur numero2
 				joueurs[i] = new JoueurIA(i, jeu);
@@ -85,6 +86,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	public void recommencer() {
 		jeu.start();
+		changeJoueur();
 	}
 	
 	public void tictac() {

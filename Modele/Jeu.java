@@ -108,7 +108,7 @@ public class Jeu extends Observable {
 		annulation = false;
 		
 		enCours = true;
-		changerjoueur=false;
+		changerjoueur=true;
 		joueurdominant=0;
 		manche=1;
 		piles = new Deck[6];// creation d'un tableau de piles pour les six paquets sur la table

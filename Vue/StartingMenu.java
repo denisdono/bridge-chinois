@@ -21,8 +21,7 @@ public class StartingMenu extends JFrame {
         setSize(500,500);
         setLocationRelativeTo(null);
     
-        menuBar menuBar = new menuBar();
-        setJMenuBar(menuBar);
+
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         JLabel titre = new JLabel("Bridge Chinois");
@@ -40,7 +39,7 @@ public class StartingMenu extends JFrame {
                 dispose();
             }
         });
-        JButton start2PB = new JButton("Jouer � 2");
+        JButton start2PB = new JButton("Jouer à 2");
         start2PB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Jeu j = new Jeu();
