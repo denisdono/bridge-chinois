@@ -410,7 +410,7 @@ public class Plateau extends JPanel implements Observateur {
 		this.repaint();
 	}
 	private void initNouvellePartie() {
-		jeu.start();
+		c.recommencer();
 		background.removeAll();
 		this.removeAll();
 		this.creerPlateau();
