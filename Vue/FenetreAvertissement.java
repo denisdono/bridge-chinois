@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,9 +23,10 @@ import javax.swing.JPanel;
  * @author dodee
  */
 public class FenetreAvertissement extends JFrame {
-    public FenetreAvertissement(String msg){
+    public FenetreAvertissement(String msg, Dimension d){
         this.setTitle("Avertissement"); // definitions de la fenetre
-        this.setSize(450, 120);
+        this.setSize(d);
+        this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage());
         JPanel pan = new JPanel();
         //pan.setLayout(new GridLayout(2,1));
         JLabel msgLabel = new JLabel(msg);

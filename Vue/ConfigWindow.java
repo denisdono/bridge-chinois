@@ -289,7 +289,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 				}
 				setVisible(false); // ferme la fenetre
 				dispose();
-                                FenetreAvertissement avert = new FenetreAvertissement("Les modifications seront prises en compte à la prochaine manche");
+                                FenetreAvertissement avert = new FenetreAvertissement("Les modifications seront prises en compte à la prochaine manche", new Dimension(450,120));
 			}
 		});
 

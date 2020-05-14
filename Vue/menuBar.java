@@ -1,5 +1,6 @@
 package Vue;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -69,7 +70,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		});
 		menuAction.add(menuB);
 		
-		restart = new JMenuItem("Recomencer");
+		restart = new JMenuItem("Recommencer");
 		restart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				c.recommencer();
@@ -89,6 +90,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		sauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 c.sauvegarde();
+                                 FenetreAvertissement f = new FenetreAvertissement("Partie Sauvegardée. Vous pouvez la reprendre plus tard à avec le menu Paramètres > Charger",new Dimension(600,120));
 			}
 		});
 		menuParametres.add(sauvegarder);
