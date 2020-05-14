@@ -64,6 +64,7 @@ public class InterfaceGraphique implements Runnable {
 
         Timer chrono = new Timer(16, new AdaptateurTemps(control));
         chrono.start();
+        frame.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

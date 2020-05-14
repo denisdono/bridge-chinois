@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import Controleur.ControleurMediateur;
 import Modele.Jeu;
+import javax.swing.ImageIcon;
 
 public class StartingMenu extends JFrame {
     
@@ -61,6 +62,7 @@ public class StartingMenu extends JFrame {
         });
         mainPanel.add(confB, BorderLayout.SOUTH);    
         add(mainPanel);
+        setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage());
         setVisible(true);       
     }
     

@@ -26,7 +26,7 @@ public class FenetreAvertissement extends JFrame {
     public FenetreAvertissement(String msg, Dimension d){
         this.setTitle("Avertissement"); // definitions de la fenetre
         this.setSize(d);
-        this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage());
+        this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("info.png")).getImage());
         JPanel pan = new JPanel();
         //pan.setLayout(new GridLayout(2,1));
         JLabel msgLabel = new JLabel(msg);
