@@ -194,7 +194,7 @@ public class Plateau extends JPanel implements Observateur {
 						|| (jeu.getIA() == false && jeu.joueurActuelle() != numJ))) {
 
 					icon2 = new ImageIcon(
-							new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back Blue 1.png")).getImage()
+							new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back"+jeu.getSelCarte()+".png")).getImage()
 									.getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
 
 				} else {
