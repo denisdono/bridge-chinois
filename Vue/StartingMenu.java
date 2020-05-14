@@ -17,14 +17,14 @@ public class StartingMenu extends JFrame {
     JPanel mainPanel;
 
     public StartingMenu() {
-        setTitle("Menu principal");
+        setTitle("Bridge Chinois");
         setSize(500,500);
         setLocationRelativeTo(null);
     
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        JLabel titre = new JLabel("Bridge Chinois");
+        JLabel titre = new JLabel("Menu principal");
         titre.setFont(new Font("Calibri", Font.PLAIN, 24));
         mainPanel.add(titre, BorderLayout.NORTH);
         JPanel buttonPanel = new JPanel();
