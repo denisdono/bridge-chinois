@@ -17,6 +17,7 @@ import javax.swing.JLabel;
  * @author dodee
  */
 public class JoueurCarteListener extends MouseAdapter{
+        public static boolean active = true;
         int indice;
 	CollecteurEvenements control;
 
@@ -27,8 +28,8 @@ public class JoueurCarteListener extends MouseAdapter{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		control.clicSouris(indice);
-                System.out.println("indice carte "+indice);
+                if(active)
+                    control.clicSouris(indice);
 		
 	}
         @Override
