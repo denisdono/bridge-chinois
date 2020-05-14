@@ -346,9 +346,9 @@ public class Plateau extends JPanel implements Observateur {
 		//finJ.setVerticalAlignment(JLabel.CENTER);
 		//textPan.add(finJ,BorderLayout.NORTH);
 		JLabel finRemporte;
-		if (lastnbPlis1 > lastnbPlis2) {
+		if (jeu.getMains()[0].getnbScore() > jeu.getMains()[1].getnbScore()) {
 			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " a " +  jeu.getMains()[1].getnbScore()+"<html>");
-		} else if (lastnbPlis1 < lastnbPlis2) {
+		} else if (jeu.getMains()[1].getnbScore() <jeu.getMains()[0].getnbScore()) {
 			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Remportée par le joueur 2 avec un score de" + jeu.getMains()[1].getnbScore() + " a " + jeu.getMains()[0].getnbScore()+"<html>");
 		} else {
 			finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>"+"Egalité <html>");
