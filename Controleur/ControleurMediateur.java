@@ -28,17 +28,24 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	
 	public void annule() {
-		Coup c = jeu.historique.getPasse().peek();//rajouter try ctch
-		jeu.annuler();
-		joueurCourant = c.getJoueur();	
+		//if(!jeu.getIA())
+			Coup c = jeu.historique.getPasse().peek();//rajouter try ctch
+			jeu.annuler();
+			joueurCourant = c.getJoueur();	
+			System.out.print("Joueur courant"+joueurCourant);
+			
+		//}
 	}
 
 	public void refait() {
-
-			Coup c = jeu.refaire(joueurCourant);
+		if(jeu.historique.peutRefaire()) {
+			jeu.refaire(joueurCourant);
 			changeJoueur();
-			System.out.print("Joueur courant"+joueurCourant);
+			//System.out.print("Joueur courant"+joueurCourant);
 			jeu.metAJour();
+		}else {
+			System.out.println("Pas de coup rejouable");
+		}
 
 	}
 	
@@ -66,6 +73,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
 		if (joueurs[joueurCourant].jeu(i))
 			changeJoueur();
+		
+		//System.out.print("Joueur courant"+joueurCourant);
 	}
 
 	void changeJoueur() {

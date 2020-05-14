@@ -28,6 +28,7 @@ public class Jeu extends Observable {
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur ÃƒÂ  la main (premier a jouer/piocher)
+	int joueurdominantpred;
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
@@ -153,12 +154,13 @@ public class Jeu extends Observable {
 		}
 		Hand h1=new Hand(mains[0]);
 		Hand h2=new Hand(mains[1]);
-			c1 =  new Coup(0,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+			c1 =  new Coup(0,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 			historique.ajouterCoup(c1);
 	}
 	
 	public void jouer(int i,int n) {
 		annulation=false;
+		joueurdominantpred=joueurdominant;
 		//creation par copie pour les coups
 		Hand h1=new Hand(mains[0]);
 		Hand h2=new Hand(mains[1]);
@@ -183,7 +185,7 @@ public class Jeu extends Observable {
 						pi[k]=new Deck(piles[k]);
 					}
 					//on passe n en parametre mais il faudrait passer joueur_actuel()
-					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 					historique.ajouterCoup(c1);
 					etape++;
 					metAJour();
@@ -205,7 +207,7 @@ public class Jeu extends Observable {
 					mains[joueurdominant].addPlis();// incrÃƒÂ©mente le nombre de plis du vainqueur
 					h1=new Hand(mains[0]);
 					h2=new Hand(mains[1]);
-					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 				
 					historique.ajouterCoup(c1);
 					
@@ -228,7 +230,7 @@ public class Jeu extends Observable {
 						for (int k=0;k<6;k++) {// boucle sur les six piles
 							pi[k]=new Deck(piles[k]);
 						}
-						c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+						c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 						
 						historique.ajouterCoup(c1);
 						etape++;
@@ -247,7 +249,7 @@ public class Jeu extends Observable {
 
 					h1=new Hand(mains[0]);
 					h2=new Hand(mains[1]);
-					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,atout,c_dom,c_sub,diff,showCarte,IA);
+					c1= new Coup(n,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 					historique.ajouterCoup(c1);
 					
 					piochage=!pilesvide();//teste si il reste des carte a piocher
@@ -287,13 +289,18 @@ public class Jeu extends Observable {
 	}
 	
 	public void annuler() {
+		
 		annulation = true;
+		
 		if(historique.getPasse().size()==1) {
 			return;
 		}else {
 			
 		Coup cj;//coup joué
 		Coup cpeek;//coup au sommet
+		if(IA) {
+			 cj = historique.defaire();
+		}
 		System.out.print("historique avant annule:");
 		//historique.affiherPasse();
 		 cj = historique.defaire();
@@ -337,10 +344,12 @@ public class Jeu extends Observable {
 	}
 	}
 	
-	public Coup refaire(int n) {//reste a corriger bug joueur actuel
+	public void refaire(int n) {//reste a corriger bug joueur actuel
 		annulation = true;
 		jca=n;
 		Coup cj;//coup joué
+		
+			
 		//Coup cpeek;//coup au sommet
 		System.out.print("historique avant refaire:");
 		historique.afficherFutur();
@@ -362,7 +371,7 @@ public class Jeu extends Observable {
 			
 			this.totalfin = cj.getTotalfin();// score a obtenir ou nombre de manche a faire avant la fin de partie PK
 			this.manche = cj.getManche();// le nombre de manche actuelle OK
-			this.etape = cj.getEtape();// etape actuelle d'un tour de jeu OK
+			this.etape = (cj.getEtape()+1)%2;// etape actuelle d'un tour de jeu OK
 			this.joueurdominant =cj.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
 			this.atout = cj.getAtout();// l'atout de la manche OK
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
@@ -376,7 +385,8 @@ public class Jeu extends Observable {
 			historique.afficherFutur();
 			System.out.println("Joueur act: "+joueurActuelle());
 			metAJour();
-			return cj;
+		
+			
 	}
 
 	
