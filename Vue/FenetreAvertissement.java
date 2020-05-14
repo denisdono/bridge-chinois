@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 public class FenetreAvertissement extends JFrame {
     public FenetreAvertissement(String msg){
         this.setTitle("Avertissement"); // definitions de la fenetre
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(450, 120);
         JPanel pan = new JPanel();
         //pan.setLayout(new GridLayout(2,1));
