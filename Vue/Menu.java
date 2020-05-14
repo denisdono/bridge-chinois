@@ -169,8 +169,8 @@ class Menu extends JPanel implements ActionListener, Observateur {
             this.labelAtout.setIcon(null);
             this.labelAtout.setText("Sans atout");
         } else{
-            int borderSize =2;
-            img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png")).getImage().getScaledInstance(d.width-borderSize, d.height-borderSize, Image.SCALE_SMOOTH));
+            int borderSize =3;
+            img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(atout+".png")).getImage().getScaledInstance(d.width-borderSize, d.height-(d.height/4), Image.SCALE_SMOOTH));
             this.labelAtout.setIcon(img);
             this.labelAtout.setBorder(new LineBorder(Color.BLACK, borderSize, true));
         }
