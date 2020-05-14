@@ -22,6 +22,7 @@ public class Coup implements Serializable {
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur à la main (premier a jouer/piocher)
+	int joueurdominantpred;
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
@@ -36,7 +37,7 @@ public class Coup implements Serializable {
 	}
 	
 	public Coup(int joueur, boolean changerjoueur, boolean enCours, boolean finmanche, boolean piochage,
-			boolean parManche, Deck[] piles, Hand h1,Hand h2, int totalfin, int manche, int etape, int joueurdominant,
+			boolean parManche, Deck[] piles, Hand h1,Hand h2, int totalfin, int manche, int etape, int joueurdominant,int jdp,
 			Couleur atout, Carte c_dom, Carte c_sub,int diff,boolean show,boolean ia) {
 		super();
 		this.joueur = joueur;
@@ -53,6 +54,7 @@ public class Coup implements Serializable {
 		this.manche = manche;
 		this.etape = etape;
 		this.joueurdominant = joueurdominant;
+		this.joueurdominantpred = jdp;
 		this.atout = atout;
 		this.c_dom = c_dom;
 		this.c_sub = c_sub;
@@ -96,6 +98,14 @@ public class Coup implements Serializable {
 
 
 
+
+	public int getJoueurdominantpred() {
+		return joueurdominantpred;
+	}
+
+	public void setJoueurdominantpred(int joueurdominantpred) {
+		this.joueurdominantpred = joueurdominantpred;
+	}
 
 	@Override
 	public String toString() {
