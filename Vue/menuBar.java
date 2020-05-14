@@ -35,14 +35,14 @@ public class menuBar extends JMenuBar { // menu du haut
 		this.frame = frame;
 
 		menuAction = new JMenu("Actions");
-		undo = new JMenuItem("undo(crtl+z)");
+		undo = new JMenuItem("Annuler (crtl+z)");
 		undo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 c.annule();
 			}
 		});
 		menuAction.add(undo);
-		redo = new JMenuItem("redo(crtl+y)");
+		redo = new JMenuItem("Restaurer (crtl+y)");
 		menuAction.add(redo);
 		redo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

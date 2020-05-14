@@ -17,15 +17,14 @@ public class StartingMenu extends JFrame {
     JPanel mainPanel;
 
     public StartingMenu() {
-        setTitle("Menu principal");
+        setTitle("Bridge Chinois");
         setSize(500,500);
         setLocationRelativeTo(null);
     
-        menuBar menuBar = new menuBar();
-        setJMenuBar(menuBar);
+
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        JLabel titre = new JLabel("Bridge Chinois");
+        JLabel titre = new JLabel("Menu principal");
         titre.setFont(new Font("Calibri", Font.PLAIN, 24));
         mainPanel.add(titre, BorderLayout.NORTH);
         JPanel buttonPanel = new JPanel();
@@ -40,7 +39,7 @@ public class StartingMenu extends JFrame {
                 dispose();
             }
         });
-        JButton start2PB = new JButton("Jouer � 2");
+        JButton start2PB = new JButton("Jouer à 2");
         start2PB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Jeu j = new Jeu();

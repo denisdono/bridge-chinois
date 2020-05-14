@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import Patterns.Observateur;
+import javax.swing.BorderFactory;
 
 public class ReglesWindow extends JFrame {
 
@@ -21,7 +22,7 @@ public class ReglesWindow extends JFrame {
         this.setSize((int) (screenSize.getWidth() / 3 * 2.5), (int) screenSize.getHeight() / 3 * 2);
         JPanel reglePane = new JPanel();
         reglePane.setLayout(new BoxLayout(reglePane, BoxLayout.PAGE_AXIS));
-
+        reglePane.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 10));
         JLabel regles = new JLabel();
         regles.setText("<html><h1 style=\"text-decoration:underline;\">Règles</h1><h2>Principe</h2> Le bridge chinois est un jeu de cartes à 2 joueurs.<br>"
                 + "On utilise un jeu de 52 cartes. L'ordre des cartes et des couleurs est le même qu'au bridge (as, roi, dame, valet, dix, ...deux, et pique, coeur, carreau, trèfle).<br>"

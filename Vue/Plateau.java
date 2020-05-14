@@ -44,30 +44,15 @@ public class Plateau extends JPanel implements Observateur {
 		this.m = m;
 		this.c = c;
 		this.frame=frame;
-		// setLayout(new BorderLayout());
-		// add(new JLabel(new
-		// ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png"))));
 		setLayout(new BorderLayout());
 
-		jeu = j;
 		// On ajoute le plateau dans la liste des observateur
 		// Les observateurs seront mis à jour par le jeu dès que nécessaire
+		jeu = j;
 		jeu.ajouteObservateur(this);
-//		m.setTaille(new Dimension(dimlabel.width * 4, dimlabel.height * 7),
-//				new Dimension((int) (dimlabel.width * 1.6), dimlabel.height));
-		
 
-		// this.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 20));
 		this.setPreferredSize(new Dimension(dimlabel.width * 14, dimlabel.height * 7));
 		creerPlateau();
-//        majFleche();
-//        majMainJoueur(0);
-//        majPaquets();
-//        majMainJoueur(1);
-//        majCarteJouees();
-//        this.m.indiqueAtout(jeu.getAtout().name());
-
-		// repaint();
 	}
 
 	public void creerPlateau() { 
@@ -165,6 +150,7 @@ public class Plateau extends JPanel implements Observateur {
 		if (manchePrec != jeu.getMancheactuelle()) {
 			System.out.println("changement de manche");
 			chgtManche = true;
+                        System.out.println("joueur:"+jeu.joueurActuelle());
 			m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(),
 					jeu.getMains()[1].getnbScore());
 			this.removeAll();
