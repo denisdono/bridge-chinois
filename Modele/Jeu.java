@@ -160,6 +160,7 @@ public class Jeu extends Observable {
 	
 	public void jouer(int i,int n) {
 		annulation=false;
+		historique.getFutur().clear();
 		joueurdominantpred=joueurdominant;
 		//creation par copie pour les coups
 		Hand h1=new Hand(mains[0]);
@@ -371,14 +372,13 @@ public class Jeu extends Observable {
 			
 			this.totalfin = cj.getTotalfin();// score a obtenir ou nombre de manche a faire avant la fin de partie PK
 			this.manche = cj.getManche();// le nombre de manche actuelle OK
-			this.etape = (cj.getEtape()+1)%2;// etape actuelle d'un tour de jeu OK
+			this.etape = (cj.getEtape()+1)%4;// etape actuelle d'un tour de jeu OK
 			this.joueurdominant =cj.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
 			this.atout = cj.getAtout();// l'atout de la manche OK
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
 			this.c_sub = cj.getC_sub();// carte jouer par l'autre joueur OK
 			
 			System.out.println();
-
 			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
 			
 			historique.affiherPasse();
