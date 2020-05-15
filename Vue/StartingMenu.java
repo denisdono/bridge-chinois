@@ -1,7 +1,10 @@
 package Vue;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,21 +18,19 @@ import javax.swing.ImageIcon;
 
 public class StartingMenu extends JFrame {
     
-    JPanel mainPanel;
+	JLabel mainPanel;
 
     public StartingMenu() {
         setTitle("Bridge Chinois");
-        setSize(500,500);
+        setSize(510,530);
         setLocationRelativeTo(null);
     
-
-        mainPanel = new JPanel();
+        mainPanel = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("StartBackground.jpg")));
         mainPanel.setLayout(new BorderLayout());
-        JLabel titre = new JLabel("Menu principal");
-        titre.setFont(new Font("Calibri", Font.PLAIN, 24));
-        mainPanel.add(titre, BorderLayout.NORTH);
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 2));
+       
+        JLabel buttonPanel = new JLabel();
+        buttonPanel.setLayout(new GridBagLayout());
+        buttonPanel.setVerticalAlignment(JButton.CENTER);
         JButton startIAB = new JButton("Jouer contrel'IA");
         startIAB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -50,6 +51,8 @@ public class StartingMenu extends JFrame {
                 dispose();
             }
         });
+        startIAB.setPreferredSize(new Dimension(200,50));
+        start2PB.setPreferredSize(new Dimension(200,50));
         buttonPanel.add(startIAB);
         buttonPanel.add(start2PB);
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
