@@ -31,6 +31,7 @@ public class Plateau extends JPanel implements Observateur {
     // Dimensions a revoir, adapter a la taille de l'écran
     private Dimension dimlabel;
     private boolean timed = false;
+    private boolean waitPioche = false;
     private int etapePrecedente;
     private int manchePrec = 1;
     private boolean chgtManche = false;
@@ -147,8 +148,9 @@ public class Plateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         // Mise à jour des infos du menu
+        if(!waitPioche){
         System.out.println("MAJ");
-
+        int cartePioche = jeu.getCarteApiocher();
         if (manchePrec != jeu.getMancheactuelle()) {
             System.out.println("changement de manche");
             chgtManche = true;
@@ -162,6 +164,13 @@ public class Plateau extends JPanel implements Observateur {
             } else {
                 showFinPartie();
             }
+        } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && jeu.getCarteApiocher() != -1) {
+            
+            waitPioche = true;
+            centreDecks.get(cartePioche).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+            Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
+            t.setRepeats(false);
+            t.start();
         } else {
             m.setNumManche(jeu.getMancheactuelle());
             m.indiqueAtout(jeu.getAtout().name(), dimlabel);
@@ -175,30 +184,7 @@ public class Plateau extends JPanel implements Observateur {
                     timed = true;
                     JoueurCarteListener.active = false;
                     majCarteJouees();
-                    Timer t = new Timer(2000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            System.out.println("FIN ATTENTE APRES ETAPE 1");
-                            //majCarteJouees();
-                            etapePrecedente = jeu.etape();
-                            majFleche();
-                            majMainJoueur(0);
-                            majPaquets();
-                            majMainJoueur(1);
-                            
-                            majCarteJouees();
-                            if (jeu.getIA()) {
-                                playedCards.get(1).setIcon(null);
-                                if (jeu.joueurActuelle() == 0 && jeu.etape()==0) {
-                                    playedCards.get(0).setIcon(null);
-                                }
-                            }else{
-                                resetCarteJoue();
-                            }
-                            timed = false;
-                            JoueurCarteListener.active = true;
-                        }
-                    });
+                    Timer t = new Timer(1500, (ActionEvent e) -> majTime());
                     t.setRepeats(false);
                     t.start();
                 } else if (!jeu.pilesvide()) {
@@ -210,7 +196,7 @@ public class Plateau extends JPanel implements Observateur {
                     majMainJoueur(1);
                     majCarteJouees();
                 }
-            } else if(!timed){
+            } else if (!timed) {
                 System.out.println("maj Classique");
                 etapePrecedente = jeu.etape();
                 majFleche();
@@ -223,6 +209,7 @@ public class Plateau extends JPanel implements Observateur {
         manchePrec = jeu.getMancheactuelle();
         lastnbPlis1 = jeu.getMains()[0].getnbPlis();
         lastnbPlis2 = jeu.getMains()[1].getnbPlis();
+        }
     }
 
     private void majMainJoueur(int numJ) {
@@ -449,8 +436,39 @@ public class Plateau extends JPanel implements Observateur {
         this.revalidate();
         this.repaint();
     }
-    public void resetCarteJoue(){
+
+    public void resetCarteJoue() {
         playedCards.get(0).setIcon(null);
         playedCards.get(1).setIcon(null);
+    }
+
+    private void majTime() {
+        System.out.println("FIN ATTENTE APRES ETAPE 1");
+        //majCarteJouees();
+        etapePrecedente = jeu.etape();
+        majFleche();
+        majMainJoueur(0);
+        majPaquets();
+        majMainJoueur(1);
+
+        majCarteJouees();
+        if (jeu.getIA()) {
+            playedCards.get(1).setIcon(null);
+            if (jeu.joueurActuelle() == 0 && jeu.etape() == 0) {
+                playedCards.get(0).setIcon(null);
+            }
+        } else {
+            resetCarteJoue();
+        }
+        timed = false;
+        JoueurCarteListener.active = true;
+    }
+
+    private void majTimePioche(int pioche) {
+        System.out.println("FINTIMERPIOCHE");
+        centreDecks.get(pioche).setBorder(null);
+        waitPioche=false;
+        miseAJour();
+        
     }
 }
