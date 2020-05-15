@@ -299,9 +299,9 @@ public class Jeu extends Observable {
 			
 		Coup cj;//coup joué
 		Coup cpeek;//coup au sommet
-		if(IA) {
-			 cj = historique.defaire();
-		}
+//		if(IA) {
+//			 cj = historique.defaire();
+//		}
 		System.out.print("historique avant annule:");
 		//historique.affiherPasse();
 		 cj = historique.defaire();
@@ -331,7 +331,7 @@ public class Jeu extends Observable {
 			
 			this.diff=cpeek.getDiff();
 			this.showCarte = cpeek.isShowCarte();
-			this.IA =cpeek.isIA();
+			this.IA =cj.isIA();
 			System.out.println();
 
 			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
@@ -345,12 +345,12 @@ public class Jeu extends Observable {
 	}
 	}
 	
-	public void refaire(int n) {//reste a corriger bug joueur actuel
+	public void refaire() {//reste a corriger bug joueur actuel
 		annulation = true;
-		jca=n;
+		//jca=n;
 		Coup cj;//coup joué
 		
-			
+		
 		//Coup cpeek;//coup au sommet
 		System.out.print("historique avant refaire:");
 		historique.afficherFutur();
