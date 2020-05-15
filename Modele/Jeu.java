@@ -39,6 +39,7 @@ public class Jeu extends Observable {
 	boolean IA;// prï¿½sence d'une IA
 	int ind;//sert a determiner quelle carte posé dans la pioche
 	public boolean annulation;
+        private int carteApiocher;
 	int jca;
 	boolean debut;
 	int selCarte;
@@ -172,6 +173,9 @@ public class Jeu extends Observable {
 		//
 		Coup c1 ;
 		ind=i;
+                carteApiocher =i;
+                metAJour();
+                carteApiocher=-1;
 		if (enCours) {
 			//tant que la condition de victoire par nombre de plis gagner ou de mancher gagner n'est pas atteinte
 			if (!finmanche) {
@@ -726,6 +730,10 @@ public class Jeu extends Observable {
         }
         public int getSelFond() {
         	return selFond;
+        }
+
+        public int getCarteApiocher() {
+            return carteApiocher;
         }
         
         
