@@ -633,7 +633,7 @@ public class Jeu extends Observable {
 		return !finmanche;
 	}
 	
-	private boolean pilesvide() {
+	public boolean pilesvide() {
 		//teste si les 6 piles de pioche sont vide
 		for (int i=0;i<6;i++) {
 			if (!piles[i].estVide()) {
