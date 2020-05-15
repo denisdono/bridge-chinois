@@ -81,10 +81,10 @@ public class arbreMinMax {
 			//deuxieme a poser
 			nombreSucPosSecond();
 			if(dom!=num) {
-				vict=creeSucPoseJoueurSecond();
+				creeSucPoseJoueurSecond();
 			}
 			else {
-				vict=creeSucPoseAdvSecond();
+				creeSucPoseAdvSecond();
 			}
 			break;
 		case 2:
@@ -181,7 +181,7 @@ public class arbreMinMax {
 			}
 		}
 		if(ActionInconnue) {
-			//l'adverssaire a des carte inconnue on liste tout les carte joueble
+			//l'adverssaire a des carte inconnue on liste tout les carte jouable
 			float prob;
 			if(context.possedecolAdv(carteAction.getCouleur())) {
 				prob=context.CarteColeDispo(carteAction.getCouleur());
@@ -192,7 +192,7 @@ public class arbreMinMax {
 			int cartevue[]=context.getCarteVue();
 			for (int j=0;j<52;j++) {
 				if(cartevue[j]==-1) {
-					if(context.SuposerJouable(carteAction,context.IntACarte(carteAdv[j]),false,context.possedecolAdv(carteAction.getCouleur()))) {
+					if(context.SuposerJouable(carteAction,context.IntACarte(j),false,context.possedecolAdv(carteAction.getCouleur()))) {
 						//si l'adverssaire peux jouer la couleur deja oser on pren en compte que les carte inconnue de la bonne couleur
 						gagnant=context.jeu.carte_gagnante(carteAction,context.IntACarte(j));
 						if(gagnant==2) {
@@ -223,7 +223,7 @@ public class arbreMinMax {
 		for(int i=0;i<6;i++) {
 			if(nbpile[i]>0) {
 				//si la pioche est pleine
-				if(cpile[i]!=-1) {
+				if(cpile[i]>=1) {
 					fils[numeroSuc]=new arbreMinMax();
 					fils[numeroSuc].arbreMinMax(1,context,dom,nextetape,num,nbcarteMain,nbpile,cpile,context.IntACarte(cpile[i]),carteMain,etage+1);
 					if(dom==(etape%2)+1) {
@@ -240,23 +240,27 @@ public class arbreMinMax {
 			}
 		}
 		if(ActionInconnue) {
-			//on peut piocher toute les carte a une position inconnue
-			float prob=getPileInc()/context.getnbCInconnue();
-			int cartevue[]=context.getCarteVue();
-			for (int j=0;j<52;j++) {
-				if(cartevue[j]==-1) {
-					fils[numeroSuc]=new arbreMinMax();
-					fils[numeroSuc].arbreMinMax(prob,context,dom,nextetape,num,nbcarteMain,nbpile,cpile,context.IntACarte(j),carteMain,etage+1);
-					if(dom==(etape%2)+1) {
-						//c'est nous qui piochons
-						fils[numeroSuc].PiocheMainJoueur(j,cpile[j]);
-						//mise a jour du contexte dans le fils
+			for(int p=0;p<6;p++) {
+				if(cpile[p]==-1) {
+					//on peut piocher toute les carte a une position inconnue
+					float prob=getPileInc()/context.getnbCInconnue();
+					int cartevue[]=context.getCarteVue();
+					for (int j=0;j<52;j++) {
+						if(cartevue[j]==-1) {
+							fils[numeroSuc]=new arbreMinMax();
+							fils[numeroSuc].arbreMinMax(prob,context,dom,nextetape,num,nbcarteMain,nbpile,cpile,context.IntACarte(j),carteMain,etage+1);
+							if(dom==(etape%2)+1) {
+								//c'est nous qui piochons
+								fils[numeroSuc].PiocheMainJoueur(p,j);
+								//mise a jour du contexte dans le fils
+							}
+							else {
+								//l'adverssaire pioche
+								fils[numeroSuc].context.Pioche_Carte_Main_Adv(context.IntACarte(j));
+							}
+							numeroSuc++;
+						}
 					}
-					else {
-						//l'adverssaire pioche
-						fils[numeroSuc].context.Pioche_Carte_Main_Adv(context.IntACarte(j));
-					}
-					numeroSuc++;
 				}
 			}
 		}
@@ -370,7 +374,7 @@ public class arbreMinMax {
 				ActionInconnue=false;
 			}
 			else {
-				nbfils=context.getnbCInconnue()+getPileDispo();
+				nbfils=context.getnbCInconnue()*getPileInc()+getPileConnue();
 				ActionInconnue=true;
 			}
 	}
@@ -407,6 +411,28 @@ public class arbreMinMax {
 	public arbreMinMax[] getfils(){
 		return fils;
 	}
+	
+	public int getetape(){
+		return etape;
+	}
+	
+	public int getdom(){
+		return dom;
+	}
+	
+
+	public int getPileConnue() {
+		//compte le nombre de pile avec des cartes connue a piocher
+		int connue=0;
+		for(int i=0;i<6;i++) {
+			if(nbpile[i]>0 && cpile[i]>=0) {
+				//regarde que la pile soit pleine et que la carte soit connue
+				connue++;
+			}
+		}
+		return connue;
+	}
+	
 	
 	public int getPileDispo() {
 		//compte le nombre de pile avec des carte a piocher

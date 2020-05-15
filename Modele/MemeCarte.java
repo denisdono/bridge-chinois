@@ -139,7 +139,7 @@ public class MemeCarte{
 			}
 		}
 		nbCadv--;//met a jour le nombre de carte de l'adverssaire
-		Carte_Poser(carte);
+		Carte_Poser(carte);//indique que la carte est poser
 		MetAJourColAdv();
 	}
 	
@@ -333,11 +333,12 @@ public class MemeCarte{
 		int nbretsant=0;
 		for (int i=0;i<52;i++) {
 			if (CarteVue[i]==-1) {
-				if (col==IntACarte(CarteVue[i]).getCouleur()) {
+				if (col.getVal()==IntACarte(i).getCouleur().getVal()) {
 					nbretsant++;
 				}
 			}
 		}
+		
 		return nbretsant;
 	}
 	
