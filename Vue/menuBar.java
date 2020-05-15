@@ -90,7 +90,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		sauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 c.sauvegarde();
-                                 FenetreAvertissement f = new FenetreAvertissement("Partie Sauvegardée. Vous pouvez la reprendre plus tard à avec le menu Paramètres > Charger",new Dimension(600,120));
+                                 FenetreAvertissement f = new FenetreAvertissement("Partie Sauvegardée. Vous pouvez la reprendre plus tard avec le menu Paramètres > Charger",new Dimension(600,120));
 			}
 		});
 		menuParametres.add(sauvegarder);

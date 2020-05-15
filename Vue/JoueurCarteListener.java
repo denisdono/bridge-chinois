@@ -17,6 +17,7 @@ import javax.swing.JLabel;
  * @author dodee
  */
 public class JoueurCarteListener extends MouseAdapter{
+        public static boolean active = true;
         int indice;
 	CollecteurEvenements control;
 
@@ -27,14 +28,15 @@ public class JoueurCarteListener extends MouseAdapter{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		control.clicSouris(indice);
-                System.out.println("indice carte "+indice);
+                if(active)
+                    control.clicSouris(indice);
 		
 	}
         @Override
         public void mouseEntered(MouseEvent e){
-            //((JLabel)e.getSource()).setPreferredSize(new Dimension(60,90));
+            if(active)
         	((JLabel)e.getSource()).setSize(new Dimension(((JLabel)e.getSource()).getSize().width,((JLabel)e.getSource()).getSize().height+15));
+            //((JLabel)e.getSource()).setPreferredSize(new Dimension(60,90));
            // ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.RED, 1));
             
         }
@@ -43,8 +45,8 @@ public class JoueurCarteListener extends MouseAdapter{
         @Override
         public void mouseExited(MouseEvent e){
             //((JLabel)e.getSource()).setPreferredSize(new Dimension(50,80));
-
-            ((JLabel)e.getSource()).setSize(new Dimension(((JLabel)e.getSource()).getSize().width,((JLabel)e.getSource()).getSize().height-15));
+                if(active)
+                    ((JLabel)e.getSource()).setSize(new Dimension(((JLabel)e.getSource()).getSize().width,((JLabel)e.getSource()).getSize().height-15));
           //  ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         }
 }
