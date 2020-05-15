@@ -88,14 +88,14 @@ public class Plateau extends JPanel implements Observateur {
 			hand1Pane.add(l);
 			hand1.add(l);
 		}
-		background.add(hand1Pane);
+		//background.add(hand1Pane);
 		JLabel space = new JLabel();
 		space.setOpaque(false);
 		space.setPreferredSize(new Dimension(dimlabel.width, dimlabel.height / 2));
-		background.add(space);
+		//background.add(space);
 
 		indPioche = new JLabel("Pioches");
-		background.add(indPioche);
+		//background.add(indPioche);
 		JPanel paquetCentrePane = new JPanel();
 		paquetCentrePane.setOpaque(false);
 		for (int i = 0; i < 6; i++) {
@@ -103,7 +103,7 @@ public class Plateau extends JPanel implements Observateur {
 			paquetCentrePane.add(l);
 			centreDecks.add(l);
 		}
-		background.add(paquetCentrePane);
+		//background.add(paquetCentrePane);
 
 		JPanel carteJoueePane = new JPanel();
 		carteJoueePane.setOpaque(false);
@@ -116,13 +116,13 @@ public class Plateau extends JPanel implements Observateur {
 		joue2.setPreferredSize(dimlabel);
 		carteJoueePane.add(joue2);
 		playedCards.add(joue2);
-		background.add(carteJoueePane);
+		//background.add(carteJoueePane);
 		JLabel space2 = new JLabel();
 		space2.setPreferredSize(new Dimension(dimlabel.width, dimlabel.height / 2));
-		background.add(space2);
+		//background.add(space2);
 
 		JLabel nomJ2 = new JLabel("Joueur 2");
-		background.add(nomJ2);
+		//background.add(nomJ2);
 		JPanel hand2Pane = new JPanel();
 		hand2Pane.setOpaque(false);
 
@@ -137,7 +137,14 @@ public class Plateau extends JPanel implements Observateur {
 			hand2Pane.add(l);
 			hand2.add(l);
 		}
-		background.add(hand2Pane);
+		background.add(hand2Pane);  
+                background.add(space);
+                background.add(indPioche);
+                background.add(paquetCentrePane);
+                background.add(carteJoueePane);
+                background.add(space2);
+                background.add(nomJ2);
+                background.add(hand1Pane);
 		miseAJour();
 		this.revalidate();
 	}
