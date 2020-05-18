@@ -142,6 +142,7 @@ public class Plateau extends JPanel implements Observateur {
         background.add(hand1Pane);
         miseAJour();
         this.revalidate();
+        this.repaint();
     }
 
     // Fonction de mise a jour appelée dès que necessaire
@@ -164,14 +165,14 @@ public class Plateau extends JPanel implements Observateur {
             } else {
                 showFinPartie();
             }
-        } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && jeu.getCarteApiocher() != -1) {
+        } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && cartePioche != -1) {
             
             waitPioche = true;
             centreDecks.get(cartePioche).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
             Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
             t.setRepeats(false);
             t.start();
-        } else if(jeu.getCarteApiocher()==-1){
+        } else if(cartePioche==-1){
             m.setNumManche(jeu.getMancheactuelle());
             m.indiqueAtout(jeu.getAtout().name(), dimlabel);
             m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),
@@ -279,7 +280,7 @@ public class Plateau extends JPanel implements Observateur {
                 centreDecks.get(i).setIcon(img);
 
                 // SI on est a une étape de pioche
-                if (jeu.etape() == 2 || jeu.etape() == 3) {
+                if (jeu.etape() == 2 || jeu.etape() == 3 && !(jeu.getIA() && jeu.joueurActuelle()==1)) {
                     if (centreDecks.get(i).getMouseListeners().length == 0 && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
                         centreDecks.get(i).addMouseListener(new JoueurCarteListener(i, c));
                     }
@@ -424,8 +425,6 @@ public class Plateau extends JPanel implements Observateur {
         background.removeAll();
         this.removeAll();
         this.creerPlateau();
-        this.revalidate();
-        this.repaint();
     }
 
     private void initNouvellePartie() {
@@ -433,8 +432,6 @@ public class Plateau extends JPanel implements Observateur {
         background.removeAll();
         this.removeAll();
         this.creerPlateau();
-        this.revalidate();
-        this.repaint();
     }
 
     public void resetCarteJoue() {
