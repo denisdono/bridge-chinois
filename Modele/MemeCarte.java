@@ -6,11 +6,11 @@ public class MemeCarte{
 		int nbCadv;//nombre de carte adverssaire
 		boolean [] colAdv;//tableaux indiquant si l'adverssaire a une couleure 
 		//en main ou nonl'indice cooresond a la valeur de la couleur
-		public Jeu jeu;
+		Couleur atout;
 	
-	public MemeCarte(Jeu j,int nbc){
-		jeu=j;
+	public MemeCarte(int nbc,Couleur a){
 		nbCadv=nbc;
+		atout=a;
 		//nbc est le nombre de carte de l'adverssair
 		//x est le nombre de cartes de l'adverssaire
 		CarteVue=new int [52];
@@ -70,6 +70,10 @@ public class MemeCarte{
 	}
 		res=new Carte(valCarte,couleur);
 		return res;
+	}
+	
+	public Couleur getAtout() {
+		return atout;
 	}
 	
 	public void Carte_Sommet_Pile(Carte c) {
@@ -168,7 +172,7 @@ public class MemeCarte{
 		int i=0;
 		boolean inconnue=false;//compte les carte inconnue de notre adverssaire
 		while(i<nbCadv); {
-			if (jeu.carte_gagnante(c, IntACarte(MainAdv[i]))==2) {
+			if (carte_gagnante(c, IntACarte(MainAdv[i]))==2) {
 				//la carte passer est battue
 				res++;
 			}
@@ -198,7 +202,7 @@ public class MemeCarte{
 			//se qui est sufisant dans le cas sans atout et 
 			//si notre carte est un atout
 			carte=j+1+13*col;
-			if(jeu.carte_gagnante(c, IntACarte(carte))==2 && CarteVue[carte]<2) {
+			if(carte_gagnante(c, IntACarte(carte))==2 && CarteVue[carte]<2) {
 				//la carte est vaincue a se tour CarteVue[carte]<1 signifi que
 				//la carte est soit dans la main de l'adversaire soit que
 				//l'on ne c'est pas ou elle est 
@@ -206,12 +210,12 @@ public class MemeCarte{
 			}
 			j++;
 		}
-		if (!(c.getCouleur()==jeu.getAtout()) && jeu.getAtout()!=Couleur.Neutre && res) {
+		if (!(c.getCouleur()==atout) && atout!=Couleur.Neutre && res) {
 			//si la carte c n'est pas une carte atout, qu'il y a un atout
 			//et que notre carte n'est pas encor vaincue
 			int i=1;//sert tester tout les valeur des carte de couleur de l'atout
 			while(i<14 && res) {
-				carte=i+13*jeu.getAtout().getVal();
+				carte=i+13*atout.getVal();
 				if(CarteVue[carte]<1) {
 					//la carte est un atou et pas nous elle nous obligatoirement 
 					//il suffit de tester si elle est diponible pour l'adverssaire
@@ -368,6 +372,32 @@ public class MemeCarte{
 		return inconnue;
 	}
 	
+	
+	public int carte_gagnante(Carte dom,Carte sub) {
+        //gagnant donne le numÃƒÂ©ros du joueure gagnant
+        int gagnant=-1;
+            if (dom.getCouleur()==sub.getCouleur()){
+                //si les deux carte sont de mÃƒÂªme couleure la plus forte l'emporte
+                if(dom.getValeur()>sub.getValeur()){
+                    gagnant=1;
+                }
+                else {
+                    gagnant=2;
+                }
+            }
+            else {
+                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure diffÃƒÂ©rente
+                    if (sub.getCouleur()==atout) {
+                        gagnant=2;
+                    }
+                    else {
+                        gagnant=1;
+                    }
+            }
+            return gagnant;
+
+
+        }
 	
 	
 	
