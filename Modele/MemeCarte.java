@@ -118,7 +118,7 @@ public class MemeCarte{
 	}
 	
 	
-	public void poseCarteAdv(int carte) {
+	public void poseCarteAdv(int carte,Carte cartejouer,boolean premier) {
 		//met a jour les info quand l'adverssaire poseune carte
 		int i=0;
 		boolean trouver=false;

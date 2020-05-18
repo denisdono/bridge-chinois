@@ -175,7 +175,7 @@ public class arbreMinMax {
 					}
 					fils[numeroSuc]=new arbreMinMax();
 					fils[numeroSuc].arbreMinMax(1,context,nextDom,nextetape,num,nbcarteMain,context.IntACarte(carteAdv[i]),carteMain,etage+1);
-					fils[numeroSuc].context.poseCarteAdv(carteAdv[i]);
+					fils[numeroSuc].context.poseCarteAdv(carteAdv[i],carteAction,false);
 					numeroSuc++;
 					if(nextDom!=num) {
 						probdef=probdef+1;
@@ -204,7 +204,7 @@ public class arbreMinMax {
 						}
 						fils[numeroSuc]=new arbreMinMax();
 						fils[numeroSuc].arbreMinMax(prob,context,nextDom,nextetape,num,nbcarteMain,context.IntACarte(j),carteMain,etage+1);
-						fils[numeroSuc].context.poseCarteAdv(j);
+						fils[numeroSuc].context.poseCarteAdv(j,carteAction,false);
 						numeroSuc++;
 						if(nextDom!=num) {
 							probdef=probdef+prob;
@@ -259,7 +259,7 @@ public class arbreMinMax {
 			if(carteAdv[i]>=0) {
 				fils[numeroSuc]=new arbreMinMax();
 				fils[numeroSuc].arbreMinMax(1,context,dom,etape+1,num,nbcarteMain,context.IntACarte(carteAdv[i]),carteMain,etage+1);
-				fils[numeroSuc].context.poseCarteAdv(carteAdv[i]);
+				fils[numeroSuc].context.poseCarteAdv(carteAdv[i],carteAction,true);
 				numeroSuc++;
 			}
 		}
@@ -271,7 +271,7 @@ public class arbreMinMax {
 				if(cartevue[j]==-1) {
 					fils[numeroSuc]=new arbreMinMax();
 					fils[numeroSuc].arbreMinMax(prob,context,dom,etape+1,num,nbcarteMain,context.IntACarte(j),carteMain,etage+1);
-					fils[numeroSuc].context.poseCarteAdv(j);
+					fils[numeroSuc].context.poseCarteAdv(j,carteAction,true);
 					numeroSuc++;
 				}
 			}
