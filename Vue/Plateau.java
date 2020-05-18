@@ -53,6 +53,7 @@ public class Plateau extends JPanel implements Observateur {
 
     public void creerPlateau() {
         //Permet de creer tous elements graphiques du plateau
+        removeAll();
         background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background" + jeu.getSelFond() + ".jpg")));
         hand1 = new ArrayList<>();
         hand2 = new ArrayList<>();
@@ -413,14 +414,12 @@ public class Plateau extends JPanel implements Observateur {
 
     private void initNouvelleManche() {
         background.removeAll();
-        this.removeAll();
         this.creerPlateau();
     }
 
     private void initNouvellePartie() {
         c.recommencer();
         background.removeAll();
-        this.removeAll();
         this.creerPlateau();
     }
 
