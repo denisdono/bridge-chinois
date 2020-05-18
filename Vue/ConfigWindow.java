@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 
 import Modele.Jeu;
 import Patterns.Observateur;
+import javax.swing.ImageIcon;
 
 public class ConfigWindow extends JFrame implements Observateur {
 	JPanel hisPanel;
@@ -101,6 +102,8 @@ public class ConfigWindow extends JFrame implements Observateur {
 		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(400, (int) screenSize.getHeight() / 3 * 2);
+                this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("iconeparam.png")).getImage());
+
 		hisPanel = new JPanel();
 		hisPanel.setLayout(new BoxLayout(hisPanel, BoxLayout.PAGE_AXIS));
 		setLocationRelativeTo(null);
