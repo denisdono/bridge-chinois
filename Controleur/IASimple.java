@@ -13,7 +13,7 @@ import Modele.Carte;
 	 int valTre;//notre plus puissante carte de trefle
 	 Couleur maxQ;//la couleur dont on a le plus de carte
 	 
-	 IASimple(int n,Jeu p){
+	 public IASimple(int n,Jeu p){
 		super(n,p);
 		valCar=0;
 		valCoeur=0;
