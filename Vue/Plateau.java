@@ -1,5 +1,6 @@
 package Vue;
 
+import Controleur.IASimple;
 import Modele.Jeu;
 import Patterns.Observateur;
 
@@ -10,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.ArrayList;
-
 
 public class Plateau extends JPanel implements Observateur {
 
@@ -146,7 +146,7 @@ public class Plateau extends JPanel implements Observateur {
         //Si on est à l'attente de la pioche de l'IA, ne rien faire
         if (!waitPioche) {
             int cartePioche = jeu.getCarteApiocher();
-            
+
             //Si on est a un une nouvelle manche
             if (manchePrec != jeu.getMancheactuelle()) {
                 System.out.println("changement de manche");
@@ -161,8 +161,8 @@ public class Plateau extends JPanel implements Observateur {
                 } else {
                     showFinPartie();
                 }
-                
-            //Si c'est a l'IA de piocher, on veut indiquer la carte qu'elle choisit pendant un court instant
+
+                //Si c'est a l'IA de piocher, on veut indiquer la carte qu'elle choisit pendant un court instant
             } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && cartePioche != -1) {
 
                 waitPioche = true;
@@ -170,8 +170,8 @@ public class Plateau extends JPanel implements Observateur {
                 Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
                 t.setRepeats(false);
                 t.start();
-                
-            //Si on est pas a un moment d'indication de carte (cas classique)
+
+                //Si on est pas a un moment d'indication de carte (cas classique)
             } else if (cartePioche == -1) {
                 //Mise a jour des infos du menu de coté
                 m.setNumManche(jeu.getMancheactuelle());
@@ -191,7 +191,7 @@ public class Plateau extends JPanel implements Observateur {
                         Timer t = new Timer(1500, (ActionEvent e) -> majTime());
                         t.setRepeats(false);
                         t.start();
-                    //Si il y a encore des pioches, maj classique
+                        //Si il y a encore des pioches, maj classique
                     } else if (!jeu.pilesvide()) {
                         etapePrecedente = jeu.etape();
                         majFleche();
@@ -200,7 +200,7 @@ public class Plateau extends JPanel implements Observateur {
                         majMainJoueur(1);
                         majCarteJouees();
                     }
-                //Si on est pas dans ces cas ni en attente d'un timer, maj classique
+                    //Si on est pas dans ces cas ni en attente d'un timer, maj classique
                 } else if (!timed) {
                     etapePrecedente = jeu.etape();
                     majFleche();
@@ -220,6 +220,7 @@ public class Plateau extends JPanel implements Observateur {
 
         ImageIcon icon2;
         for (int i = 0; i < 11; i++) {
+            hands.get(numJ).get(i).setBorder(null);
             if (i < jeu.getMains()[numJ].getnbCarte()) {
 
                 if (jeu.getShowCarte() == false && ((jeu.getIA() == true && numJ == 1)
@@ -266,6 +267,7 @@ public class Plateau extends JPanel implements Observateur {
             indPioche.setBorder(null);
         }
         for (int i = 0; i < 6; i++) {
+            centreDecks.get(i).setBorder(null);
             if (jeu.getPiles()[i].estVide()) {
                 centreDecks.get(i).setIcon(null);
                 centreDecks.get(i).setText("Vide");
@@ -456,5 +458,18 @@ public class Plateau extends JPanel implements Observateur {
         waitPioche = false;
         miseAJour();
 
+    }
+
+    //Permet de mettre en surbrillance un coup proposé par l'ia simple si le joueur le demande
+    void suggererUnCoup() {
+        if (!(jeu.getIA() && jeu.joueurActuelle() == 1)) {
+            IASimple suggereIA = new IASimple(jeu.joueurActuelle(), jeu);
+            int coupSuggere = suggereIA.IAjeu();
+            if (jeu.etape() == 0 || jeu.etape() == 1) {
+                hands.get(jeu.joueurActuelle()).get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+            } else {
+                centreDecks.get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+            }
+        }
     }
 }

@@ -29,6 +29,7 @@ public class menuBar extends JMenuBar { // menu du haut
 	private JMenuItem restart;
 	private JMenuItem config;
 	private JMenuItem regles;
+        private JMenuItem suggere;
 	private JMenuItem menuB;
 	private JFrame frame;
 	menuBar() {
@@ -131,7 +132,14 @@ public class menuBar extends JMenuBar { // menu du haut
 				lesRegles.montrer();
 			}
 		});
+                suggere = new JMenuItem("Suggérer un coup");
+		suggere.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pl.suggererUnCoup();
+			}
+		});
 		menuHelp.add(regles);
+                menuHelp.add(suggere);
 		add(menuHelp);
 	}
 
