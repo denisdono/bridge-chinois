@@ -50,13 +50,13 @@ public class InterfaceGraphique implements Runnable {
     public void run() {
         //Creation de la fenetre globale
         JFrame frame = new JFrame("Bridge Chinois");
-        menuBar = new menuBar(control,frame, j);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new FlowLayout());
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension d = new Dimension(screenSize.width / 25, screenSize.height / 10);
         Menu m = new Menu(j, d);
         Plateau pl = new Plateau(j, control, m, d,frame);
+        menuBar = new menuBar(control,frame, j, pl);
         frame.add(pl);
         frame.add(m);
 
