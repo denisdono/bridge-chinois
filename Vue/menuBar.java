@@ -16,6 +16,7 @@ public class menuBar extends JMenuBar { // menu du haut
 	private CollecteurEvenements c;
 	private boolean menu;
 	private Jeu jeu;
+	private Plateau pl;
 	private JMenu menuParametres;
 	private JMenu menuAction;
 	private JMenu menuHelp;
@@ -34,10 +35,11 @@ public class menuBar extends JMenuBar { // menu du haut
 		completeIHM();
 	}
 
-	menuBar(CollecteurEvenements c, JFrame frame, Jeu jeu) {
+	menuBar(CollecteurEvenements c, JFrame frame, Jeu jeu, Plateau pl) {
 		this.c = c;
 		this.frame = frame;
 		this.jeu = jeu;
+		this.pl=pl;
 		menuAction = new JMenu("Actions");
 		undo = new JMenuItem("Annuler (crtl+z)");
 		undo.addActionListener(new ActionListener() {
@@ -111,7 +113,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		config = new JMenuItem("Configuration");
 		config.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConfigWindow lesConf = new ConfigWindow(jeu);
+				ConfigWindow lesConf = new ConfigWindow(jeu,pl);
 				lesConf.montrer();
 			}
 		});
