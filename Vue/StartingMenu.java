@@ -59,7 +59,7 @@ public class StartingMenu extends JFrame {
         JButton confB = new JButton("Configuration");
         confB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ConfigWindow lesConf = new ConfigWindow();
+                ConfigWindow lesConf = new ConfigWindow(null);
                 lesConf.montrer();
             }
         });

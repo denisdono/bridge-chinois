@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
+import Modele.Jeu;
 import Patterns.Observateur;
 
 public class ConfigWindow extends JFrame implements Observateur {
@@ -31,6 +32,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 	ButtonGroup showGroup;
 	ButtonGroup dosGroup;
 	ButtonGroup fondGroup;
+	Jeu jeu;
 	// variables des configurations
 	int selDiff;
 	int selWin;
@@ -39,7 +41,8 @@ public class ConfigWindow extends JFrame implements Observateur {
 	int selCarte;
 	int selFond;
 
-	public ConfigWindow() {
+	public ConfigWindow(Jeu jeu) {
+		this.jeu=jeu;
 		// recuperations des infos du fichier config
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("config"));
@@ -89,6 +92,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 				System.out.println("impossible de cr�er un fichier.");
 			}
 		}
+		
 		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(400, (int) screenSize.getHeight() / 3 * 2);
@@ -286,6 +290,9 @@ public class ConfigWindow extends JFrame implements Observateur {
 					} catch (IOException e2) {
 						System.out.println("impossible de cr�er un fichier.");
 					}
+				}
+				if(jeu!=null) {
+					jeu.readConfig();
 				}
 				setVisible(false); // ferme la fenetre
 				dispose();

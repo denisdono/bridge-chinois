@@ -52,59 +52,7 @@ public class Jeu extends Observable {
 	}
 		
 	public void start() {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("config"));
-			diff = Integer.parseInt(br.readLine());
-			if (diff < 0 || diff > 1) { // a changer pour diff > 2
-				diff = 0;
-			}
-			if(Integer.parseInt(br.readLine())==1) {
-				parManche=true;
-			}
-			else parManche=false;
-			
-			totalfin = Integer.parseInt(br.readLine());
-			if (totalfin<=0) {
-				if (parManche)totalfin=12;
-				else totalfin=100;
-			}
-			
-			if (Integer.parseInt(br.readLine())==0) {
-				showCarte=true;
-			}else {
-				showCarte=false;
-			}
-			
-			
-			
-			selCarte = Integer.parseInt(br.readLine());
-			if (selCarte < 0 || selCarte > 2) {
-				selCarte = 0;
-			}
-			selFond = Integer.parseInt(br.readLine());
-			if (selFond < 0 || selFond > 2) {
-				selFond = 0;
-			}
-			br.close();
-		} catch (IOException e) {// si le fichier n'est pas trouvÃ© on en crÃ©e un avec les configurations de base
-			try {
-				File confile = new File("config");
-				if (confile.createNewFile()) {
-					System.out.println("CrÃ©ation d'un fichier config.");
-					FileWriter myWriter = new FileWriter("config");
-					myWriter.write("0\n0\n100\n0\n0\n0\n");
-					myWriter.close();
-					diff = 0;
-					parManche = false;
-					totalfin = 100;
-					showCarte=true;
-					selCarte = 0;
-					selFond = 0;
-				}
-			} catch (IOException e1) {// la crÃ©ation du fichier a echouÃ©
-				System.out.println("impossible de crÃ©er un fichier.");
-			}
-		}
+		readConfig();
 		debut = true;
 		historique = new Historique();
 		annulation = false;
@@ -734,6 +682,62 @@ public class Jeu extends Observable {
 
         public int getCarteApiocher() {
             return carteApiocher;
+        }
+        public void readConfig() {
+        	try {
+    			BufferedReader br = new BufferedReader(new FileReader("config"));
+    			diff = Integer.parseInt(br.readLine());
+    			if (diff < 0 || diff > 1) { // a changer pour diff > 2
+    				diff = 0;
+    			}
+    			if(Integer.parseInt(br.readLine())==1) {
+    				parManche=true;
+    			}
+    			else parManche=false;
+    			
+    			totalfin = Integer.parseInt(br.readLine());
+    			if (totalfin<=0) {
+    				if (parManche)totalfin=12;
+    				else totalfin=100;
+    			}
+    			
+    			if (Integer.parseInt(br.readLine())==0) {
+    				showCarte=true;
+    			}else {
+    				showCarte=false;
+    			}
+    			
+    			
+    			
+    			selCarte = Integer.parseInt(br.readLine());
+    			if (selCarte < 0 || selCarte > 2) {
+    				selCarte = 0;
+    			}
+    			selFond = Integer.parseInt(br.readLine());
+    			if (selFond < 0 || selFond > 2) {
+    				selFond = 0;
+    			}
+    			br.close();
+    		} catch (IOException e) {// si le fichier n'est pas trouvÃ© on en crÃ©e un avec les configurations de base
+    			try {
+    				File confile = new File("config");
+    				if (confile.createNewFile()) {
+    					System.out.println("CrÃ©ation d'un fichier config.");
+    					FileWriter myWriter = new FileWriter("config");
+    					myWriter.write("0\n0\n100\n0\n0\n0\n");
+    					myWriter.close();
+    					diff = 0;
+    					parManche = false;
+    					totalfin = 100;
+    					showCarte=true;
+    					selCarte = 0;
+    					selFond = 0;
+    				}
+    			} catch (IOException e1) {// la crÃ©ation du fichier a echouÃ©
+    				System.out.println("impossible de crÃ©er un fichier.");
+    			}
+    		}
+        	metAJour();
         }
         
         

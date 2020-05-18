@@ -3,40 +3,31 @@ package Controleur;
 import Modele.Jeu;
 
 class JoueurIA extends Joueur{
-	int niv;
 	IARandom ia;
 	IASimple ias;
 	
 	JoueurIA(int n, Jeu p) {
 		super (n,p);
-		niv=p.niveauIA();
-		switch (niv) {
-		case 0:
-			ia =new IARandom(n,p);
-			break;
-		case 1:
-			ias=new IASimple (n,p);
-			break;
-		default :
-			break;
-		}
+		ia =new IARandom(n,p);
+		ias=new IASimple (n,p);
 	}
 
 	
 	boolean tempsEcoule() {
-		boolean rep=false;
+		int i;
+		int niv=jeu.niveauIA();
 		switch (niv) {
 		case 0:
-			rep=ia.IAJeu();
+			i=ia.IAJeu();
 			break;
 		case 1:
-			rep=ias.IAjeu();
+			i=ias.IAjeu();
 			break;
 		default :
-			break;
+			i=-1;//ne seras jamais atteint.
 		}
-		return rep;
-				
+		jeu.jouer(i, num);
+		return true;	
 		}
 
 	
