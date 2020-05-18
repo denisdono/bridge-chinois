@@ -171,7 +171,7 @@ public class Plateau extends JPanel implements Observateur {
             Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
             t.setRepeats(false);
             t.start();
-        } else {
+        } else if(jeu.getCarteApiocher()==-1){
             m.setNumManche(jeu.getMancheactuelle());
             m.indiqueAtout(jeu.getAtout().name(), dimlabel);
             m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),

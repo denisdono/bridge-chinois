@@ -39,7 +39,7 @@ public class Jeu extends Observable {
 	boolean IA;// prï¿½sence d'une IA
 	int ind;//sert a determiner quelle carte posé dans la pioche
 	public boolean annulation;
-        private int carteApiocher;
+        private int carteApiocher=-1;
 	int jca;
 	boolean debut;
 	int selCarte;
