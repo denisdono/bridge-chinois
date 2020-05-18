@@ -1,6 +1,5 @@
 package Vue;
 
-import Controleur.ControleurMediateur;
 import Modele.Jeu;
 import Patterns.Observateur;
 
@@ -9,17 +8,13 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
+
 
 public class Plateau extends JPanel implements Observateur {
 
     Jeu jeu;
-    private int largeurCase = 1, hauteurCase = 1;
     private CollecteurEvenements c;
     private Menu m;
     private ArrayList<JLabel> arrows;
@@ -146,9 +141,11 @@ public class Plateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         // Mise à jour des infos du menu
+        //Si on est à l'attente de la pioche de l'IA, ne rien faire
         if (!waitPioche) {
             System.out.println("MAJ");
             int cartePioche = jeu.getCarteApiocher();
+            //Si on est a un une nouvelle manche
             if (manchePrec != jeu.getMancheactuelle()) {
                 System.out.println("changement de manche");
                 chgtManche = true;
@@ -162,6 +159,7 @@ public class Plateau extends JPanel implements Observateur {
                 } else {
                     showFinPartie();
                 }
+            //Si c'est a l'IA de piocher, on veut indiquer la carte qu'elle choisit pendant un court instant
             } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && cartePioche != -1) {
 
                 waitPioche = true;
@@ -169,14 +167,18 @@ public class Plateau extends JPanel implements Observateur {
                 Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
                 t.setRepeats(false);
                 t.start();
+            //Si on est pas a un moment d'indication de carte (cas classique)
             } else if (cartePioche == -1) {
+                //Mise a jour des infos du menu de coté
                 m.setNumManche(jeu.getMancheactuelle());
                 m.indiqueAtout(jeu.getAtout().name(), dimlabel);
                 m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),
                         jeu.getMains()[1].getnbScore());
+                //Si l'etape precedente est 1, CAD que les 2 joueurs ont placé leur carte du tour
                 if (etapePrecedente == 1 && jeu.getC_sub() != null && jeu.getC_dom() != null && !timed) {
                     m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(),
                             dimlabel);
+                    //Si il n'y a plus de pioche, on souhaite attendre un court temps pour laisser ces 2 cartes affichées
                     if (jeu.pilesvide()) {
                         System.out.println("majTimer");
                         timed = true;
@@ -185,8 +187,8 @@ public class Plateau extends JPanel implements Observateur {
                         Timer t = new Timer(1500, (ActionEvent e) -> majTime());
                         t.setRepeats(false);
                         t.start();
+                    //Si il y a encore des pioches, maj classique
                     } else if (!jeu.pilesvide()) {
-                        System.out.println("majpilesPleines");
                         etapePrecedente = jeu.etape();
                         majFleche();
                         majMainJoueur(0);
@@ -194,8 +196,8 @@ public class Plateau extends JPanel implements Observateur {
                         majMainJoueur(1);
                         majCarteJouees();
                     }
+                //Si on est pas dans ces cas ni en attente d'un timer, maj classique
                 } else if (!timed) {
-                    System.out.println("maj Classique");
                     etapePrecedente = jeu.etape();
                     majFleche();
                     majMainJoueur(0);
@@ -213,7 +215,6 @@ public class Plateau extends JPanel implements Observateur {
     private void majMainJoueur(int numJ) {
 
         ImageIcon icon2;
-
         for (int i = 0; i < 11; i++) {
             if (i < jeu.getMains()[numJ].getnbCarte()) {
 
@@ -223,13 +224,10 @@ public class Plateau extends JPanel implements Observateur {
                     icon2 = new ImageIcon(
                             new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back" + jeu.getSelCarte() + ".png")).getImage()
                             .getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-
                 } else {
-
                     icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
                             .getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage()
                             .getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-
                 }
                 hands.get(numJ).get(i).setIcon(icon2);
 
@@ -240,12 +238,13 @@ public class Plateau extends JPanel implements Observateur {
 
                     }
                 } else {
-                    //Grisage des cartes
+                    //Grisage des cartes du joueur courant qu'il ne peut jouer si ce n'est pas une IA
                     if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ
                             && !jeu.peutJouer(i, numJ) && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
                         Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon2.getImage()));
                         hands.get(numJ).get(i).setIcon(img);
                     }
+                    //On enleve les listeners des cartes pour les autres cas ou on en a pas besoin
                     if (hands.get(numJ).get(i).getMouseListeners().length > 0) {
                         hands.get(numJ).get(i).removeMouseListener(hands.get(numJ).get(i).getMouseListeners()[0]);
                     }
@@ -322,6 +321,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void showFinManche() {
+        //affichage de l'écran de fin de manche
         JPanel finManchePane = new JPanel();
         background.removeAll();
         finManchePane.setLayout(new BorderLayout());
@@ -357,6 +357,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void showFinPartie() {
+        //Affichage de l'écran de fin de partie
         this.manchePrec = 1;
         JPanel finManchePane = new JPanel();
         background.removeAll();
@@ -426,8 +427,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void majTime() {
-        System.out.println("FIN ATTENTE APRES ETAPE 1");
-        //majCarteJouees();
+        //fonction appelée après l'attente qui permet de montrer les 2 cartes jouees
         etapePrecedente = jeu.etape();
         majFleche();
         majMainJoueur(0);
@@ -448,6 +448,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void majTimePioche(int pioche) {
+        //fonction appelée après l'attente qui montre la carte que l'IA pioche
         System.out.println("FINTIMERPIOCHE");
         centreDecks.get(pioche).setBorder(null);
         waitPioche = false;
