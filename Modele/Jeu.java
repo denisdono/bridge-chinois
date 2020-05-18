@@ -34,6 +34,8 @@ public class Jeu extends Observable {
 	Carte c_sub;// carte jouer par l'autre joueur
 	Carte c_0;//carte piochée par le joueur dominant
 	Carte c_1;//carte piochée par l'autre joueur
+	Carte Cartepioche1;
+	Carte Cartepioche2;
 	int diff;// dificulter de l'ia
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
@@ -121,9 +123,9 @@ public class Jeu extends Observable {
 		//
 		Coup c1 ;
 		ind=i;
-                carteApiocher =i;
-                metAJour();
-                carteApiocher=-1;
+        carteApiocher=i;
+        metAJour();
+        carteApiocher=-1;
 		if (enCours) {
 			//tant que la condition de victoire par nombre de plis gagner ou de mancher gagner n'est pas atteinte
 			if (!finmanche) {
@@ -176,7 +178,8 @@ public class Jeu extends Observable {
 				case 2:
 					
 						//s'il reste des cartes a piocher le joueur dominant pioche
-						mains[n].ajoutCarte(piles[i].piocher());
+						Cartepioche1=piles[i].piocher();
+						mains[n].ajoutCarte(Cartepioche1);
 						mains[n].trierMain();
 						h1=new Hand(mains[0]);
 						h2=new Hand(mains[1]);
@@ -193,7 +196,8 @@ public class Jeu extends Observable {
 					break;
 				case 3:
 					//le deuxiÃƒÂ¨me joueure pioche
-					mains[n].ajoutCarte(piles[i].piocher());
+					Cartepioche2=piles[i].piocher();
+					mains[n].ajoutCarte(Cartepioche2);
 					mains[n].trierMain();
 					
 					for (int k=0;k<6;k++) {// boucle sur les six piles
@@ -240,6 +244,15 @@ public class Jeu extends Observable {
 		}
 			historique.affiherPasse();
 	}
+	
+	public Carte getCartepioche2() {
+		return Cartepioche2;
+	}
+	
+	public Carte getCartepioche1() {
+		return Cartepioche1;
+	}
+	
 	
 	public void annuler() {
 		
