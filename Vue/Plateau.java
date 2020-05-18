@@ -52,6 +52,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     public void creerPlateau() {
+        //Permet de creer tous elements graphiques du plateau
         background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background" + jeu.getSelFond() + ".jpg")));
         hand1 = new ArrayList<>();
         hand2 = new ArrayList<>();
@@ -71,7 +72,7 @@ public class Plateau extends JPanel implements Observateur {
 
         JPanel hand1Pane = new JPanel();
         hand1Pane.setOpaque(false);
-        // Ajout de la fl�che indiquant le tour du joueur 1
+        // Ajout de la fleche indiquant le tour du joueur 1
         JLabel arrow1Label = new JLabel();
         arrow1Label.setPreferredSize(dimlabel);
         hand1Pane.add(arrow1Label);
@@ -113,7 +114,7 @@ public class Plateau extends JPanel implements Observateur {
         JPanel hand2Pane = new JPanel();
         hand2Pane.setOpaque(false);
 
-        // Ajout de la fl�che indiquant le tour du joueur 2
+        // Ajout de la fleche indiquant le tour du joueur 2
         JLabel arrow2Label = new JLabel();
         arrow2Label.setPreferredSize(dimlabel);
         hand2Pane.add(arrow2Label);
@@ -140,11 +141,11 @@ public class Plateau extends JPanel implements Observateur {
     // Fonction de mise a jour appelée dès que necessaire
     @Override
     public void miseAJour() {
-        // Mise à jour des infos du menu
+        //Fonction qui met a jour toutes les infos sur le plateau et le menu de droite
         //Si on est à l'attente de la pioche de l'IA, ne rien faire
         if (!waitPioche) {
-            System.out.println("MAJ");
             int cartePioche = jeu.getCarteApiocher();
+            
             //Si on est a un une nouvelle manche
             if (manchePrec != jeu.getMancheactuelle()) {
                 System.out.println("changement de manche");
@@ -159,6 +160,7 @@ public class Plateau extends JPanel implements Observateur {
                 } else {
                     showFinPartie();
                 }
+                
             //Si c'est a l'IA de piocher, on veut indiquer la carte qu'elle choisit pendant un court instant
             } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && cartePioche != -1) {
 
@@ -167,6 +169,7 @@ public class Plateau extends JPanel implements Observateur {
                 Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
                 t.setRepeats(false);
                 t.start();
+                
             //Si on est pas a un moment d'indication de carte (cas classique)
             } else if (cartePioche == -1) {
                 //Mise a jour des infos du menu de coté
