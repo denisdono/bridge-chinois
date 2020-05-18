@@ -24,19 +24,19 @@ class JoueurIA extends Joueur{
 
 	
 	boolean tempsEcoule() {
-		boolean rep=false;
+		int i;
 		switch (niv) {
 		case 0:
-			rep=ia.IAJeu();
+			i=ia.IAJeu();
 			break;
 		case 1:
-			rep=ias.IAjeu();
+			i=ias.IAjeu();
 			break;
 		default :
-			break;
+			i=-1;//ne seras jamais atteint.
 		}
-		return rep;
-				
+		jeu.jouer(i, num);
+		return true;	
 		}
 
 	

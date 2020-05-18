@@ -25,8 +25,8 @@ import Modele.Carte;
 	
 	
 	
-	public boolean IAjeu() {
-		boolean rep;
+	public int IAjeu() {
+		int rep;
 		switch (jeu.etape() ){
 		case 0:
 			//si on pose en premier 
@@ -57,20 +57,19 @@ import Modele.Carte;
 			//si il n'y a pas de carte atout on va piocher la plus forte carte toute couleur confondue 
 			//trouver
 			break;
-		default :
-			rep=false;
-				break;
+			default :rep=-1;//ne seras jamais atteint
+			break;
 		}
-	return rep;
+		return rep;
 	}
 	
-	boolean poser_premier_simple() {
+	int poser_premier_simple() {
 		int indice =-1;//l'indice de la carte qu'on va jouer
 		int somme=0;//somme de toutes les valeurs de carte qu'on a en main
 		boolean uniq_atout=true;//pour savoir si on a que des atout en main
 		int moyenne;//la valeur moyenne de notre main
 		int dif;//la difference entre une carte et la moyenne
-		int meme_dif=-1;//pour se rappeler de la différence de la carte choisi a la moyenne
+		int meme_dif=-1;//pour se rappeler de la diffï¿½rence de la carte choisi a la moyenne
 		int k=0;
 		int div=0;//le nombre de carte qui sera utiliser pour la moyenne des carte de la main
 		while (k<jeu.getMains()[num].getnbCarte() && uniq_atout) {
@@ -98,7 +97,7 @@ import Modele.Carte;
 			if(indice==-1) {
 				//on pas encore choisi de carte a poser
 				if (uniq_atout || jeu.getMains()[num].voirCarte(i).getCouleur()!=jeu.getAtout()) {
-					//on a que des atout en main on ne différenci les carte que par leur valeur
+					//on a que des atout en main on ne diffï¿½renci les carte que par leur valeur
 					//ou on a une carte qui n'est pas un atout et la choisi
 					dif=jeu.getMains()[num].voirCarte(i).getValeur()-moyenne;
 					meme_dif=dif;
@@ -111,7 +110,7 @@ import Modele.Carte;
 				if (dif>0 && dif<meme_dif) {
 					//notre carte est plus proche de la moyenne de la main que la precedente carte choisi
 					if(uniq_atout || jeu.getMains()[num].voirCarte(i).getCouleur()!=jeu.getAtout()) {
-						//on a que des atout en main on ne différenci les carte que par leur valeur
+						//on a que des atout en main on ne diffï¿½renci les carte que par leur valeur
 						//ou on a une carte qui n'est pas un atout et la choisi
 						meme_dif=dif;
 						indice=i;
@@ -119,11 +118,10 @@ import Modele.Carte;
 				}
 			}
 		}
-		jeu.jouer(indice, num);
-		return true;
+		return indice;
 		}
 	
-	public boolean pose_second_simple() {
+	public int pose_second_simple() {
 		int indice=0;//la position de notre carte a jouer
 		Couleur col=jeu.getMains()[num].voirCarte(0).getCouleur();//la couleur de la carte a jouer
 		int val=jeu.getMains()[num].voirCarte(0).getValeur();//la valeur de notre carte a jouer
@@ -168,7 +166,7 @@ import Modele.Carte;
 					else {
 					//on a une carte gagnante
 						if (!gagner) {
-							//c'est notre tout première carte gagnante 
+							//c'est notre tout premiï¿½re carte gagnante 
 							//donc c'est la carte quel'on va jouer
 							gagner=true;
 							val=jeu.getMains()[num].voirCarte(i).getValeur();
@@ -188,12 +186,11 @@ import Modele.Carte;
 				}
 			}
 		}
-	jeu.jouer(indice,num );
-	return true;
+	return indice;
 	}
 	
 	
-	public boolean piocher() {
+	public int piocher() {
 		int indice=-1;//indice de quelle pioche poser
 		Couleur col=Couleur.Neutre;//la couleur de notre carte a piocher
 		int val=-1;//la valeur de notre carte a piocher
@@ -252,20 +249,19 @@ import Modele.Carte;
 				}
 			}
 		}
-	jeu.jouer(indice, num);
-	return true;
+	return indice;
 	}
 	
 	
 
 	
-	boolean poser_premier_simpleSansAtout() {
+	int poser_premier_simpleSansAtout() {
 		ModifVal();
 		int indice =-1;//l'indice de la carte qu'on va jouer
 		int somme=0;//somme de toutes les valeurs de carte qu'on a en main
 		int moyenne;//la valeur moyenne de notre main
 		int dif;//la difference entre une carte et la moyenne
-		int meme_dif=-1;//pour se rappeler de la différence de la carte choisi a la moyenne
+		int meme_dif=-1;//pour se rappeler de la diffï¿½rence de la carte choisi a la moyenne
 
 		int div=0;//le nombre de carte qui sera utiliser pour la moyenne des carte de la main
 		for (int i=0;i<jeu.getMains()[num].getnbCarte();i++) {
@@ -280,7 +276,7 @@ import Modele.Carte;
 			if(indice==-1) {
 				//on pas encore choisi de carte a poser
 				if (jeu.getMains()[num].voirCarte(i).getCouleur()==maxQ) {
-					//on prens la première cate qui est de la couleur que l'on veut poser
+					//on prens la premiï¿½re cate qui est de la couleur que l'on veut poser
 					dif=jeu.getMains()[num].voirCarte(i).getValeur()-moyenne;
 					meme_dif=dif;
 					indice=i;
@@ -299,12 +295,11 @@ import Modele.Carte;
 				}
 			}
 		}
-		jeu.jouer(indice, num);
-		return true;
+		return indice;
 		}
 		
 	
-	public boolean piocherSansAtout() {
+	public int piocherSansAtout() {
 		ModifVal();
 		int indice=-1;//indice de quelle pioche poser
 		int val=-1;//la valeur de notre carte a piocher
@@ -360,8 +355,7 @@ import Modele.Carte;
 				}
 			}
 		}
-	jeu.jouer(indice, num);
-	return true;
+	return indice;
 	}
 	
 	void ModifVal(){
@@ -372,22 +366,22 @@ import Modele.Carte;
 		//met a jour la plus puissante carte de chaque couleure
 		for (int i=0;i<jeu.getMains()[num].getnbCarte();i++) {
 			if(jeu.getMains()[num].voirCarte(i).getCouleur()==Couleur.Trefle) {
-				//nous avons une carte de trefle et vérifions si c'est la plus puissante
+				//nous avons une carte de trefle et vï¿½rifions si c'est la plus puissante
 				valTre=Math.max(valTre,jeu.getMains()[num].voirCarte(i).getValeur());
 				nbTre++;
 			}
 			else if(jeu.getMains()[num].voirCarte(i).getCouleur()==Couleur.Carreaux) {
-				//nous avons une carte de Carreaux et vérifions si c'est la plus puissante
+				//nous avons une carte de Carreaux et vï¿½rifions si c'est la plus puissante
 				valCar=Math.max(valCar,jeu.getMains()[num].voirCarte(i).getValeur());
 				nbCar++;
 			}
 			else if(jeu.getMains()[num].voirCarte(i).getCouleur()==Couleur.Coeur) {
-				//nous avons une carte de Coeur et vérifions si c'est la plus puissante
+				//nous avons une carte de Coeur et vï¿½rifions si c'est la plus puissante
 				valCoeur=Math.max(valCoeur,jeu.getMains()[num].voirCarte(i).getValeur());
 				nbCoeur++;
 			}
 			else {
-				//nous avons une carte de Pique et vérifions si c'est la plus puissante
+				//nous avons une carte de Pique et vï¿½rifions si c'est la plus puissante
 				valPiq=Math.max(valPiq,jeu.getMains()[num].voirCarte(i).getValeur());
 				nbPiq++;
 			}
