@@ -318,12 +318,56 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void majFleche() {
-        Icon imgArrow = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("arrow.png"))
-                .getImage().getScaledInstance(dimlabel.width, dimlabel.height / 2, Image.SCALE_SMOOTH));
-
-        this.arrows.get(jeu.joueurActuelle()).setIcon(imgArrow);
-        System.out.println("joueur actif : " + jeu.joueurActuelle() + "\n");
-        this.arrows.get((jeu.joueurActuelle() + 1) % 2).setIcon(null);
+       String j1ImgName;
+       String j2ImgName;
+       
+       //Nom de l'image en fonction de l'état du jeu
+       if (jeu.getIA() == true) {
+    	   j2ImgName = "IA";
+    	   System.out.println("Niveau IA : " + jeu.niveauIA());
+    	   
+    	   switch(jeu.niveauIA()) {
+    	   case 0:
+    		   System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+    		   j2ImgName =  j2ImgName.concat("Eas");
+    		   break;
+    	   case 1:
+    		   j2ImgName = j2ImgName.concat("Med");
+    		   break;
+    	   case 2:
+    		   j2ImgName = j2ImgName.concat("Har");
+    		   break;
+    	   }
+    	   
+       }else {
+    	   j2ImgName = "H2";
+       }
+       
+       j1ImgName = "H1";
+       
+       
+       System.out.println("Joueur actuel : " + jeu.joueurActuelle());
+       if (jeu.joueurActuelle() == 0) {
+    	   j1ImgName = j1ImgName.concat("w");
+    	   j2ImgName = j2ImgName.concat("s");
+       }else {
+    	   j1ImgName = j1ImgName.concat("s");
+    	   j2ImgName = j2ImgName.concat("w");
+       }
+       
+       j1ImgName = j1ImgName.concat(".png");
+       j2ImgName = j2ImgName.concat(".png");
+       
+       System.out.println(j1ImgName);
+       System.out.println(j2ImgName);
+       
+       Icon imgJ1 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(j1ImgName)).getImage().getScaledInstance(dimlabel.width, dimlabel.height / 2, Image.SCALE_SMOOTH));
+       
+       Icon imgJ2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(j2ImgName)).getImage().getScaledInstance(dimlabel.width, dimlabel.height / 2, Image.SCALE_SMOOTH));
+       
+       
+       this.arrows.get(0).setIcon(imgJ1);
+       this.arrows.get(1).setIcon(imgJ2);
     }
 
     private void showFinManche() {
