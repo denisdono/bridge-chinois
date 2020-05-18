@@ -10,9 +10,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
+import Modele.Jeu;
+
 public class menuBar extends JMenuBar { // menu du haut
 	private CollecteurEvenements c;
 	private boolean menu;
+	private Jeu jeu;
 	private JMenu menuParametres;
 	private JMenu menuAction;
 	private JMenu menuHelp;
@@ -31,10 +34,10 @@ public class menuBar extends JMenuBar { // menu du haut
 		completeIHM();
 	}
 
-	menuBar(CollecteurEvenements c, JFrame frame) {
+	menuBar(CollecteurEvenements c, JFrame frame, Jeu jeu) {
 		this.c = c;
 		this.frame = frame;
-
+		this.jeu = jeu;
 		menuAction = new JMenu("Actions");
 		undo = new JMenuItem("Annuler (crtl+z)");
 		undo.addActionListener(new ActionListener() {
@@ -108,7 +111,7 @@ public class menuBar extends JMenuBar { // menu du haut
 		config = new JMenuItem("Configuration");
 		config.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConfigWindow lesConf = new ConfigWindow();
+				ConfigWindow lesConf = new ConfigWindow(jeu);
 				lesConf.montrer();
 			}
 		});
