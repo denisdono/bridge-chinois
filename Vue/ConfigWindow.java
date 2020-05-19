@@ -3,6 +3,7 @@ package Vue;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -212,7 +213,10 @@ public class ConfigWindow extends JFrame implements Observateur {
 		dos.setBorder(BorderFactory.createTitledBorder("Dos de carte :"));
 		dosGroup = new ButtonGroup();
 		JRadioButton carte1 = new JRadioButton();
-		JLabel imgc1 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back0.png")));
+		JLabel imgc1 = new JLabel(new ImageIcon(
+                new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back0.png")).getImage()
+                .getScaledInstance(57, 88, Image.SCALE_SMOOTH)));
+		//imgc1.setPreferredSize(new Dimension(57,88));
 		imgc1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -222,7 +226,10 @@ public class ConfigWindow extends JFrame implements Observateur {
 		
 		
 		JRadioButton carte2 = new JRadioButton();
-		JLabel imgc2 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back1.png")));
+		JLabel imgc2 = new JLabel(new ImageIcon(
+                new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back1.png")).getImage()
+                .getScaledInstance(57, 88, Image.SCALE_SMOOTH)));
+		//imgc2.setPreferredSize(new Dimension(57,88));
 		imgc2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -231,7 +238,10 @@ public class ConfigWindow extends JFrame implements Observateur {
 		});
 		
 		JRadioButton carte3 = new JRadioButton();
-		JLabel imgc3 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back2.png")));
+		JLabel imgc3 = new JLabel(new ImageIcon(
+                new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back2.png")).getImage()
+                .getScaledInstance(57, 88, Image.SCALE_SMOOTH)));
+		//imgc3.setPreferredSize(new Dimension(57,88));
 		imgc3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
