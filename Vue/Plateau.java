@@ -66,9 +66,11 @@ public class Plateau extends JPanel implements Observateur {
 
         add(background);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
-
-        JLabel nomJ = new JLabel("Joueur 2");
-
+        JLabel nomJ = new JLabel();
+        if(jeu.getIA())
+            nomJ.setText("Joueur 2 (IA)");
+        else
+            nomJ.setText("Joueur 2");
         background.add(nomJ);
 
         JPanel hand1Pane = new JPanel();
@@ -255,22 +257,25 @@ public class Plateau extends JPanel implements Observateur {
                     }
                 }
             } else {
+                hands.get(numJ).get(i).setPreferredSize(dimlabel);
+                hands.get(numJ).get(i).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
                 hands.get(numJ).get(i).setIcon(null);
+
             }
         }
     }
 
     private void majPaquets() {
         if (jeu.etape() == 2 || jeu.etape() == 3) {
-            indPioche.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            indPioche.setText("<html><span bgcolor=\"yellow\">Pioches</span></html>");
         } else {
-            indPioche.setBorder(null);
+            indPioche.setText("Pioches");
         }
         for (int i = 0; i < 6; i++) {
             centreDecks.get(i).setBorder(null);
             if (jeu.getPiles()[i].estVide()) {
                 centreDecks.get(i).setIcon(null);
-                centreDecks.get(i).setText("Vide");
+                centreDecks.get(i).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
                 if (centreDecks.get(i).getMouseListeners().length > 0) {
                     centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
                 }
