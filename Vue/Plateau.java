@@ -361,9 +361,11 @@ public class Plateau extends JPanel implements Observateur {
        System.out.println(j1ImgName);
        System.out.println(j2ImgName);
        
-       Icon imgJ1 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(j1ImgName)).getImage().getScaledInstance(dimlabel.width, dimlabel.height / 2, Image.SCALE_SMOOTH));
+       Icon imgJ1 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
+    		   .getResource(j1ImgName)).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_AREA_AVERAGING));
        
-       Icon imgJ2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(j2ImgName)).getImage().getScaledInstance(dimlabel.width, dimlabel.height / 2, Image.SCALE_SMOOTH));
+       Icon imgJ2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
+    		   .getResource(j2ImgName)).getImage().getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_AREA_AVERAGING));
        
        
        this.arrows.get(0).setIcon(imgJ1);
