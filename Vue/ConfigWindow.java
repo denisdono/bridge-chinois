@@ -1,10 +1,14 @@
 package Vue;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -101,7 +105,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 
 		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(400, (int) screenSize.getHeight() / 3 * 2);
+		this.setSize(450, (int) screenSize.getHeight() / 3 * 2);
                 this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("iconeparam.png")).getImage());
 
 		hisPanel = new JPanel();
@@ -115,35 +119,36 @@ public class ConfigWindow extends JFrame implements Observateur {
 		JLabel titre = new JLabel("Configurations");
 		titre.setFont(new Font("Calibri", Font.PLAIN, 24));
 		hisPanel.add(titre);
-		JPanel diff = new JPanel();
-		diff.setBorder(BorderFactory.createTitledBorder("Difficult� IA :"));
-		diffGroup = new ButtonGroup();
-		JRadioButton facile = new JRadioButton("facile");
-		JRadioButton moyenne = new JRadioButton("moyenne");
-		JRadioButton difficile = new JRadioButton("difficile");
-		facile.setActionCommand("0");
-		moyenne.setActionCommand("1");
-		difficile.setActionCommand("2");
-		switch (selDiff) {
-		case 0:
-			facile.setSelected(true);
-			break;
-		case 1:
-			moyenne.setSelected(true);
-			break;
-		case 2:
-			difficile.setSelected(true);
-			break;
+		if(jeu==null || jeu.getIA()) {
+			JPanel diff = new JPanel();
+			diff.setBorder(BorderFactory.createTitledBorder("Difficulté IA :"));
+			diffGroup = new ButtonGroup();
+			JRadioButton facile = new JRadioButton("facile");
+			JRadioButton moyenne = new JRadioButton("moyenne");
+			JRadioButton difficile = new JRadioButton("difficile");
+			facile.setActionCommand("0");
+			moyenne.setActionCommand("1");
+			difficile.setActionCommand("2");
+			switch (selDiff) {
+			case 0:
+				facile.setSelected(true);
+				break;
+			case 1:
+				moyenne.setSelected(true);
+				break;
+			case 2:
+				difficile.setSelected(true);
+				break;
+			}
+			diffGroup.add(facile);
+			diffGroup.add(moyenne);
+			diffGroup.add(difficile);
+			diff.add(facile);
+			diff.add(moyenne);
+			diff.add(difficile);
+	
+			hisPanel.add(diff);
 		}
-		diffGroup.add(facile);
-		diffGroup.add(moyenne);
-		diffGroup.add(difficile);
-		diff.add(facile);
-		diff.add(moyenne);
-		diff.add(difficile);
-
-		hisPanel.add(diff);
-
 		JPanel cond = new JPanel();
 		cond.setLayout(new BoxLayout(cond, BoxLayout.PAGE_AXIS));
 		cond.setBorder(BorderFactory.createTitledBorder("Condition de victoire :"));
@@ -206,9 +211,34 @@ public class ConfigWindow extends JFrame implements Observateur {
 		JPanel dos = new JPanel();
 		dos.setBorder(BorderFactory.createTitledBorder("Dos de carte :"));
 		dosGroup = new ButtonGroup();
-		JRadioButton carte1 = new JRadioButton("carte1");
-		JRadioButton carte2 = new JRadioButton("carte2");
-		JRadioButton carte3 = new JRadioButton("carte3");
+		JRadioButton carte1 = new JRadioButton();
+		JLabel imgc1 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back0.png")));
+		imgc1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				carte1.setSelected(true);
+			}
+		});
+		
+		
+		JRadioButton carte2 = new JRadioButton();
+		JLabel imgc2 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back1.png")));
+		imgc2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				carte2.setSelected(true);
+			}
+		});
+		
+		JRadioButton carte3 = new JRadioButton();
+		JLabel imgc3 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back2.png")));
+		imgc3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				carte3.setSelected(true);
+			}
+		});
+		
 		carte1.setActionCommand("0");
 		carte2.setActionCommand("1");
 		carte3.setActionCommand("2");
@@ -227,17 +257,48 @@ public class ConfigWindow extends JFrame implements Observateur {
 		dosGroup.add(carte2);
 		dosGroup.add(carte3);
 		dos.add(carte1);
+		dos.add(imgc1);
 		dos.add(carte2);
+		dos.add(imgc2);
 		dos.add(carte3);
+		dos.add(imgc3);
 
 		hisPanel.add(dos);
 
 		JPanel fond = new JPanel();
 		fond.setBorder(BorderFactory.createTitledBorder("Fond de plateau :"));
 		fondGroup = new ButtonGroup();
-		JRadioButton fond1 = new JRadioButton("fond1");
-		JRadioButton fond2 = new JRadioButton("fond2");
-		JRadioButton fond3 = new JRadioButton("fond3");
+		JRadioButton fond1 = new JRadioButton();
+		JLabel imgf1 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background0.jpg")));
+		imgf1.setPreferredSize(new Dimension(100,50));
+		imgf1.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		imgf1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				fond1.setSelected(true);
+			}
+		});
+		
+		JRadioButton fond2 = new JRadioButton();
+		JLabel imgf2 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background1.jpg")));
+		imgf2.setPreferredSize(new Dimension(100,50));
+		imgf2.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		imgf2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				fond2.setSelected(true);
+			}
+		});
+		JRadioButton fond3 = new JRadioButton();
+		JLabel imgf3 = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background2.jpg")));
+		imgf3.setPreferredSize(new Dimension(100,50));
+		imgf3.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		imgf3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				fond3.setSelected(true);
+			}
+		});
 		fond1.setActionCommand("0");
 		fond2.setActionCommand("1");
 		fond3.setActionCommand("2");
@@ -258,8 +319,11 @@ public class ConfigWindow extends JFrame implements Observateur {
 		fondGroup.add(fond2);
 		fondGroup.add(fond3);
 		fond.add(fond1);
+		fond.add(imgf1);
 		fond.add(fond2);
+		fond.add(imgf2);
 		fond.add(fond3);
+		fond.add(imgf3);
 
 		hisPanel.add(fond);
 
@@ -276,7 +340,9 @@ public class ConfigWindow extends JFrame implements Observateur {
 												// fichier config
 		valid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selDiff = Integer.parseInt(diffGroup.getSelection().getActionCommand());
+				if(jeu==null || jeu.getIA()) {
+					selDiff = Integer.parseInt(diffGroup.getSelection().getActionCommand());
+				}
 				selWin = Integer.parseInt(condGroup.getSelection().getActionCommand());
 				value = Integer.parseInt(valueField.getValue().toString());
 				showCarte = Integer.parseInt(showGroup.getSelection().getActionCommand());
@@ -291,7 +357,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 					try {
 						File confile = new File("config");
 						if (confile.createNewFile()) {
-							System.out.println("Cr�ation d'un fichier config.");
+							System.out.println("Création d'un fichier config.");
 							FileWriter myWriter = new FileWriter("config");
 							myWriter.write(selDiff + "\n" + selWin + "\n" + value + "\n" + showCarte + "\n" + selCarte
 									+ "\n" + selFond + "\n");
