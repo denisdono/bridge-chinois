@@ -107,14 +107,19 @@ public class Coup implements Serializable {
 		this.joueurdominantpred = joueurdominantpred;
 	}
 
+	
+	
+	
+
+
 	@Override
 	public String toString() {
 		return "Coup [joueur=" + joueur + ", changerjoueur=" + changerjoueur + ", enCours=" + enCours + ", finmanche="
-				+ finmanche + ", piochage=" + piochage + ", parManche=" + parManche + ", main1=" + main1 + ", main2="
-				+ main2 + ", totalfin=" + totalfin + ", manche=" + manche + ", etape=" + etape + ", joueurdominant="
-				+ joueurdominant + ", atout=" + atout + ", c_dom=" + c_dom + ", c_sub=" + c_sub + ", c_0=" + c_0
-				+ ", c_1=" + c_1 + ", action=" + action + ", diff=" + diff + ", showCarte=" + showCarte + ", IA=" + IA
-				+ "]";
+				+ finmanche + ", piochage=" + piochage + ", parManche=" + parManche + ", totalfin=" + totalfin
+				+ ", manche=" + manche + ", etape=" + etape + ", joueurdominant=" + joueurdominant
+				+ ", joueurdominantpred=" + joueurdominantpred + ", atout=" + atout + ", c_dom=" + c_dom + ", c_sub="
+				+ c_sub + ", c_0=" + c_0 + ", c_1=" + c_1 + ", action=" + action + ", diff=" + diff + ", showCarte="
+				+ showCarte + ", IA=" + IA + "]";
 	}
 
 	public void setJoueur(int joueur) {
@@ -284,8 +289,7 @@ public class Coup implements Serializable {
 	public void setIA(boolean iA) {
 		IA = iA;
 	}
+
 	
-	
-	
-	
+
 }

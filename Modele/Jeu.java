@@ -112,7 +112,8 @@ public class Jeu extends Observable {
 	public void jouer(int i,int n) {
 		annulation=false;
 		historique.getFutur().clear();
-		joueurdominantpred=joueurdominant;
+		if(etape==3)
+			joueurdominantpred=joueurdominant;
 		//creation par copie pour les coups
 		Hand h1=new Hand(mains[0]);
 		Hand h2=new Hand(mains[1]);
@@ -243,6 +244,7 @@ public class Jeu extends Observable {
 			}	
 		}
 			historique.affiherPasse();
+			historique.afficherFutur();
 	}
 	
 	public Carte getCartepioche2() {
@@ -265,11 +267,29 @@ public class Jeu extends Observable {
 		Coup cj;//coup joué
 		Coup cpeek;//coup au sommet
 		if(IA) {
-			 cj = historique.defaire();
+			cj = historique.defaire();
+			cpeek=historique.getPasse().peek();
+				if(cj.getJoueur()!=0) {
+					
+				while(cpeek.getJoueur()!=0 && historique.getPasse().size()!=0 ) {
+					cj=historique.defaire();
+					if(historique.getPasse().size()>0) {
+						cpeek=historique.getPasse().peek();
+						
+					}
+				}
+				
+				cj = historique.defaire();
+				}
+
+
+		}else {
+			
+			cj = historique.defaire();//on annule le coup du joueur
 		}
 		System.out.print("historique avant annule:");
 		//historique.affiherPasse();
-		 cj = historique.defaire();
+		
 		 cpeek= historique.getPasse().peek();
 		System.out.println("main :");
 		 //c.main1.afficherMain();
@@ -289,6 +309,13 @@ public class Jeu extends Observable {
 			this.manche = cpeek.getManche();// le nombre de manche actuelle OK
 			this.etape = cj.getEtape();// etape actuelle d'un tour de jeu OK
 			this.joueurdominant =cpeek.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
+			if(etape!=1) {
+				
+				this.joueurdominantpred=cj.getJoueurdominant();
+			}else {
+				this.joueurdominantpred=cj.getJoueurdominantpred();
+
+			}
 			this.atout = cpeek.getAtout();// l'atout de la manche OK
 			this.c_dom = cpeek.getC_dom();// carte jouer par le joueur dominant OK
 			this.c_sub = cpeek.getC_sub();// carte jouer par l'autre joueur OK
@@ -296,30 +323,58 @@ public class Jeu extends Observable {
 			
 			this.diff=cpeek.getDiff();
 			this.showCarte = cpeek.isShowCarte();
-			this.IA =cpeek.isIA();
+			this.IA =cj.isIA();
 			System.out.println();
 
 			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
 			
-			historique.affiherPasse();
-			historique.afficherFutur();
 			metAJour();
 
 			
 	
 	}
+
+		historique.affiherPasse();
+		historique.afficherFutur();
 	}
 	
-	public void refaire(int n) {//reste a corriger bug joueur actuel
+	public void refaire() {//reste a corriger bug joueur actuel
 		annulation = true;
-		jca=n;
+		System.out.println("Taille geFutur :"+historique.getFutur().size());
+
+		//jca=n;
 		Coup cj;//coup joué
-		
+		Coup cpeek;
+//		 cj = historique.refaire();//on redo le coup du joueur
+		 //cpeek=cj;
+		if(getIA()) {
 			
+			 cj = historique.refaire();//on redo 1 coup de l'ia
+			
+			 cpeek=historique.getFutur().peek();
+				if(cj.getJoueur()!=1) {
+					
+				while(cpeek.getJoueur()!=0 && historique.getFutur().size()>0 ) {
+					cj=historique.refaire();
+					if(historique.getFutur().size()>0) {
+						cpeek=historique.getFutur().peek();
+					}
+					historique.afficherFutur();
+				}
+				
+//				cj = historique.refaire();
+				}
+
+//		
+			
+		}else {
+			 cj = historique.refaire();//on redo 1 coup de l'ia
+
+		}
+		
 		//Coup cpeek;//coup au sommet
 		System.out.print("historique avant refaire:");
 		historique.afficherFutur();
-		 cj = historique.refaire();
 		// cpeek= historique.getPasse().peek();
 		System.out.println("main :");
 		 //c.main1.afficherMain();
@@ -339,18 +394,18 @@ public class Jeu extends Observable {
 			this.manche = cj.getManche();// le nombre de manche actuelle OK
 			this.etape = (cj.getEtape()+1)%4;// etape actuelle d'un tour de jeu OK
 			this.joueurdominant =cj.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
+			this.joueurdominantpred=cj.getJoueurdominantpred();//a prendre en compte que lors du changement de tour
 			this.atout = cj.getAtout();// l'atout de la manche OK
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
 			this.c_sub = cj.getC_sub();// carte jouer par l'autre joueur OK
 			
 			System.out.println();
-			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
+			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
 			
 			historique.affiherPasse();
 			historique.afficherFutur();
 			System.out.println("Joueur act: "+joueurActuelle());
 			metAJour();
-		
 			
 	}
 
@@ -657,6 +712,7 @@ public class Jeu extends Observable {
         }
         
         public int joueurActuelle() {// permet de renvoyer le joueur courant
+        	
         if (etape%2==0) {
             return joueurdominant;
         }
@@ -755,3 +811,5 @@ public class Jeu extends Observable {
         
         
 }
+
+
