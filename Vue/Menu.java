@@ -28,7 +28,7 @@ import javax.swing.border.LineBorder;
  * @author Administrator
  * @created April 28, 2020
  */
-class Menu extends JPanel implements ActionListener, Observateur {
+class Menu extends JPanel implements ActionListener{
 
     Historique his;
     private final JLabel labelTitrePlis;
@@ -144,8 +144,6 @@ class Menu extends JPanel implements ActionListener, Observateur {
         
     }
 
-    /**
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -154,11 +152,6 @@ class Menu extends JPanel implements ActionListener, Observateur {
             his.montrer();
 
         }
-    }
-
-    @Override
-    public void miseAJour() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     //Indiquer la couleur de l'atout dans le menu

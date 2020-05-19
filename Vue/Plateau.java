@@ -257,10 +257,10 @@ public class Plateau extends JPanel implements Observateur {
                     }
                 }
             } else {
-                hands.get(numJ).get(i).setPreferredSize(dimlabel);
-                hands.get(numJ).get(i).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
                 hands.get(numJ).get(i).setIcon(null);
-
+                if (hands.get(numJ).get(i).getMouseListeners().length > 0) {
+                    hands.get(numJ).get(i).removeMouseListener(hands.get(numJ).get(i).getMouseListeners()[0]);
+                }
             }
         }
     }
