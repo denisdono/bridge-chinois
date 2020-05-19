@@ -36,16 +36,13 @@ public class ControleurMediateur implements CollecteurEvenements {
 			System.out.print("Joueur courant"+joueurCourant);
 			
 		}else {
-			System.out.print("JDOM : "+jeu.j_dom());
-			if(jeu.j_dom()==1 && jeu.etape()==3) {
-				jeu.annuler();
-			}
-			jeu.annuler();
-			//c = jeu.historique.getPasse().peek();//rajouter try ctch
-			jeu.annuler();
+
+			jeu.annuler();	
 
 			
 		}
+		System.out.println("Nous sommes a l etape :"+ jeu.etape());
+
 	}
 
 	public void refait() {
@@ -57,16 +54,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 			//System.out.print("Joueur courant"+joueurCourant);
 			jeu.metAJour();
 			}else {
-//				jeu.refaire();
 				jeu.refaire();
-				if(jeu.historique.peutRefaire()) {
-					jeu.refaire();
-					if(jeu.historique.peutRefaire()) {
-						if(jeu.j_dom()==1 && jeu.etape()==2)
-							jeu.refaire();
-					}
-				}
 			}	
+			System.out.println("Nous sommes a l etape :"+ jeu.etape());
 		}else {
 			System.out.println("Pas de coup rejouable");
 		}
