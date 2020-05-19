@@ -147,7 +147,7 @@ public class Plateau extends JPanel implements Observateur {
     public void miseAJour() {
         //Fonction qui met a jour toutes les infos sur le plateau et le menu de droite
         //Si on est a 2 joueur et a une nouvelle main, on veut cacher les cartes et indiquer le chgt de joueur
-        if(((jeu.etape()==0 && etapePrecedente==3) || (jeu.etape()==0 && etapePrecedente==1)) && !jeu.getIA() && chgtJoueur){
+        if(((jeu.etape()==0 && etapePrecedente==3) || (jeu.etape()==0 && etapePrecedente==1)) && !jeu.getIA() && chgtJoueur && !jeu.isShowCarte()){
             majMainJoueur(0, true);
             majMainJoueur(1, true);
             JoueurCarteListener.active=false;
