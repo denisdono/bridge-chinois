@@ -1,6 +1,6 @@
 package Vue;
 
-import Controleur.ControleurMediateur;
+import Controleur.IASimple;
 import Modele.Jeu;
 import Patterns.Observateur;
 
@@ -9,17 +9,12 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 
 public class Plateau extends JPanel implements Observateur {
 
     Jeu jeu;
-    private int largeurCase = 1, hauteurCase = 1;
     private CollecteurEvenements c;
     private Menu m;
     private ArrayList<JLabel> arrows;
@@ -28,9 +23,9 @@ public class Plateau extends JPanel implements Observateur {
     private ArrayList<JLabel> centreDecks;
     private ArrayList<JLabel> playedCards;
     private ArrayList<ArrayList<JLabel>> hands;
-    // Dimensions a revoir, adapter a la taille de l'écran
     private Dimension dimlabel;
     private boolean timed = false;
+    private boolean waitPioche = false;
     private int etapePrecedente;
     private int manchePrec = 1;
     private boolean chgtManche = false;
@@ -57,6 +52,8 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     public void creerPlateau() {
+        //Permet de creer tous elements graphiques du plateau
+        removeAll();
         background = new JLabel(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Background" + jeu.getSelFond() + ".jpg")));
         hand1 = new ArrayList<>();
         hand2 = new ArrayList<>();
@@ -67,18 +64,16 @@ public class Plateau extends JPanel implements Observateur {
         hands.add(hand1);
         hands.add(hand2);
 
-        System.out.println("creerplat");
-
         add(background);
         background.setLayout(new BoxLayout(background, BoxLayout.PAGE_AXIS));
 
-        JLabel nomJ = new JLabel("Joueur 1");
+        JLabel nomJ = new JLabel("Joueur 2");
 
         background.add(nomJ);
 
         JPanel hand1Pane = new JPanel();
         hand1Pane.setOpaque(false);
-        // Ajout de la fl�che indiquant le tour du joueur 1
+        // Ajout de la fleche indiquant le tour du joueur 1
         JLabel arrow1Label = new JLabel();
         arrow1Label.setPreferredSize(dimlabel);
         hand1Pane.add(arrow1Label);
@@ -116,11 +111,11 @@ public class Plateau extends JPanel implements Observateur {
         JLabel space2 = new JLabel();
         space2.setPreferredSize(new Dimension(dimlabel.width, dimlabel.height / 2));
 
-        JLabel nomJ2 = new JLabel("Joueur 2");
+        JLabel nomJ2 = new JLabel("Joueur 1");
         JPanel hand2Pane = new JPanel();
         hand2Pane.setOpaque(false);
 
-        // Ajout de la fl�che indiquant le tour du joueur 2
+        // Ajout de la fleche indiquant le tour du joueur 2
         JLabel arrow2Label = new JLabel();
         arrow2Label.setPreferredSize(dimlabel);
         hand2Pane.add(arrow2Label);
@@ -141,68 +136,72 @@ public class Plateau extends JPanel implements Observateur {
         background.add(hand1Pane);
         miseAJour();
         this.revalidate();
+        this.repaint();
     }
 
     // Fonction de mise a jour appelée dès que necessaire
     @Override
     public void miseAJour() {
-        // Mise à jour des infos du menu
-        System.out.println("MAJ");
+        //Fonction qui met a jour toutes les infos sur le plateau et le menu de droite
+        //Si on est à l'attente de la pioche de l'IA, ne rien faire
+        if (!waitPioche) {
+            int cartePioche = jeu.getCarteApiocher();
 
-        if (manchePrec != jeu.getMancheactuelle()) {
-            System.out.println("changement de manche");
-            chgtManche = true;
-            m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(),
-                    jeu.getMains()[1].getnbScore());
-            this.removeAll();
-            this.revalidate();
-            this.repaint();
-            if (jeu.enCours()) {
-                showFinManche();
-            } else {
-                showFinPartie();
-            }
-        } else {
-            m.setNumManche(jeu.getMancheactuelle());
-            m.indiqueAtout(jeu.getAtout().name(), dimlabel);
-            m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),
-                    jeu.getMains()[1].getnbScore());
-            if (etapePrecedente == 1 && jeu.getC_sub() != null && jeu.getC_dom() != null && !timed) {
-                m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(),
-                        dimlabel);
-                if (jeu.pilesvide()) {
-                    System.out.println("majTimer");
-                    timed = true;
-                    JoueurCarteListener.active = false;
-                    majCarteJouees();
-                    Timer t = new Timer(2000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            System.out.println("FIN ATTENTE APRES ETAPE 1");
-                            //majCarteJouees();
-                            etapePrecedente = jeu.etape();
-                            majFleche();
-                            majMainJoueur(0);
-                            majPaquets();
-                            majMainJoueur(1);
-                            
-                            majCarteJouees();
-                            if (jeu.getIA()) {
-                                playedCards.get(1).setIcon(null);
-                                if (jeu.joueurActuelle() == 0 && jeu.etape()==0) {
-                                    playedCards.get(0).setIcon(null);
-                                }
-                            }else{
-                                resetCarteJoue();
-                            }
-                            timed = false;
-                            JoueurCarteListener.active = true;
-                        }
-                    });
-                    t.setRepeats(false);
-                    t.start();
-                } else if (!jeu.pilesvide()) {
-                    System.out.println("majpilesPleines");
+            //Si on est a un une nouvelle manche
+            if (manchePrec != jeu.getMancheactuelle()) {
+                System.out.println("changement de manche");
+                chgtManche = true;
+                m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(),
+                        jeu.getMains()[1].getnbScore());
+                this.removeAll();
+                this.revalidate();
+                this.repaint();
+                if (jeu.enCours()) {
+                    showFinManche();
+                } else {
+                    showFinPartie();
+                }
+
+                //Si c'est a l'IA de piocher, on veut indiquer la carte qu'elle choisit pendant un court instant
+            } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && cartePioche != -1) {
+
+                waitPioche = true;
+                centreDecks.get(cartePioche).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+                Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
+                t.setRepeats(false);
+                t.start();
+
+                //Si on est pas a un moment d'indication de carte (cas classique)
+            } else if (cartePioche == -1) {
+                //Mise a jour des infos du menu de coté
+                m.setNumManche(jeu.getMancheactuelle());
+                m.indiqueAtout(jeu.getAtout().name(), dimlabel);
+                m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),
+                        jeu.getMains()[1].getnbScore());
+                //Si l'etape precedente est 1, CAD que les 2 joueurs ont placé leur carte du tour
+                if (etapePrecedente == 1 && jeu.getC_sub() != null && jeu.getC_dom() != null && !timed) {
+                    m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(),
+                            dimlabel);
+                    //Si il n'y a plus de pioche, on souhaite attendre un court temps pour laisser ces 2 cartes affichées
+                    if (jeu.pilesvide()) {
+                        System.out.println("majTimer");
+                        timed = true;
+                        JoueurCarteListener.active = false;
+                        majCarteJouees();
+                        Timer t = new Timer(1500, (ActionEvent e) -> majTime());
+                        t.setRepeats(false);
+                        t.start();
+                        //Si il y a encore des pioches, maj classique
+                    } else if (!jeu.pilesvide()) {
+                        etapePrecedente = jeu.etape();
+                        majFleche();
+                        majMainJoueur(0);
+                        majPaquets();
+                        majMainJoueur(1);
+                        majCarteJouees();
+                    }
+                    //Si on est pas dans ces cas ni en attente d'un timer, maj classique
+                } else if (!timed) {
                     etapePrecedente = jeu.etape();
                     majFleche();
                     majMainJoueur(0);
@@ -210,26 +209,18 @@ public class Plateau extends JPanel implements Observateur {
                     majMainJoueur(1);
                     majCarteJouees();
                 }
-            } else if(!timed){
-                System.out.println("maj Classique");
-                etapePrecedente = jeu.etape();
-                majFleche();
-                majMainJoueur(0);
-                majPaquets();
-                majMainJoueur(1);
-                majCarteJouees();
             }
+            manchePrec = jeu.getMancheactuelle();
+            lastnbPlis1 = jeu.getMains()[0].getnbPlis();
+            lastnbPlis2 = jeu.getMains()[1].getnbPlis();
         }
-        manchePrec = jeu.getMancheactuelle();
-        lastnbPlis1 = jeu.getMains()[0].getnbPlis();
-        lastnbPlis2 = jeu.getMains()[1].getnbPlis();
     }
 
     private void majMainJoueur(int numJ) {
 
         ImageIcon icon2;
-
         for (int i = 0; i < 11; i++) {
+            hands.get(numJ).get(i).setBorder(null);
             if (i < jeu.getMains()[numJ].getnbCarte()) {
 
                 if (jeu.getShowCarte() == false && ((jeu.getIA() == true && numJ == 1)
@@ -238,13 +229,10 @@ public class Plateau extends JPanel implements Observateur {
                     icon2 = new ImageIcon(
                             new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back" + jeu.getSelCarte() + ".png")).getImage()
                             .getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-
                 } else {
-
                     icon2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader()
                             .getResource(jeu.getMains()[numJ].getMain()[i].getResourceName())).getImage()
                             .getScaledInstance(dimlabel.width, dimlabel.height, Image.SCALE_SMOOTH));
-
                 }
                 hands.get(numJ).get(i).setIcon(icon2);
 
@@ -255,12 +243,13 @@ public class Plateau extends JPanel implements Observateur {
 
                     }
                 } else {
-                    //Grisage des cartes
+                    //Grisage des cartes du joueur courant qu'il ne peut jouer si ce n'est pas une IA
                     if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ
                             && !jeu.peutJouer(i, numJ) && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
                         Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon2.getImage()));
                         hands.get(numJ).get(i).setIcon(img);
                     }
+                    //On enleve les listeners des cartes pour les autres cas ou on en a pas besoin
                     if (hands.get(numJ).get(i).getMouseListeners().length > 0) {
                         hands.get(numJ).get(i).removeMouseListener(hands.get(numJ).get(i).getMouseListeners()[0]);
                     }
@@ -278,6 +267,7 @@ public class Plateau extends JPanel implements Observateur {
             indPioche.setBorder(null);
         }
         for (int i = 0; i < 6; i++) {
+            centreDecks.get(i).setBorder(null);
             if (jeu.getPiles()[i].estVide()) {
                 centreDecks.get(i).setIcon(null);
                 centreDecks.get(i).setText("Vide");
@@ -292,7 +282,7 @@ public class Plateau extends JPanel implements Observateur {
                 centreDecks.get(i).setIcon(img);
 
                 // SI on est a une étape de pioche
-                if (jeu.etape() == 2 || jeu.etape() == 3) {
+                if (jeu.etape() == 2 || jeu.etape() == 3 && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
                     if (centreDecks.get(i).getMouseListeners().length == 0 && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
                         centreDecks.get(i).addMouseListener(new JoueurCarteListener(i, c));
                     }
@@ -337,6 +327,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void showFinManche() {
+        //affichage de l'écran de fin de manche
         JPanel finManchePane = new JPanel();
         background.removeAll();
         finManchePane.setLayout(new BorderLayout());
@@ -344,11 +335,6 @@ public class Plateau extends JPanel implements Observateur {
         background.setLayout(new BorderLayout());
         JPanel textPan = new JPanel();
         textPan.setLayout(new BorderLayout());
-        //JLabel finJ = new JLabel("La manche " + (jeu.getMancheactuelle() - 1) + " est terminee\n");
-        //finJ.setFont(new Font("Calibri", Font.PLAIN, 28));
-        //finJ.setHorizontalAlignment(JLabel.CENTER);
-        //finJ.setVerticalAlignment(JLabel.CENTER);
-        //textPan.add(finJ,BorderLayout.NORTH);
         JLabel finRemporte;
         if (lastnbPlis1 > lastnbPlis2) {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>" + "Remportée par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2 + "<html>");
@@ -377,6 +363,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void showFinPartie() {
+        //Affichage de l'écran de fin de partie
         this.manchePrec = 1;
         JPanel finManchePane = new JPanel();
         background.removeAll();
@@ -385,11 +372,6 @@ public class Plateau extends JPanel implements Observateur {
         background.setLayout(new BorderLayout());
         JPanel textPan = new JPanel();
         textPan.setLayout(new BorderLayout());
-        //JLabel finJ = new JLabel("La manche " + (jeu.getMancheactuelle() - 1) + " est terminee\n");
-        //finJ.setFont(new Font("Calibri", Font.PLAIN, 28));
-        //finJ.setHorizontalAlignment(JLabel.CENTER);
-        //finJ.setVerticalAlignment(JLabel.CENTER);
-        //textPan.add(finJ,BorderLayout.NORTH);
         JLabel finRemporte;
         if (jeu.getMains()[0].getnbScore() > jeu.getMains()[1].getnbScore()) {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " a " + jeu.getMains()[1].getnbScore() + "<html>");
@@ -414,7 +396,6 @@ public class Plateau extends JPanel implements Observateur {
 
         this.add(finManchePane);
         this.revalidate();
-        final Plateau p = this;
         menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -435,22 +416,60 @@ public class Plateau extends JPanel implements Observateur {
 
     private void initNouvelleManche() {
         background.removeAll();
-        this.removeAll();
         this.creerPlateau();
-        this.revalidate();
-        this.repaint();
     }
 
     private void initNouvellePartie() {
         c.recommencer();
         background.removeAll();
-        this.removeAll();
         this.creerPlateau();
-        this.revalidate();
-        this.repaint();
     }
-    public void resetCarteJoue(){
+
+    public void resetCarteJoue() {
         playedCards.get(0).setIcon(null);
         playedCards.get(1).setIcon(null);
+    }
+
+    private void majTime() {
+        //fonction appelée après l'attente qui permet de montrer les 2 cartes jouees
+        etapePrecedente = jeu.etape();
+        majFleche();
+        majMainJoueur(0);
+        majPaquets();
+        majMainJoueur(1);
+
+        majCarteJouees();
+        if (jeu.getIA()) {
+            playedCards.get(1).setIcon(null);
+            if (jeu.joueurActuelle() == 0 && jeu.etape() == 0) {
+                playedCards.get(0).setIcon(null);
+            }
+        } else {
+            resetCarteJoue();
+        }
+        timed = false;
+        JoueurCarteListener.active = true;
+    }
+
+    private void majTimePioche(int pioche) {
+        //fonction appelée après l'attente qui montre la carte que l'IA pioche
+        System.out.println("FINTIMERPIOCHE");
+        centreDecks.get(pioche).setBorder(null);
+        waitPioche = false;
+        miseAJour();
+
+    }
+
+    //Permet de mettre en surbrillance un coup proposé par l'ia simple si le joueur le demande
+    void suggererUnCoup() {
+        if (!(jeu.getIA() && jeu.joueurActuelle() == 1)) {
+            IASimple suggereIA = new IASimple(jeu.joueurActuelle(), jeu);
+            int coupSuggere = suggereIA.IAjeu();
+            if (jeu.etape() == 0 || jeu.etape() == 1) {
+                hands.get(jeu.joueurActuelle()).get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+            } else {
+                centreDecks.get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+            }
+        }
     }
 }

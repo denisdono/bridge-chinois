@@ -14,7 +14,7 @@ public class IARandom extends Joueur {
 	}
 	
 	
-	boolean IAJeu() {
+	int IAJeu() {
 		int i;
 		if (jeu.etape()<2) {
 			i = r.nextInt(jeu.getMains()[num].getnbCarte());
@@ -28,8 +28,8 @@ public class IARandom extends Joueur {
 				i = r.nextInt(6);
 			}
 		}
-		jeu.jouer(i,num);
-		return true;
+		
+		return i;
 	}
 	
 }

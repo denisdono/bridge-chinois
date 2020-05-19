@@ -34,11 +34,14 @@ public class Jeu extends Observable {
 	Carte c_sub;// carte jouer par l'autre joueur
 	Carte c_0;//carte piochée par le joueur dominant
 	Carte c_1;//carte piochée par l'autre joueur
+	Carte Cartepioche1;
+	Carte Cartepioche2;
 	int diff;// dificulter de l'ia
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
 	int ind;//sert a determiner quelle carte posé dans la pioche
 	public boolean annulation;
+        private int carteApiocher=-1;
 	int jca;
 	boolean debut;
 	int selCarte;
@@ -51,59 +54,7 @@ public class Jeu extends Observable {
 	}
 		
 	public void start() {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("config"));
-			diff = Integer.parseInt(br.readLine());
-			if (diff < 0 || diff > 1) { // a changer pour diff > 2
-				diff = 0;
-			}
-			if(Integer.parseInt(br.readLine())==1) {
-				parManche=true;
-			}
-			else parManche=false;
-			
-			totalfin = Integer.parseInt(br.readLine());
-			if (totalfin<=0) {
-				if (parManche)totalfin=12;
-				else totalfin=100;
-			}
-			
-			if (Integer.parseInt(br.readLine())==0) {
-				showCarte=true;
-			}else {
-				showCarte=false;
-			}
-			
-			
-			
-			selCarte = Integer.parseInt(br.readLine());
-			if (selCarte < 0 || selCarte > 2) {
-				selCarte = 0;
-			}
-			selFond = Integer.parseInt(br.readLine());
-			if (selFond < 0 || selFond > 2) {
-				selFond = 0;
-			}
-			br.close();
-		} catch (IOException e) {// si le fichier n'est pas trouvÃ© on en crÃ©e un avec les configurations de base
-			try {
-				File confile = new File("config");
-				if (confile.createNewFile()) {
-					System.out.println("CrÃ©ation d'un fichier config.");
-					FileWriter myWriter = new FileWriter("config");
-					myWriter.write("0\n0\n100\n0\n0\n0\n");
-					myWriter.close();
-					diff = 0;
-					parManche = false;
-					totalfin = 100;
-					showCarte=true;
-					selCarte = 0;
-					selFond = 0;
-				}
-			} catch (IOException e1) {// la crÃ©ation du fichier a echouÃ©
-				System.out.println("impossible de crÃ©er un fichier.");
-			}
-		}
+		readConfig();
 		debut = true;
 		historique = new Historique();
 		annulation = false;
@@ -173,6 +124,9 @@ public class Jeu extends Observable {
 		//
 		Coup c1 ;
 		ind=i;
+        carteApiocher=i;
+        metAJour();
+        carteApiocher=-1;
 		if (enCours) {
 			//tant que la condition de victoire par nombre de plis gagner ou de mancher gagner n'est pas atteinte
 			if (!finmanche) {
@@ -225,7 +179,8 @@ public class Jeu extends Observable {
 				case 2:
 					
 						//s'il reste des cartes a piocher le joueur dominant pioche
-						mains[n].ajoutCarte(piles[i].piocher());
+						Cartepioche1=piles[i].piocher();
+						mains[n].ajoutCarte(Cartepioche1);
 						mains[n].trierMain();
 						h1=new Hand(mains[0]);
 						h2=new Hand(mains[1]);
@@ -242,7 +197,8 @@ public class Jeu extends Observable {
 					break;
 				case 3:
 					//le deuxiÃƒÂ¨me joueure pioche
-					mains[n].ajoutCarte(piles[i].piocher());
+					Cartepioche2=piles[i].piocher();
+					mains[n].ajoutCarte(Cartepioche2);
 					mains[n].trierMain();
 					
 					for (int k=0;k<6;k++) {// boucle sur les six piles
@@ -290,6 +246,15 @@ public class Jeu extends Observable {
 			historique.affiherPasse();
 			historique.afficherFutur();
 	}
+	
+	public Carte getCartepioche2() {
+		return Cartepioche2;
+	}
+	
+	public Carte getCartepioche1() {
+		return Cartepioche1;
+	}
+	
 	
 	public void annuler() {
 		
@@ -782,6 +747,66 @@ public class Jeu extends Observable {
         }
         public int getSelFond() {
         	return selFond;
+        }
+
+        public int getCarteApiocher() {
+            return carteApiocher;
+        }
+        public void readConfig() {
+        	try {
+    			BufferedReader br = new BufferedReader(new FileReader("config"));
+    			diff = Integer.parseInt(br.readLine());
+    			if (diff < 0 || diff > 1) { // a changer pour diff > 2
+    				diff = 0;
+    			}
+    			if(Integer.parseInt(br.readLine())==1) {
+    				parManche=true;
+    			}
+    			else parManche=false;
+    			
+    			totalfin = Integer.parseInt(br.readLine());
+    			if (totalfin<=0) {
+    				if (parManche)totalfin=12;
+    				else totalfin=100;
+    			}
+    			
+    			if (Integer.parseInt(br.readLine())==0) {
+    				showCarte=true;
+    			}else {
+    				showCarte=false;
+    			}
+    			
+    			
+    			
+    			selCarte = Integer.parseInt(br.readLine());
+    			if (selCarte < 0 || selCarte > 2) {
+    				selCarte = 0;
+    			}
+    			selFond = Integer.parseInt(br.readLine());
+    			if (selFond < 0 || selFond > 2) {
+    				selFond = 0;
+    			}
+    			br.close();
+    		} catch (IOException e) {// si le fichier n'est pas trouvÃ© on en crÃ©e un avec les configurations de base
+    			try {
+    				File confile = new File("config");
+    				if (confile.createNewFile()) {
+    					System.out.println("CrÃ©ation d'un fichier config.");
+    					FileWriter myWriter = new FileWriter("config");
+    					myWriter.write("0\n0\n100\n0\n0\n0\n");
+    					myWriter.close();
+    					diff = 0;
+    					parManche = false;
+    					totalfin = 100;
+    					showCarte=true;
+    					selCarte = 0;
+    					selFond = 0;
+    				}
+    			} catch (IOException e1) {// la crÃ©ation du fichier a echouÃ©
+    				System.out.println("impossible de crÃ©er un fichier.");
+    			}
+    		}
+        	metAJour();
         }
         
         

@@ -4,13 +4,13 @@ public class MemeCarte{
 		int [] CarteVue;//un tableu indiquant les information disponible sur chaque carte
 		int [] MainAdv;//information sur la carte adv
 		int nbCadv;//nombre de carte adverssaire
-		boolean [] colAdv;//tableaux indiquant si l'adverssaire a une couleure 
+		int [] colAdv;//tableaux indiquant si l'adverssaire a une couleure 
 		//en main ou nonl'indice cooresond a la valeur de la couleur
-		public Jeu jeu;
+		Couleur atout;
 	
-	public MemeCarte(Jeu j,int nbc){
-		jeu=j;
+	public MemeCarte(int nbc,Couleur a){
 		nbCadv=nbc;
+		atout=a;
 		//nbc est le nombre de carte de l'adverssair
 		//x est le nombre de cartes de l'adverssaire
 		CarteVue=new int [52];
@@ -22,6 +22,7 @@ public class MemeCarte{
 		//1 la carte est en sommet de pile
 		//2 on a la carte en main
 		//3 la carte a deja ete jouer
+		//4 la carte est dans la pioche (non visible)
 		MainAdv=new int[12];
 		for(int c=0;c<12;c++) {
 			MainAdv[c]=-1;
@@ -30,11 +31,12 @@ public class MemeCarte{
 		//-1 carte inconnue 
 		//-2 pas de carte
 		//sinon notre le nombre est la crte de notre adversset
-		colAdv=new boolean[4];
+		colAdv=new int[4];
 		for (int k=0;k<4;k++){
-			//on pars du rincipe que l'adverssaire n'a aucune 
-			//couleur et peut don jouer se qu'il veut
-			colAdv[k]=false;
+			//-1 on ne sait pas 
+			//0 il n'as pas cette couleur
+			//1 il as cette couleur
+			colAdv[k]=-1;
 		}
 		
 	}
@@ -72,6 +74,10 @@ public class MemeCarte{
 		return res;
 	}
 	
+	public Couleur getAtout() {
+		return atout;
+	}
+	
 	public void Carte_Sommet_Pile(Carte c) {
 		//maintien les information sur les cartes vues dans la partie
 		//par le joueur
@@ -104,7 +110,7 @@ public class MemeCarte{
 			i++;
 		}
 		nbCadv++;
-		colAdv[c.getCouleur().getVal()]=true;
+		colAdv[c.getCouleur().getVal()]=1;
 	}
 	
 	public void Carte_Poser(int pos) {
@@ -114,7 +120,7 @@ public class MemeCarte{
 	}
 	
 	
-	public void poseCarteAdv(int carte) {
+	public void poseCarteAdv(int carte,Carte cartejouer,boolean premier) {
 		//met a jour les info quand l'adverssaire poseune carte
 		int i=0;
 		boolean trouver=false;
@@ -139,25 +145,23 @@ public class MemeCarte{
 			}
 		}
 		nbCadv--;//met a jour le nombre de carte de l'adverssaire
-		Carte_Poser(carte);
-		MetAJourColAdv();
+		Carte_Poser(carte);//indique que la carte est poser
+		if (premier && IntACarte(carte).getCouleur()!=cartejouer.getCouleur())//vérifie si l'aversaire a cette couleur
+			colAdv[cartejouer.getCouleur().getVal()]=0;
+			MetAJourColAdv(cartejouer.getCouleur().getVal());
 	}
 	
 	
-	public void MetAJourColAdv() {
+	public void MetAJourColAdv(int col) {
 		//met a jour les information sur les couleur de la main adversse d'apres se qu'on sait
-		int ValCol;
-		for(int k=0;k<4;k++) {
-			//reinitialise tout les information sur les couleur de la main adversse
-			colAdv[k]=false;
-		}
-		for(int i=0;i<12;i++) {
-			//indique les couleur que l'on ssait que notre adverssaire possedent
-			if(MainAdv[i]>=0){
-				ValCol=MainAdv[i]/13;
-				colAdv[ValCol]=true;
+		if (colAdv[col]==0) {
+			for (int j=0;j<52;j++) {
+				if (CarteVue[j]==-1 && IntACarte(j).getCouleur().getVal()==col) {
+					CarteVue[j]=4;
+				}
 			}
 		}
+		
 	}
 	
 	
@@ -168,7 +172,7 @@ public class MemeCarte{
 		int i=0;
 		boolean inconnue=false;//compte les carte inconnue de notre adverssaire
 		while(i<nbCadv); {
-			if (jeu.carte_gagnante(c, IntACarte(MainAdv[i]))==2) {
+			if (carte_gagnante(c, IntACarte(MainAdv[i]))==2) {
 				//la carte passer est battue
 				res++;
 			}
@@ -198,7 +202,7 @@ public class MemeCarte{
 			//se qui est sufisant dans le cas sans atout et 
 			//si notre carte est un atout
 			carte=j+1+13*col;
-			if(jeu.carte_gagnante(c, IntACarte(carte))==2 && CarteVue[carte]<2) {
+			if(carte_gagnante(c, IntACarte(carte))==2 && CarteVue[carte]<2) {
 				//la carte est vaincue a se tour CarteVue[carte]<1 signifi que
 				//la carte est soit dans la main de l'adversaire soit que
 				//l'on ne c'est pas ou elle est 
@@ -206,12 +210,12 @@ public class MemeCarte{
 			}
 			j++;
 		}
-		if (!(c.getCouleur()==jeu.getAtout()) && jeu.getAtout()!=Couleur.Neutre && res) {
+		if (!(c.getCouleur()==atout) && atout!=Couleur.Neutre && res) {
 			//si la carte c n'est pas une carte atout, qu'il y a un atout
 			//et que notre carte n'est pas encor vaincue
 			int i=1;//sert tester tout les valeur des carte de couleur de l'atout
 			while(i<14 && res) {
-				carte=i+13*jeu.getAtout().getVal();
+				carte=i+13*atout.getVal();
 				if(CarteVue[carte]<1) {
 					//la carte est un atou et pas nous elle nous obligatoirement 
 					//il suffit de tester si elle est diponible pour l'adverssaire
@@ -277,7 +281,7 @@ public class MemeCarte{
 	}
 	
 	public boolean possedecolAdv(Couleur col) {
-		return colAdv[col.getVal()];
+		return colAdv[col.getVal()]==1;
 	}
 	
 	public int CartePosableAdv(Carte c_pos,boolean premier) {
@@ -289,7 +293,7 @@ public class MemeCarte{
 		for(int i=0;i<12;i++) {
 			if (MainAdv[i]>=0) {
 				c=IntACarte(MainAdv[i]);
-				if (SuposerJouable(c_pos ,c,premier,colAdv[c_pos.getCouleur().getVal()])) {
+				if (SuposerJouable(c_pos ,c,premier,colAdv[c_pos.getCouleur().getVal()]==1)) {
 					//la carte est posable
 					posable ++;
 				}
@@ -333,11 +337,12 @@ public class MemeCarte{
 		int nbretsant=0;
 		for (int i=0;i<52;i++) {
 			if (CarteVue[i]==-1) {
-				if (col==IntACarte(CarteVue[i]).getCouleur()) {
+				if (col.getVal()==IntACarte(i).getCouleur().getVal()) {
 					nbretsant++;
 				}
 			}
 		}
+		
 		return nbretsant;
 	}
 	
@@ -367,6 +372,32 @@ public class MemeCarte{
 		return inconnue;
 	}
 	
+	
+	public int carte_gagnante(Carte dom,Carte sub) {
+        //gagnant donne le numÃƒÂ©ros du joueure gagnant
+        int gagnant=-1;
+            if (dom.getCouleur()==sub.getCouleur()){
+                //si les deux carte sont de mÃƒÂªme couleure la plus forte l'emporte
+                if(dom.getValeur()>sub.getValeur()){
+                    gagnant=1;
+                }
+                else {
+                    gagnant=2;
+                }
+            }
+            else {
+                    //le premier joueure n'a pas d'atout et les deux joueure on une couleure diffÃƒÂ©rente
+                    if (sub.getCouleur()==atout) {
+                        gagnant=2;
+                    }
+                    else {
+                        gagnant=1;
+                    }
+            }
+            return gagnant;
+
+
+        }
 	
 	
 	

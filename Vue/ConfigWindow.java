@@ -22,7 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
+import Modele.Jeu;
 import Patterns.Observateur;
+import javax.swing.ImageIcon;
 
 public class ConfigWindow extends JFrame implements Observateur {
 	JPanel hisPanel;
@@ -31,6 +33,8 @@ public class ConfigWindow extends JFrame implements Observateur {
 	ButtonGroup showGroup;
 	ButtonGroup dosGroup;
 	ButtonGroup fondGroup;
+	Jeu jeu;
+	Plateau pl;
 	// variables des configurations
 	int selDiff;
 	int selWin;
@@ -39,7 +43,9 @@ public class ConfigWindow extends JFrame implements Observateur {
 	int selCarte;
 	int selFond;
 
-	public ConfigWindow() {
+	public ConfigWindow(Jeu jeu, Plateau pl) {
+		this.jeu = jeu;
+		this.pl = pl;
 		// recuperations des infos du fichier config
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("config"));
@@ -52,15 +58,17 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selWin = 0;
 			}
 			value = Integer.parseInt(br.readLine());
-			if (value<=0) {
-				if (selWin==1)value=12;
-				else value=100;
+			if (value <= 0) {
+				if (selWin == 1)
+					value = 12;
+				else
+					value = 100;
 			}
 			showCarte = Integer.parseInt(br.readLine());
 			if (showCarte < 0 || showCarte > 1) {
 				showCarte = 0;
 			}
-			
+
 			selCarte = Integer.parseInt(br.readLine());
 			if (selCarte < 0 || selCarte > 2) {
 				selCarte = 0;
@@ -70,7 +78,8 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selFond = 0;
 			}
 			br.close();
-		} catch (IOException e) {// si le fichier n'est pas trouv� on en cr�e un avec les configurations de base
+		} catch (IOException e) {// si le fichier n'est pas trouv� on en cr�e un avec les configurations de
+									// base
 			try {
 				File confile = new File("config");
 				if (confile.createNewFile()) {
@@ -89,12 +98,15 @@ public class ConfigWindow extends JFrame implements Observateur {
 				System.out.println("impossible de cr�er un fichier.");
 			}
 		}
+
 		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(400, (int) screenSize.getHeight() / 3 * 2);
+                this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("iconeparam.png")).getImage());
+
 		hisPanel = new JPanel();
 		hisPanel.setLayout(new BoxLayout(hisPanel, BoxLayout.PAGE_AXIS));
-                setLocationRelativeTo(null);
+		setLocationRelativeTo(null);
 		miseAJour();
 	}
 
@@ -167,7 +179,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 		cond.add(valueP);
 
 		hisPanel.add(cond);
-		
+
 		JPanel show = new JPanel();
 		show.setBorder(BorderFactory.createTitledBorder("Montrer les cartes de l'adversaire :"));
 		showGroup = new ButtonGroup();
@@ -186,7 +198,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 		}
 		showGroup.add(yes);
 		showGroup.add(no);
-		
+
 		show.add(yes);
 		show.add(no);
 		hisPanel.add(show);
@@ -259,7 +271,8 @@ public class ConfigWindow extends JFrame implements Observateur {
 				dispose();
 			}
 		});
-		JButton valid = new JButton("valider"); // boutton de validation qui stock toutes les infos selection�s dans un
+		JButton valid = new JButton("valider"); // boutton de validation qui stock toutes les infos selection�s dans
+												// un
 												// fichier config
 		valid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -271,7 +284,8 @@ public class ConfigWindow extends JFrame implements Observateur {
 				selFond = Integer.parseInt(fondGroup.getSelection().getActionCommand());
 				try {
 					FileWriter myWriter = new FileWriter("config");
-					myWriter.write(selDiff + "\n" + selWin + "\n" + value +"\n" +showCarte+ "\n" + selCarte + "\n" + selFond + "\n");
+					myWriter.write(selDiff + "\n" + selWin + "\n" + value + "\n" + showCarte + "\n" + selCarte + "\n"
+							+ selFond + "\n");
 					myWriter.close();
 				} catch (IOException e1) {
 					try {
@@ -279,17 +293,23 @@ public class ConfigWindow extends JFrame implements Observateur {
 						if (confile.createNewFile()) {
 							System.out.println("Cr�ation d'un fichier config.");
 							FileWriter myWriter = new FileWriter("config");
-							myWriter.write(
-									selDiff + "\n" + selWin + "\n" + value +"\n" +showCarte+ "\n" + selCarte + "\n" + selFond + "\n");
+							myWriter.write(selDiff + "\n" + selWin + "\n" + value + "\n" + showCarte + "\n" + selCarte
+									+ "\n" + selFond + "\n");
 							myWriter.close();
 						}
 					} catch (IOException e2) {
 						System.out.println("impossible de cr�er un fichier.");
 					}
 				}
+				if (jeu != null) {
+					jeu.readConfig();
+				}
+				if(pl!=null) {
+					pl.creerPlateau();
+				}
 				setVisible(false); // ferme la fenetre
 				dispose();
-                                FenetreAvertissement avert = new FenetreAvertissement("Les modifications seront prises en compte à la prochaine manche", new Dimension(450,120));
+				
 			}
 		});
 
