@@ -26,6 +26,7 @@ public class Plateau extends JPanel implements Observateur {
     private Dimension dimlabel;
     private boolean timed = false;
     private boolean waitPioche = false;
+    private boolean chgtJoueur = false;
     private int etapePrecedente;
     private int manchePrec = 1;
     private boolean chgtManche = false;
@@ -145,6 +146,14 @@ public class Plateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         //Fonction qui met a jour toutes les infos sur le plateau et le menu de droite
+        //Si on est a 2 joueur et a une nouvelle main, on veut cacher les cartes et indiquer le chgt de joueur
+        if(((jeu.etape()==0 && etapePrecedente==3) || (jeu.etape()==0 && etapePrecedente==1)) && !jeu.getIA() && chgtJoueur){
+            majMainJoueur(0, true);
+            majMainJoueur(1, true);
+            JoueurCarteListener.active=false;
+            FenetreAvertissement f = new FenetreAvertissement("Changement de joueur : c'est au tour du Joueur "+(jeu.joueurActuelle()+1), new Dimension(350,120),this);
+            chgtJoueur = false;
+        } else{
         //Si on est à l'attente de la pioche de l'IA, ne rien faire
         if (!waitPioche) {
             int cartePioche = jeu.getCarteApiocher();
@@ -197,18 +206,18 @@ public class Plateau extends JPanel implements Observateur {
                     } else if (!jeu.pilesvide()) {
                         etapePrecedente = jeu.etape();
                         majFleche();
-                        majMainJoueur(0);
+                        majMainJoueur(0, false);
                         majPaquets();
-                        majMainJoueur(1);
+                        majMainJoueur(1, false);
                         majCarteJouees();
                     }
                     //Si on est pas dans ces cas ni en attente d'un timer, maj classique
                 } else if (!timed) {
                     etapePrecedente = jeu.etape();
                     majFleche();
-                    majMainJoueur(0);
+                    majMainJoueur(0, false);
                     majPaquets();
-                    majMainJoueur(1);
+                    majMainJoueur(1, false);
                     majCarteJouees();
                 }
             }
@@ -216,9 +225,11 @@ public class Plateau extends JPanel implements Observateur {
             lastnbPlis1 = jeu.getMains()[0].getnbPlis();
             lastnbPlis2 = jeu.getMains()[1].getnbPlis();
         }
+        chgtJoueur = true;
+        }
     }
 
-    private void majMainJoueur(int numJ) {
+    private void majMainJoueur(int numJ, boolean hide) {
 
         ImageIcon icon2;
         for (int i = 0; i < 11; i++) {
@@ -226,7 +237,7 @@ public class Plateau extends JPanel implements Observateur {
             if (i < jeu.getMains()[numJ].getnbCarte()) {
 
                 if (jeu.getShowCarte() == false && ((jeu.getIA() == true && numJ == 1)
-                        || (jeu.getIA() == false && jeu.joueurActuelle() != numJ))) {
+                        || (jeu.getIA() == false && jeu.joueurActuelle() != numJ)) || hide) {
 
                     icon2 = new ImageIcon(
                             new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Back" + jeu.getSelCarte() + ".png")).getImage()
@@ -486,9 +497,9 @@ public class Plateau extends JPanel implements Observateur {
         //fonction appelée après l'attente qui permet de montrer les 2 cartes jouees
         etapePrecedente = jeu.etape();
         majFleche();
-        majMainJoueur(0);
+        majMainJoueur(0, false);
         majPaquets();
-        majMainJoueur(1);
+        majMainJoueur(1, false);
 
         majCarteJouees();
         if (jeu.getIA()) {

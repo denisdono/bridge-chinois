@@ -23,11 +23,12 @@ import javax.swing.JPanel;
  * @author dodee
  */
 public class FenetreAvertissement extends JFrame {
+    private String msg;
+    private Dimension d;
     public FenetreAvertissement(String msg, Dimension d){
-        this.setTitle("Avertissement"); // definitions de la fenetre
-        this.setSize(d);
-        this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("info.png")).getImage());
-        JPanel pan = new JPanel();
+        this.d = d;
+        this.msg = msg;
+         JPanel pan = new JPanel();
         //pan.setLayout(new GridLayout(2,1));
         JLabel msgLabel = new JLabel(msg);
         msgLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -41,10 +42,39 @@ public class FenetreAvertissement extends JFrame {
             }
         });
         pan.add(btOk);
-        setLocationRelativeTo(null);
         add(pan);
+        init();
+    }
+    
+    public FenetreAvertissement(String msg, Dimension d, Plateau p){
+        this.d = d;
+        this.msg = msg;
+         JPanel pan = new JPanel();
+        //pan.setLayout(new GridLayout(2,1));
+        JLabel msgLabel = new JLabel(msg);
+        msgLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        pan.add(msgLabel);
+        JButton btOk = new JButton("OK");
+        btOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                dispose();
+                JoueurCarteListener.active=true;
+                p.miseAJour();
+            }
+        });
+        pan.add(btOk);
+        add(pan);
+        init();
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    }
+    
+    private void init(){
+        this.setTitle("Avertissement"); // definitions de la fenetre
+        this.setSize(d);
+        this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("info.png")).getImage());
+        setLocationRelativeTo(null);
         setVisible(true);
-       
-        
     }
 }
