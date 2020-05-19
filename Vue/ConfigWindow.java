@@ -106,7 +106,7 @@ public class ConfigWindow extends JFrame implements Observateur {
 
 		this.setTitle("Configuration"); // definitions de la fenetre
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize(450, (int) screenSize.getHeight() / 3 * 2);
+		this.setSize(450, 600);
                 this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("iconeparam.png")).getImage());
 
 		hisPanel = new JPanel();
