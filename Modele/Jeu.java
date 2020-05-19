@@ -36,6 +36,7 @@ public class Jeu extends Observable {
 	Carte c_1;//carte piochée par l'autre joueur
 	Carte Cartepioche1;
 	Carte Cartepioche2;
+	Deck paquet;
 	int diff;// dificulter de l'ia
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
@@ -74,17 +75,8 @@ public class Jeu extends Observable {
 		metAJour();
 	}
 	
-	public void nouvelleManche() {
-//		c_dom = new Carte(2,Couleur.Trefle);//permet d'annuler après le 1er coup sinon ca bug
-//		c_sub = new Carte(2,Couleur.Trefle);
-		//decommenter les 2 lignes au dessus pour voir le bug
-		finmanche=false;
-		piochage= true;
-		etape=0;
-		mains[0].resetPlis();
-		mains[1].resetPlis();
-		Deck paquet = new Deck(); // creation d'un paquet de carte (deja melanger)
-		paquet.remplirPaquet();
+	public void distrubition(Deck p) {
+		Deck paquet=new Deck(p);
 		for (int i=0;i<11;i++) { // remplissage des mains des joueurs
 			mains[0].ajoutCarte(paquet.piocher());
 			mains[1].ajoutCarte(paquet.piocher());
@@ -107,6 +99,33 @@ public class Jeu extends Observable {
 		Hand h2=new Hand(mains[1]);
 			c1 =  new Coup(0,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 			historique.ajouterCoup(c1);
+	}
+	
+	public void restart() {
+		changerjoueur=true;
+		joueurdominant=(manche+1)%2;
+		mains[0].videMain();
+		mains[1].videMain();
+		finmanche=false;
+		piochage= true;
+		etape=0;
+		mains[0].resetPlis();
+		mains[1].resetPlis();
+		distrubition(paquet);
+		metAJour();
+	}
+	
+	
+	public void nouvelleManche() {
+		finmanche=false;
+		piochage= true;
+		etape=0;
+		mains[0].resetPlis();
+		mains[1].resetPlis();
+		// creation d'un paquet de carte (deja melanger)
+		paquet =new Deck();
+		paquet.remplirPaquet();
+		distrubition(paquet);
 	}
 	
 	public void jouer(int i,int n) {

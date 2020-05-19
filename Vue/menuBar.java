@@ -27,6 +27,7 @@ public class menuBar extends JMenuBar { // menu du haut
 	private JMenuItem redo;
 	private JMenuItem conceed;
 	private JMenuItem restart;
+	private JMenuItem nouvelle;
 	private JMenuItem config;
 	private JMenuItem regles;
         private JMenuItem suggere;
@@ -83,6 +84,14 @@ public class menuBar extends JMenuBar { // menu du haut
 			}
 		});
 		menuAction.add(restart);
+		
+		nouvelle = new JMenuItem("Nouvelle Partie");
+		nouvelle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.nouvellePartie();
+			}
+		});
+		menuAction.add(nouvelle);
 		add(menuAction);
 
 		completeIHM();
