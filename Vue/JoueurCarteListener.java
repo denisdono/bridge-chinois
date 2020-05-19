@@ -18,12 +18,14 @@ import javax.swing.JLabel;
  */
 public class JoueurCarteListener extends MouseAdapter{
         public static boolean active = true;
-        int indice;
-	CollecteurEvenements control;
+        private int indice;
+	private CollecteurEvenements control;
+        private Dimension dim;
 
-	JoueurCarteListener(int indice, CollecteurEvenements c) {
+	JoueurCarteListener(int indice, CollecteurEvenements c, Dimension d) {
 		this.indice = indice;
 		this.control = c;
+                this.dim = d;
 	}
 
 	@Override
@@ -46,7 +48,7 @@ public class JoueurCarteListener extends MouseAdapter{
         public void mouseExited(MouseEvent e){
             //((JLabel)e.getSource()).setPreferredSize(new Dimension(50,80));
                 if(active)
-                    ((JLabel)e.getSource()).setSize(new Dimension(((JLabel)e.getSource()).getSize().width,((JLabel)e.getSource()).getSize().height-15));
+                    ((JLabel)e.getSource()).setSize(dim);
           //  ((JLabel)e.getSource()).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         }
 }
