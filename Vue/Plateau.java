@@ -275,6 +275,7 @@ public class Plateau extends JPanel implements Observateur {
             centreDecks.get(i).setBorder(null);
             if (jeu.getPiles()[i].estVide()) {
                 centreDecks.get(i).setIcon(null);
+                centreDecks.get(i).setPreferredSize(dimlabel);
                 centreDecks.get(i).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
                 if (centreDecks.get(i).getMouseListeners().length > 0) {
                     centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
@@ -295,7 +296,7 @@ public class Plateau extends JPanel implements Observateur {
                     centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
                 }
             }
-            centreDecks.get(i).setPreferredSize(dimlabel);
+            
         }
     }
 
