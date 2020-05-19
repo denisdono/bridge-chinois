@@ -168,7 +168,7 @@ public class Plateau extends JPanel implements Observateur {
             } else if (jeu.getIA() && jeu.joueurActuelle() == 1 && (jeu.etape() == 2 || jeu.etape() == 3) && cartePioche != -1) {
 
                 waitPioche = true;
-                centreDecks.get(cartePioche).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+                centreDecks.get(cartePioche).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
                 Timer t = new Timer(1500, (ActionEvent e) -> majTimePioche(cartePioche));
                 t.setRepeats(false);
                 t.start();
@@ -241,7 +241,7 @@ public class Plateau extends JPanel implements Observateur {
                 if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ && jeu.peutJouer(i, numJ)) {
                     //Ajout des listeners de carte si necessaire
                     if (hands.get(numJ).get(i).getMouseListeners().length == 0 && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
-                        hands.get(numJ).get(i).addMouseListener(new JoueurCarteListener(i, c));
+                        hands.get(numJ).get(i).addMouseListener(new JoueurCarteListener(i, c, dimlabel));
 
                     }
                 } else {
@@ -257,10 +257,10 @@ public class Plateau extends JPanel implements Observateur {
                     }
                 }
             } else {
-                hands.get(numJ).get(i).setPreferredSize(dimlabel);
-                hands.get(numJ).get(i).setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
                 hands.get(numJ).get(i).setIcon(null);
-
+                if (hands.get(numJ).get(i).getMouseListeners().length > 0) {
+                    hands.get(numJ).get(i).removeMouseListener(hands.get(numJ).get(i).getMouseListeners()[0]);
+                }
             }
         }
     }
@@ -290,7 +290,7 @@ public class Plateau extends JPanel implements Observateur {
                 // SI on est a une étape de pioche
                 if (jeu.etape() == 2 || jeu.etape() == 3 && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
                     if (centreDecks.get(i).getMouseListeners().length == 0 && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
-                        centreDecks.get(i).addMouseListener(new JoueurCarteListener(i, c));
+                        centreDecks.get(i).addMouseListener(new JoueurCarteListener(i, c, dimlabel));
                     }
                 } else if (centreDecks.get(i).getMouseListeners().length > 0) {
                     centreDecks.get(i).removeMouseListener(centreDecks.get(i).getMouseListeners()[0]);
@@ -518,9 +518,9 @@ public class Plateau extends JPanel implements Observateur {
             IASimple suggereIA = new IASimple(jeu.joueurActuelle(), jeu);
             int coupSuggere = suggereIA.IAjeu();
             if (jeu.etape() == 0 || jeu.etape() == 1) {
-                hands.get(jeu.joueurActuelle()).get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+                hands.get(jeu.joueurActuelle()).get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
             } else {
-                centreDecks.get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+                centreDecks.get(coupSuggere).setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
             }
         }
     }

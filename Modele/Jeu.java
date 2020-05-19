@@ -106,6 +106,9 @@ public class Jeu extends Observable {
 		joueurdominant=(manche+1)%2;
 		mains[0].videMain();
 		mains[1].videMain();
+		for (int i=0;i<6;i++) {// boucle sur les six piles
+				piles[i].videPaquet();
+			}
 		finmanche=false;
 		piochage= true;
 		etape=0;
