@@ -161,6 +161,7 @@ class Menu extends JPanel implements ActionListener{
         Icon img;
         if(atout == "Neutre"){
             this.labelAtout.setIcon(null);
+            this.labelAtout.setBorder(null);
             this.labelAtout.setText("Sans atout");
         } else{
             int borderSize =3;

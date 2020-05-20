@@ -50,6 +50,7 @@ public class FenetreAvertissement extends JFrame {
         this.d = d;
         this.msg = msg;
          JPanel pan = new JPanel();
+         this.setAlwaysOnTop(true);
         //pan.setLayout(new GridLayout(2,1));
         JLabel msgLabel = new JLabel(msg);
         msgLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
