@@ -88,7 +88,6 @@ public class ConfigWindow extends JFrame implements Observateur {
 			try {
 				File confile = new File("config");
 				if (confile.createNewFile()) {
-					System.out.println("Cr�ation d'un fichier config.");
 					FileWriter myWriter = new FileWriter("config");
 					myWriter.write("0\n0\n100\n0\n0\n0\n");
 					myWriter.close();
@@ -367,7 +366,6 @@ public class ConfigWindow extends JFrame implements Observateur {
 					try {
 						File confile = new File("config");
 						if (confile.createNewFile()) {
-							System.out.println("Création d'un fichier config.");
 							FileWriter myWriter = new FileWriter("config");
 							myWriter.write(selDiff + "\n" + selWin + "\n" + value + "\n" + showCarte + "\n" + selCarte
 									+ "\n" + selFond + "\n");
