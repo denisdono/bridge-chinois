@@ -18,7 +18,7 @@ class JoueurIA extends Joueur{
 	
 	boolean tempsEcoule() {
 		int i;
-		int niv=2;
+		  int niv=jeu.niveauIA();
 		switch (niv) {
 		case 0:
 			i=ia.IAJeu();
