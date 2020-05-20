@@ -790,7 +790,7 @@ public class Jeu extends Observable {
         	try {
     			BufferedReader br = new BufferedReader(new FileReader("config"));
     			diff = Integer.parseInt(br.readLine());
-    			if (diff < 0 || diff > 1) { // a changer pour diff > 2
+    			if (diff < 0 || diff > 2) { // a changer pour diff > 2
     				diff = 0;
     			}
     			if(Integer.parseInt(br.readLine())==1) {
