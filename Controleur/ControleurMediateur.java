@@ -27,37 +27,22 @@ public class ControleurMediateur implements CollecteurEvenements {
 	}
 
 	
-
 	public void annule() {
-		Coup c;
-		if(!jeu.getIA()) {
-			c = jeu.historique.getPasse().peek();//rajouter try ctch
+		//if(!jeu.getIA())
+			Coup c = jeu.historique.getPasse().peek();//rajouter try ctch
 			jeu.annuler();
 			joueurCourant = c.getJoueur();	
 			System.out.print("Joueur courant"+joueurCourant);
 			
-		}else {
-
-			jeu.annuler();	
-
-			
-		}
-		System.out.println("Nous sommes a l etape :"+ jeu.etape());
-
+		//}
 	}
 
 	public void refait() {
 		if(jeu.historique.peutRefaire()) {
-			if(!jeu.getIA()) {
-				
-			jeu.refaire();
+			jeu.refaire(joueurCourant);
 			changeJoueur();
 			//System.out.print("Joueur courant"+joueurCourant);
 			jeu.metAJour();
-			}else {
-				jeu.refaire();
-			}	
-			System.out.println("Nous sommes a l etape :"+ jeu.etape());
 		}else {
 			System.out.println("Pas de coup rejouable");
 		}
@@ -66,23 +51,13 @@ public class ControleurMediateur implements CollecteurEvenements {
 	
 	@Override
 	public void sauvegarde() {
-		if(!jeu.getIA()) {
-			jeu.save("laSauvegarde");
-		}else {
-			jeu.save("laSauvegardeIA");
-
-		}
+		jeu.save("laSauvegarde");
 	}
 	
 	@Override
 	public void charge() throws ClassNotFoundException {
 		try {
-			if(!jeu.getIA()) {
 			jeu.load("laSauvegarde");
-			}else {
-				jeu.load("laSauvegardeIA");
-
-			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,6 +72,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
 		if (joueurs[joueurCourant].jeu(i))
+			System.out.println("diff "+jeu.niveauIA());
+			if(jeu.niveauIA()==2 && jeu.getIA())
+				joueurs[1].avanceMinMAx(jeu.getdern());
 			changeJoueur();
 		
 		//System.out.print("Joueur courant"+joueurCourant);
@@ -118,13 +96,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 		changeJoueur();
 	}
 
-	public void nouvellePartie() {
-		jeu.start();
-		changeJoueur();
-	}
-	
 	public void recommencer() {
-		jeu.restart();
+		jeu.start();
 		changeJoueur();
 	}
 	
@@ -134,6 +107,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 				// Lorsque le temps est écoulé on le transmet au joueur courant.
 				// Si un coup a été joué (IA) on change de joueur.
 				if (joueurs[joueurCourant].tempsEcoule()) {
+					if(jeu.niveauIA()==2 && jeu.getIA())
+						joueurs[1].avanceMinMAx(jeu.getdern());
 					changeJoueur();
 				} else {
 				// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
