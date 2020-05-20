@@ -12,12 +12,14 @@ public class Hand implements Serializable{
 	private Carte[] main;//main du joueur 
 	private int nbcarte;// nombre de carte du joueur
 	private int plis;// nombre de plis du joueur (dans une manche)
-	private int score;// score du joueur dans la partie
+	private int scoreM;// score (manche )du joueur dans la partie
+	private int scoreP;// score (pli) du joueur dans la partie
 	
 	public Hand() { //initialisation a 0
 		main =new Carte[11];
 		plis=0;
-		score=0;
+		scoreM=0;
+		scoreP=0;
 		nbcarte=0;
 	}
 	
@@ -25,7 +27,8 @@ public class Hand implements Serializable{
 		main = h.getMain().clone();
 		
 		plis = h.plis;
-		score =h.score;
+		scoreM =h.scoreM;
+		scoreP =h.scoreP;
 		nbcarte = h.nbcarte;
 	}
 	
@@ -107,16 +110,28 @@ public class Hand implements Serializable{
 		plis=0 ;
 	}
 	
-	public int getnbScore() {// obtenir le score du joueur
-		return score;
+	public int getnbScoreM() {// obtenir le score du joueur
+		return scoreM;
 	}
 	
-	public void resetScore() {// remet le score a 0
-		score=0;
+	public void resetScoreM() {// remet le score a 0
+		scoreM=0;
 	}
 	
-	public void addScore(int p) {// permet d'ajouter p au score
-		score=score+p;
+	public void addScoreM(int p) {// permet d'ajouter p au score
+		scoreM=scoreM+p;
+	}
+	
+	public int getnbScoreP() {// obtenir le score du joueur
+		return scoreP;
+	}
+	
+	public void resetScoreP() {// remet le score a 0
+		scoreP=0;
+	}
+	
+	public void addScoreP(int p) {// permet d'ajouter p au score
+		scoreP=scoreP+p;
 	}
 
         public Carte[] getMain() {// permet de renvoyer la main(donn�e du joueur)

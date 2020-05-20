@@ -28,6 +28,7 @@ public class Historique extends JFrame {
     JPanel hisPanel;
     private final JLabel tot1;
     private final JLabel tot2;
+    private int lastNumManche=0;
 
     public Historique() {
         this.setTitle("Historique");
@@ -37,25 +38,8 @@ public class Historique extends JFrame {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
         hisPanel = new JPanel(new GridLayout(0, 3));
-        JLabel titre = new JLabel("Historique");
-        titre.setFont(new Font("Calibri", Font.PLAIN, 24));
-        hisPanel.add(titre);
-        JLabel invLab = new JLabel("");
-        JLabel invLab2 = new JLabel("");
-        hisPanel.add(invLab);
-        hisPanel.add(invLab2);
-        ///////////////////////
-        //Entete tableau
-        JLabel ent1 = new JLabel("Manche num", SwingConstants.CENTER);
-        ent1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        JLabel ent2 = new JLabel("Joueur 1", SwingConstants.CENTER);
-        ent2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        JLabel ent3 = new JLabel("Joueur 2", SwingConstants.CENTER);
-        ent3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        hisPanel.add(ent1);
-        hisPanel.add(ent2);
-        hisPanel.add(ent3);
-
+        initPanel();
+        
         JScrollPane scrollPane = new JScrollPane(hisPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         container.add(scrollPane);
@@ -76,7 +60,10 @@ public class Historique extends JFrame {
 
     public void ajouterManche(int numManche, int nbPlis1, int nbPlis2, int score1, int score2) {
         String infoManche, infoj1, infoj2;
-
+        if(numManche <=lastNumManche){
+            initPanel();
+        }
+        lastNumManche = numManche;
         if (nbPlis1 + nbPlis2 == 26) {
             infoManche = "" + numManche;
             infoj1 = "" + nbPlis1;
@@ -101,6 +88,28 @@ public class Historique extends JFrame {
 
     public void montrer() {
         this.setVisible(true);
+    }
+
+    private void initPanel() {
+        hisPanel.removeAll();
+        JLabel titre = new JLabel("Historique");
+        titre.setFont(new Font("Calibri", Font.PLAIN, 24));
+        hisPanel.add(titre);
+        JLabel invLab = new JLabel("");
+        JLabel invLab2 = new JLabel("");
+        hisPanel.add(invLab);
+        hisPanel.add(invLab2);
+        ///////////////////////
+        //Entete tableau
+        JLabel ent1 = new JLabel("Manche num", SwingConstants.CENTER);
+        ent1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JLabel ent2 = new JLabel("Joueur 1", SwingConstants.CENTER);
+        ent2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JLabel ent3 = new JLabel("Joueur 2", SwingConstants.CENTER);
+        ent3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        hisPanel.add(ent1);
+        hisPanel.add(ent2);
+        hisPanel.add(ent3);
     }
 
 }

@@ -28,7 +28,7 @@ public class Jeu extends Observable {
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur ÃƒÂ  la main (premier a jouer/piocher)
-	int joueurdominantpred;//indique le joueur dominant de la precedente manche
+	int joueurdominantpred;
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
@@ -41,9 +41,10 @@ public class Jeu extends Observable {
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
 	int ind;//sert a determiner quelle carte posé dans la pioche
-	boolean annulation;//sert a determiner s'il y a eu une annulation de coup
-    private int carteApiocher=-1;
-	boolean debut;//indique si on est au premier coup du premier tour de jeu
+	public boolean annulation;
+        private int carteApiocher=-1;
+	int jca;
+	boolean debut;
 	int selCarte;
 	int selFond;
 	public Historique historique;
@@ -239,21 +240,21 @@ public class Jeu extends Observable {
 				if (mains[0].getnbCarte()==0 && mains[1].getnbCarte()==0) {
 					//teste si la manche est fini
 					finmanche=true;
+					int j=vainqueurManche();
+					if (j!=-1) {
+						//si il n'y a pas ÃƒÂ©galiter on incrÃƒÂ©mente le score du vaiqueur
+						mains[j].addScoreM(1);
+					}
+					//on ajoute le nombre de plis gagner par chaque jooueur
+						mains[0].addScoreP(mains[0].getnbPlis());
+						mains[1].addScoreP(mains[1].getnbPlis());
 					if(parManche) {
 						//si on compte par nombre de manche
 						enCours=(manche<totalfin);//on vÃƒÂ©rifie si on fini la partie
-						int j=vainqueurManche();
-						if (j!=-1) {
-							//si il n'y a pas ÃƒÂ©galiter on incrÃƒÂ©mente le score du vaiqueur
-							mains[j].addScore(1);
-						}
 					}
 					else{
 						//sinon est par nombre de plis gagner
-						//on ajoute le nombre de plis gagner par chaque jooueur
-						mains[0].addScore(mains[0].getnbPlis());
-						mains[1].addScore(mains[1].getnbPlis());
-						enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);//on vÃƒÂ©rifie si on fini la partie
+						enCours=(mains[0].getnbScoreP()<totalfin && mains[1].getnbScoreP()<totalfin);//on vÃƒÂ©rifie si on fini la partie
 					}
 					if (enCours) {
 						//si la partie n'est pas fini on lance une nouvelle manche
@@ -264,7 +265,8 @@ public class Jeu extends Observable {
 				}		
 			}	
 		}
-			
+			historique.affiherPasse();
+			historique.afficherFutur();
 	}
 	
 	public Carte getCartepioche2() {
@@ -354,7 +356,8 @@ public class Jeu extends Observable {
 	
 	}
 
-	
+		historique.affiherPasse();
+		historique.afficherFutur();
 	}
 	
 	public void refaire() {//reste a corriger bug joueur actuel
@@ -378,7 +381,7 @@ public class Jeu extends Observable {
 					if(historique.getFutur().size()>0) {
 						cpeek=historique.getFutur().peek();
 					}
-//					historique.afficherFutur();
+					historique.afficherFutur();
 				}
 				
 //				cj = historique.refaire();
@@ -393,7 +396,7 @@ public class Jeu extends Observable {
 		
 		//Coup cpeek;//coup au sommet
 		System.out.print("historique avant refaire:");
-//		historique.afficherFutur();
+		historique.afficherFutur();
 		// cpeek= historique.getPasse().peek();
 		System.out.println("main :");
 		 //c.main1.afficherMain();
@@ -418,12 +421,12 @@ public class Jeu extends Observable {
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
 			this.c_sub = cj.getC_sub();// carte jouer par l'autre joueur OK
 			
-//			System.out.println();
-//			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
-//			
-//			historique.affiherPasse();
-//			historique.afficherFutur();
-//			System.out.println("Joueur act: "+joueurActuelle());
+			System.out.println();
+			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
+			
+			historique.affiherPasse();
+			historique.afficherFutur();
+			System.out.println("Joueur act: "+joueurActuelle());
 			metAJour();
 			
 	}
@@ -439,34 +442,25 @@ public class Jeu extends Observable {
 			for (int i=0;i<6;i++) {// boucle sur les six piles
 				piles[i].videPaquet();
 			}
+			if (IA && joueurActuelle()==1) {
+				//si c'est une ia c'est l'autre joueur qui as abandonner
+				mains[1].addScoreM(1);
+				mains[0].resetPlis();
+				mains[1].maxPlis();
+				mains[1].addScoreP(26);
+			}
+			else {//sinon on concidère que c'est le joueur actuelle qui abandonne
+				mains[(joueurActuelle()+1)%2].addScoreM(1);
+				mains[(joueurActuelle()+1)%2].addScoreP(26);
+				mains[joueurActuelle()].resetPlis();
+				mains[(joueurActuelle()+1)%2].maxPlis();
+			}
 			if(parManche) {
 				//si on compte par nombre de manche
 				enCours=(manche<totalfin);//on vÃƒÂ©rifie si on fini la partie
-				if (IA && joueurActuelle()==1) {
-					//si c'est une ia c'est l'autre joueur qui as abandonner
-					mains[1].addScore(1);
-					mains[0].resetPlis();
-					mains[1].maxPlis();
-				}
-				else {//sinon on concidère que c'est le joueur actuelle qui abandonne
-					mains[(joueurActuelle()+1)%2].addScore(1);
-					mains[joueurActuelle()].resetPlis();
-					mains[(joueurActuelle()+1)%2].maxPlis();
-				}
 			}
 			else{
-				if (IA && joueurActuelle()==1) {
-					//si c'est une ia c'est l'autre joueur qui as abandonner
-					mains[1].addScore(26);
-					mains[0].resetPlis();
-					mains[1].maxPlis();
-				}
-				else {//sinon on concidère que c'est le joueur actuelle qui abandonne
-					mains[(joueurActuelle()+1)%2].addScore(26);
-					mains[joueurActuelle()].resetPlis();
-					mains[(joueurActuelle()+1)%2].maxPlis();
-				}
-				enCours=(mains[0].getnbScore()<totalfin && mains[1].getnbScore()<totalfin);//on vÃƒÂ©rifie si on fini la partie
+				enCours=(mains[0].getnbScoreP()<totalfin && mains[1].getnbScoreP()<totalfin);//on vÃƒÂ©rifie si on fini la partie
 			}
 			if (enCours) {
 				//si la partie n'est pas fini on lance une nouvelle manche
@@ -550,13 +544,25 @@ public class Jeu extends Observable {
 	
 	public int vainqueurPartie() {
 		//donne le gagnatnt d'une partie(de plusieure manche)
-		if (mains[0].getnbScore()>mains[1].getnbScore()) {
-			//le joueur 1 a gagner la partie
-			return 0;
+		if(parManche) {
+			if (mains[0].getnbScoreM()>mains[1].getnbScoreM()) {
+				//le joueur 1 a gagner la partie
+				return 0;
+			}
+			if (mains[0].getnbScoreM()<mains[1].getnbScoreM()) {
+				//le joueur 2 a gagner la partie
+				return 1;
+			}
 		}
-		if (mains[0].getnbScore()<mains[1].getnbScore()) {
-			//le joueur 2 a gagner la partie
-			return 1;
+		else {
+			if (mains[0].getnbScoreP()>mains[1].getnbScoreP()) {
+				//le joueur 1 a gagner la partie
+				return 0;
+			}
+			if (mains[0].getnbScoreP()<mains[1].getnbScoreP()) {
+				//le joueur 2 a gagner la partie
+				return 1;
+			}
 		}
 		return -1;
 		//egaliter
@@ -589,18 +595,7 @@ public class Jeu extends Observable {
 		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
 		osave.writeBoolean(annulation);
 		osave.writeObject(historique);
-		osave.writeObject(Cartepioche1);
-		osave.writeObject(Cartepioche2);
-		osave.writeObject(paquet);
-		osave.writeInt(diff);// dificulter de l'ia
-		osave.writeBoolean(showCarte);// carte visible
-		osave.writeBoolean(IA);// prï¿½sence d'une IA
-		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
-		osave.writeBoolean(annulation);//sert a determiner s'il y a eu une annulation de coup
-	    osave.writeInt(carteApiocher);
-		osave.writeBoolean(debut);//indique si on est au premier coup du premier tour de jeu
-		osave.writeInt(selCarte);
-		osave.writeInt(selFond);
+		
 	    // donnÃ©e a sauvegarder
 		osave.close();
 		System.out.println("Partie sauvegardée");
@@ -636,17 +631,6 @@ public class Jeu extends Observable {
 		  	ind = osave.readInt();;//sert a determiner quelle carte posé dans la pioche
 		  	annulation = osave.readBoolean();
 		  	historique = (Historique) osave.readObject();
-		  	Cartepioche1 = (Carte)osave.readObject();
-		  	Cartepioche2 = (Carte)osave.readObject();		  	paquet = (Deck)osave.readObject();
-			diff = osave.readInt();// dificulter de l'ia
-			showCarte = osave.readBoolean();// carte visible
-			IA = osave.readBoolean();// prï¿½sence d'une IA
-			ind = osave.readInt();//sert a determiner quelle carte posé dans la pioche
-			annulation = osave.readBoolean();//sert a determiner s'il y a eu une annulation de coup
-		    carteApiocher = osave.readInt();
-			debut = osave.readBoolean();//indique si on est au premier coup du premier tour de jeu
-			selCarte = osave.readInt();
-			selFond = osave.readInt();
 		      osave.close();
 		      metAJour();
 				System.out.println("Partie chargée");
@@ -789,6 +773,15 @@ public class Jeu extends Observable {
         public int getSelFond() {
         	return selFond;
         }
+        
+        public int getScore(int j) {
+        	if(parManche) {
+        		return mains[j].getnbScoreM();
+        	}
+        	else {
+        		return mains[j].getnbScoreP();
+        	}
+        }
 
         public int getCarteApiocher() {
             return carteApiocher;
@@ -832,7 +825,7 @@ public class Jeu extends Observable {
     			try {
     				File confile = new File("config");
     				if (confile.createNewFile()) {
-    					System.out.println("CrÃ©ation d'un fichier config.");
+    					System.out.println("Création d'un fichier config.");
     					FileWriter myWriter = new FileWriter("config");
     					myWriter.write("0\n0\n100\n0\n0\n0\n");
     					myWriter.close();
