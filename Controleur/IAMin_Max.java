@@ -15,7 +15,6 @@ public class IAMin_Max extends Joueur {
 	arbreMinMax arbre=new arbreMinMax();//notre arbre de chois possible
 	int etape;//la dernier etape a la quelle on a jouer
 	
-	
 	public IAMin_Max(int n,Jeu j) {
 		//cree et initialise notre IA
 		super(n,j);
@@ -35,6 +34,36 @@ public class IAMin_Max extends Joueur {
 		etape=0;
 		System.out.println("il y a actuellement "+tmp+" de fils cr√©e");
 	}
+	
+	void testTransition() {
+		//verifie que la carte cree est correctement transposer en entier pui remis en carte
+		Carte c;
+		int tmp;
+		Couleur couleur = null;
+		for(int j =0;j<4 ;j++ ) { // creations de toutes les cartes
+			switch(j) {
+				case 0: couleur = Couleur.Trefle;
+						break;
+				case 1: couleur = Couleur.Carreaux;
+						break;
+				case 2: couleur = Couleur.Coeur;
+						break;
+				case 3: couleur = Couleur.Pique;
+					break;		
+						
+			}
+			for(int i = 2 ;i<15;i++ ) { // Les cartes vont du 2 au 14 pour les cartes de 2 a 10 les chiffres parlent d'eux meme ensuite 11=valet, 12=dame, 13=roi et 14=as
+				c = new Carte(i,couleur);
+				System.out.println("carte cree "+c);
+				tmp=contexte.CarteAInt(c);
+				System.out.println("carte vaut "+tmp);
+				c=contexte.IntACarte(tmp);
+				System.out.println("carte recuperer "+c);
+				System.out.println(" ");
+			}
+		}
+	}
+	
 	
 	int etageSup() {
 		//simule le nombre de fils qui sera crÈe dans la partie
@@ -61,10 +90,9 @@ public class IAMin_Max extends Joueur {
 		return e;
 	}
 	
-	public boolean IAjeu() {
+	public int IAjeu() {
 		int i=0;
 		int j;
-		Carte dernierCarteJouer;
 		Carte Ajouer;
 		arbreMinMax fils[];
 		//int tmp[];
@@ -83,23 +111,21 @@ public class IAMin_Max extends Joueur {
 			Ajouer=tmp.getCarteAction();
 			i=indiceCarteMain(Ajouer);
 			etape=jeu.etape();
-			System.out.println("joue la carte de la main d'indice "+i);
 			break;
 		case 2:
 		case 3:
 			deplace_arbre();
 			i=meilleurPioche();
 			etape=jeu.etape();
-			System.out.println("pioche dans la pile "+i);
 			break;
 		}
-		jeu.jouer(i, num);
-		return true;
+		return i;
 	}
 	
 	
 	
 	int meilleurPioche() {
+		//System.out.println("recherche meilleur pioche");
 		Deck pioche[];
 		pioche=jeu.getPiles();
 		arbreMinMax tmp;
@@ -110,8 +136,10 @@ public class IAMin_Max extends Joueur {
 		for (int j=0;j<arbre.getnbfils();j++) {
 			tmp=fils[j];
 			for (int i=0;i<6;i++) {
+				//System.out.println("regarde si la pioche est piochable");
 					if(jeu.peutPiocher(i)) {
 						if(pioche[i].topDeck().getCouleur()==tmp.getCarteAction().getCouleur() && pioche[i].topDeck().getValeur()==tmp.getCarteAction().getValeur()) {
+							//System.out.println("la pioche est piochable");
 							if(tmp.gettauxvictoir()>meilleur) {
 								meilleur=tmp.gettauxvictoir();
 								ind=i;
@@ -187,18 +215,28 @@ public class IAMin_Max extends Joueur {
 	public void deplace_arbre() {
 		//trouve la carte jouer a l'etape qui nous interesse
 		Carte jouer=null;
-		System.out.println("etape du jeu "+jeu.etape());
-		while(jeu.etape()!=etape) {
+		boolean finpioche=jeu.pilesvide();
+		while(jeu.etape()!=arbre.getetape() || finpioche){
 			//notre arbre n'est pas sur l'etape en cour on le met a jour
-			switch(etape) {
+			switch(arbre.getetape()) {
 			case 0:
-				System.out.println("premier jeu ");
-				jouer=jeu.getC_dom();
+				//System.out.println("carte poser premier ");
+				if(finpioche && arbre.getdom()!=jeu.j_dom() && jeu.j_dom()!=num) {
+					jouer=jeu.getc_doma();
+				}
+				else {
+					jouer=jeu.getC_dom();
+				}
 				etape=1;
 				break;
 			case 1:
-				System.out.println("second jeu ");
-				jouer=jeu.getC_sub();
+				//System.out.println("carte poser second ");
+				if(finpioche && arbre.getdom()!=jeu.j_dom() && jeu.j_dom()!=num) {
+					jouer=jeu.getc_suba();
+				}
+				else {
+					jouer=jeu.getC_sub();
+				}
 				if(jeu.pilesvide()) {
 					etape=0;
 				}
@@ -207,19 +245,26 @@ public class IAMin_Max extends Joueur {
 				}
 				break;
 			case 2:
-				System.out.println("premiere pioche ");
+				//System.out.println("carte piocher premier ");
 				jouer=jeu.getCartepioche1();
 				etape=3;
 				break;
 			case 3:
-				System.out.println("seconde pioche ");
+				//System.out.println("carte piocher second ");
 				jouer=jeu.getCartepioche2();
 				etape=0;
 				break;
 			}
-			System.out.println("etape supposer "+etape);
 			System.out.println("on  va avancer avec la carte "+jouer);
+			finpioche=false;
 			avancer_arbre(jouer);
+			/*System.out.println(" ");
+			System.out.println("joueur dominant est "+jeu.j_dom());
+			System.out.println("joueur dominant de l'arbre est "+arbre.getdom());
+			System.out.println(" ");
+			System.out.println(" ");
+			System.out.println("etape est "+jeu.etape());
+			System.out.println("etape de l'arbre est "+arbre.getetape());*/
 		}
 	}
 		
@@ -227,10 +272,12 @@ public class IAMin_Max extends Joueur {
 		public void avancer_arbre(Carte c) {
 			//avance l'arbre selont les carte qui ont ete jouer si necessaire
 		System.out.println("carte jouer"+c);
+		System.out.println("carteAction"+arbre.getCarteAction());
 		int i=0;
 		arbreMinMax fils[]=arbre.getfils();
 		boolean trouver=false;
 		while(!trouver) {
+			//System.out.println("carte regarder "+fils[i].getCarteAction());
 			if(fils[i].getCarteAction().getCouleur()==c.getCouleur() && fils[i].getCarteAction().getValeur()==c.getValeur()) {
 				trouver=true;
 				System.out.println("dans la boucle carte "+fils[i].getCarteAction());
