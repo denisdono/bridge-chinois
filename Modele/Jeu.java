@@ -28,7 +28,7 @@ public class Jeu extends Observable {
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur ÃƒÂ  la main (premier a jouer/piocher)
-	int joueurdominantpred;
+	int joueurdominantpred;//indique le joueur dominant de la precedente manche
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
@@ -41,10 +41,9 @@ public class Jeu extends Observable {
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
 	int ind;//sert a determiner quelle carte posé dans la pioche
-	public boolean annulation;
-        private int carteApiocher=-1;
-	int jca;
-	boolean debut;
+	boolean annulation;//sert a determiner s'il y a eu une annulation de coup
+    private int carteApiocher=-1;
+	boolean debut;//indique si on est au premier coup du premier tour de jeu
 	int selCarte;
 	int selFond;
 	public Historique historique;
@@ -265,8 +264,7 @@ public class Jeu extends Observable {
 				}		
 			}	
 		}
-			historique.affiherPasse();
-			historique.afficherFutur();
+			
 	}
 	
 	public Carte getCartepioche2() {
@@ -356,8 +354,7 @@ public class Jeu extends Observable {
 	
 	}
 
-		historique.affiherPasse();
-		historique.afficherFutur();
+	
 	}
 	
 	public void refaire() {//reste a corriger bug joueur actuel
@@ -381,7 +378,7 @@ public class Jeu extends Observable {
 					if(historique.getFutur().size()>0) {
 						cpeek=historique.getFutur().peek();
 					}
-					historique.afficherFutur();
+//					historique.afficherFutur();
 				}
 				
 //				cj = historique.refaire();
@@ -396,7 +393,7 @@ public class Jeu extends Observable {
 		
 		//Coup cpeek;//coup au sommet
 		System.out.print("historique avant refaire:");
-		historique.afficherFutur();
+//		historique.afficherFutur();
 		// cpeek= historique.getPasse().peek();
 		System.out.println("main :");
 		 //c.main1.afficherMain();
@@ -421,12 +418,12 @@ public class Jeu extends Observable {
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
 			this.c_sub = cj.getC_sub();// carte jouer par l'autre joueur OK
 			
-			System.out.println();
-			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
-			
-			historique.affiherPasse();
-			historique.afficherFutur();
-			System.out.println("Joueur act: "+joueurActuelle());
+//			System.out.println();
+//			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
+//			
+//			historique.affiherPasse();
+//			historique.afficherFutur();
+//			System.out.println("Joueur act: "+joueurActuelle());
 			metAJour();
 			
 	}
@@ -592,7 +589,18 @@ public class Jeu extends Observable {
 		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
 		osave.writeBoolean(annulation);
 		osave.writeObject(historique);
-		
+		osave.writeObject(Cartepioche1);
+		osave.writeObject(Cartepioche2);
+		osave.writeObject(paquet);
+		osave.writeInt(diff);// dificulter de l'ia
+		osave.writeBoolean(showCarte);// carte visible
+		osave.writeBoolean(IA);// prï¿½sence d'une IA
+		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
+		osave.writeBoolean(annulation);//sert a determiner s'il y a eu une annulation de coup
+	    osave.writeInt(carteApiocher);
+		osave.writeBoolean(debut);//indique si on est au premier coup du premier tour de jeu
+		osave.writeInt(selCarte);
+		osave.writeInt(selFond);
 	    // donnÃ©e a sauvegarder
 		osave.close();
 		System.out.println("Partie sauvegardée");
@@ -628,6 +636,17 @@ public class Jeu extends Observable {
 		  	ind = osave.readInt();;//sert a determiner quelle carte posé dans la pioche
 		  	annulation = osave.readBoolean();
 		  	historique = (Historique) osave.readObject();
+		  	Cartepioche1 = (Carte)osave.readObject();
+		  	Cartepioche2 = (Carte)osave.readObject();		  	paquet = (Deck)osave.readObject();
+			diff = osave.readInt();// dificulter de l'ia
+			showCarte = osave.readBoolean();// carte visible
+			IA = osave.readBoolean();// prï¿½sence d'une IA
+			ind = osave.readInt();//sert a determiner quelle carte posé dans la pioche
+			annulation = osave.readBoolean();//sert a determiner s'il y a eu une annulation de coup
+		    carteApiocher = osave.readInt();
+			debut = osave.readBoolean();//indique si on est au premier coup du premier tour de jeu
+			selCarte = osave.readInt();
+			selFond = osave.readInt();
 		      osave.close();
 		      metAJour();
 				System.out.println("Partie chargée");

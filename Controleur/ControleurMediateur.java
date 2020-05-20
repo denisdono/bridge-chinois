@@ -66,13 +66,23 @@ public class ControleurMediateur implements CollecteurEvenements {
 	
 	@Override
 	public void sauvegarde() {
-		jeu.save("laSauvegarde");
+		if(!jeu.getIA()) {
+			jeu.save("laSauvegarde");
+		}else {
+			jeu.save("laSauvegardeIA");
+
+		}
 	}
 	
 	@Override
 	public void charge() throws ClassNotFoundException {
 		try {
+			if(!jeu.getIA()) {
 			jeu.load("laSauvegarde");
+			}else {
+				jeu.load("laSauvegardeIA");
+
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

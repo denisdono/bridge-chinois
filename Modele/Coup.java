@@ -32,6 +32,9 @@ public class Coup implements Serializable {
 	int diff;// dificulter de l'ia
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
+	int carteApiocher;
+	int selCarte;
+	int selFond;
 	public Coup() {
 		
 	}
@@ -62,6 +65,7 @@ public class Coup implements Serializable {
 		this.showCarte = show;
 		this.diff=diff;
 		this.IA=ia;
+		
 		
 		if(etape ==0 || etape == 1) {
 			action = "pose";
