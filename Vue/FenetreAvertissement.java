@@ -72,10 +72,14 @@ public class FenetreAvertissement extends JFrame {
     }
     
     private void init(){
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - d.width) / 2 - 60);
+        int y = (int) ((dimension.getHeight() - d.height) / 2 - 60);
+        setLocation(x, y);
         this.setTitle("Avertissement"); // definitions de la fenetre
         this.setSize(d);
         this.setIconImage(new ImageIcon(ClassLoader.getSystemClassLoader().getResource("info.png")).getImage());
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
         setVisible(true);
     }
 }

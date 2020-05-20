@@ -7,8 +7,6 @@ import Modele.Jeu;
 import Modele.MemeCarte;
 import Modele.arbreMinMax;
 import Modele.Deck;
-import Modele.Coup;
-import Modele.Historique;
 
 public class IAMin_Max extends Joueur {
 	MemeCarte contexte;//contient tout le contexte de la partie
@@ -18,6 +16,11 @@ public class IAMin_Max extends Joueur {
 	public IAMin_Max(int n,Jeu j) {
 		//cree et initialise notre IA
 		super(n,j);
+		nouvellemanche();
+	}
+	
+	void nouvellemanche() {
+
 		int []CarteMain=new int[11];
 		Carte carte = new Carte(13,Couleur.Neutre);
 		contexte=new MemeCarte(11,jeu.getAtout());
@@ -28,6 +31,8 @@ public class IAMin_Max extends Joueur {
 			
 		}		
 		//cree notre noeud de depart
+		arbre=null;
+		arbre=new arbreMinMax();
 		arbre.arbreMinMax(1,contexte,jeu.j_dom(),jeu.etape(),num,11,carte,CarteMain,0);
 		creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
 		int tmp;
@@ -92,38 +97,38 @@ public class IAMin_Max extends Joueur {
 	}
 	
 	public int IAjeu() {
-		int i=0;
-		int j;
-		Carte Ajouer;
-		arbreMinMax fils[];
-		creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
-		int carteM[]=arbre.getcartemain();
-		for(int h=0;h<11;h++) {
-			System.out.println("carte num "+h+" est "+carteM[h]+" carte vaut "+contexte.IntACarte(carteM[h]));
+		if(!jeu.MancheCours()) {
+			nouvellemanche();
+			return -1;
 		}
-		switch (jeu.etape()) {
-		case 0:
-		case 1:
-			arbreMinMax tmp;
-			deplace_arbre();
-			j=arbre.maxtauxvictoir();
-			fils=arbre.getfils();
-			tmp=fils[j];
-			Ajouer=tmp.getCarteAction();
-			i=indiceCarteMain(Ajouer);
-			etape=jeu.etape();
-			nextetape();
-			creeArbre(arbre,arbre.getetage()+etageSup());
-			avancer_arbre(Ajouer);
-			break;
-		case 2:
-		case 3:
-			deplace_arbre();
-			i=meilleurPioche();
-			etape=jeu.etape();
-			break;
+		else {
+			int i=0;
+			int j;
+			Carte Ajouer;
+			arbreMinMax fils[];
+			creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
+			switch (jeu.etape()) {
+			case 0:
+			case 1:
+				arbreMinMax tmp;
+				deplace_arbre();
+				j=arbre.maxtauxvictoir();
+				fils=arbre.getfils();
+				tmp=fils[j];
+				Ajouer=tmp.getCarteAction();
+				i=indiceCarteMain(Ajouer);
+				nextetape();
+				creeArbre(arbre,arbre.getetage()+etageSup());
+				avancer_arbre(Ajouer);
+				break;
+			case 2:
+			case 3:
+				deplace_arbre();
+				i=meilleurPioche();
+				break;
+			}
+			return i;
 		}
-		return i;
 	}
 	
 	
@@ -268,7 +273,7 @@ public class IAMin_Max extends Joueur {
 				etape=0;
 				break;
 			}
-			System.out.println("on  va avancer avec la carte "+jouer);
+			//System.out.println("on  va avancer avec la carte "+jouer);
 			avancer_arbre(jouer);
 			/*System.out.println(" ");
 			System.out.println("joueur dominant est "+jeu.j_dom());
@@ -284,7 +289,7 @@ public class IAMin_Max extends Joueur {
 		public void avancer_arbre(Carte c) {
 			//avance l'arbre selont les carte qui ont ete jouer si necessaire
 		System.out.println("carte jouer"+c);
-		System.out.println("carteAction"+arbre.getCarteAction());
+		//System.out.println("carteAction"+arbre.getCarteAction());
 		int i=0;
 		arbreMinMax fils[]=arbre.getfils();
 		boolean trouver=false;
@@ -292,7 +297,7 @@ public class IAMin_Max extends Joueur {
 			//System.out.println("carte regarder "+fils[i].getCarteAction());
 			if(fils[i].getCarteAction().getCouleur()==c.getCouleur() && fils[i].getCarteAction().getValeur()==c.getValeur()) {
 				trouver=true;
-				System.out.println("dans la boucle carte "+fils[i].getCarteAction());
+				//System.out.println("dans la boucle carte "+fils[i].getCarteAction());
 				arbre=fils[i];
 			}
 			i++;	

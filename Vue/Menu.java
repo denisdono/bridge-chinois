@@ -149,7 +149,6 @@ class Menu extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == boutHis) {
-            System.out.println("historique");
             his.montrer();
 
         }
@@ -181,7 +180,6 @@ class Menu extends JPanel implements ActionListener{
     }
     public void setResDernierPlis(int jWin, String carte1, String carte2, Dimension dim){
         labelDernierPlisGagnant.setText("Joueur "+(jWin+1)+" emporte");
-        System.out.println("carte1"+carte1+"-carte2"+carte2);
         Icon img = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(carte1)).getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
         Icon img2 = new ImageIcon(new ImageIcon(ClassLoader.getSystemClassLoader().getResource(carte2)).getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
 
