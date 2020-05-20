@@ -28,7 +28,7 @@ public class Jeu extends Observable {
 	int manche;// le nombre de manche actuelle
 	int etape;// etape actuelle d'un tour de jeu
 	int joueurdominant;// quel joueur ÃƒÂ  la main (premier a jouer/piocher)
-	int joueurdominantpred;
+	int joueurdominantpred;//indique le joueur dominant de la precedente manche
 	Couleur atout;// l'atout de la manche
 	Carte c_dom;// carte jouer par le joueur dominant 
 	Carte c_sub;// carte jouer par l'autre joueur
@@ -354,8 +354,7 @@ public class Jeu extends Observable {
 	
 	}
 
-		historique.affiherPasse();
-		historique.afficherFutur();
+	
 	}
 	
 	public void refaire() {//reste a corriger bug joueur actuel
@@ -379,7 +378,7 @@ public class Jeu extends Observable {
 					if(historique.getFutur().size()>0) {
 						cpeek=historique.getFutur().peek();
 					}
-					historique.afficherFutur();
+//					historique.afficherFutur();
 				}
 				
 //				cj = historique.refaire();
@@ -394,7 +393,7 @@ public class Jeu extends Observable {
 		
 		//Coup cpeek;//coup au sommet
 		System.out.print("historique avant refaire:");
-		historique.afficherFutur();
+//		historique.afficherFutur();
 		// cpeek= historique.getPasse().peek();
 		System.out.println("main :");
 		 //c.main1.afficherMain();
@@ -419,12 +418,12 @@ public class Jeu extends Observable {
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
 			this.c_sub = cj.getC_sub();// carte jouer par l'autre joueur OK
 			
-			System.out.println();
-			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
-			
-			historique.affiherPasse();
-			historique.afficherFutur();
-			System.out.println("Joueur act: "+joueurActuelle());
+//			System.out.println();
+//			System.out.print("\nhistorique après annule: etape = "+etape+"\n");
+//			
+//			historique.affiherPasse();
+//			historique.afficherFutur();
+//			System.out.println("Joueur act: "+joueurActuelle());
 			metAJour();
 			
 	}
