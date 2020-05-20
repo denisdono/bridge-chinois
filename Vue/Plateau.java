@@ -403,7 +403,9 @@ public class Plateau extends JPanel implements Observateur {
         JPanel textPan = new JPanel();
         textPan.setLayout(new BorderLayout());
         JLabel finRemporte;
-        if (lastnbPlis1 > lastnbPlis2) {
+    	if(lastnbPlis1 + lastnbPlis2<26) {
+            finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>" + "Abandon <html>");
+    	} else if (lastnbPlis1 > lastnbPlis2) {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>" + "Remportée par le joueur 1 avec " + lastnbPlis1 + " plis a " + lastnbPlis2 + "<html>");
         } else if (lastnbPlis1 < lastnbPlis2) {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La manche " + (jeu.getMancheactuelle() - 1) + " est terminée</p>" + "Remportée par le joueur 2 avec " + lastnbPlis2 + " plis a " + lastnbPlis1 + "<html>");
@@ -442,7 +444,7 @@ public class Plateau extends JPanel implements Observateur {
         JLabel finRemporte;
         if (jeu.getMains()[0].getnbScore() > jeu.getMains()[1].getnbScore()) {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " a " + jeu.getMains()[1].getnbScore() + "<html>");
-        } else if (jeu.getMains()[1].getnbScore() < jeu.getMains()[0].getnbScore()) {
+        } else if (jeu.getMains()[1].getnbScore() > jeu.getMains()[0].getnbScore()) {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 2 avec un score de" + jeu.getMains()[1].getnbScore() + " a " + jeu.getMains()[0].getnbScore() + "<html>");
         } else {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Egalité <html>");
