@@ -129,8 +129,8 @@ public class Jeu extends Observable {
 		// creation d'un paquet de carte (deja melanger)
 		paquet =new Deck();
 		paquet.remplirPaquet();
-		c_sub = null;
-		c_dom=null;
+//		c_sub = null;
+//		c_dom=null;
 		distrubition(paquet);
 		
 	}
