@@ -293,7 +293,7 @@ public class Jeu extends Observable {
 		historique.affiherPasse();
 		historique.afficherFutur();
 		
-		if(historique.getPasse().size()<=1 || (historique.getPasse().size()<=2 && joueurdominant==1)) {
+		if(historique.getPasse().size()<=1 || (historique.getPasse().size()<=2 && joueurdominant==1 && IA)) {
 			System.out.println("On ne peut annuler");
 			return;
 		}else {
