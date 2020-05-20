@@ -348,9 +348,9 @@ public class Jeu extends Observable {
 
 			System.out.print("\nhistorique après annule: etape = "+cj.etape+"\n");
 			
+			historique.affiherPasse();
+			System.out.println("Cdom :"+getC_dom());
 			metAJour();
-
-			
 	
 	}
 
