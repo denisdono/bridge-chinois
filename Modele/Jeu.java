@@ -41,10 +41,9 @@ public class Jeu extends Observable {
 	boolean showCarte;// carte visible
 	boolean IA;// prï¿½sence d'une IA
 	int ind;//sert a determiner quelle carte posé dans la pioche
-	public boolean annulation;
-        private int carteApiocher=-1;
-	int jca;
-	boolean debut;
+	boolean annulation;//sert a determiner s'il y a eu une annulation de coup
+    private int carteApiocher=-1;
+	boolean debut;//indique si on est au premier coup du premier tour de jeu
 	int selCarte;
 	int selFond;
 	public Historique historique;
@@ -265,8 +264,7 @@ public class Jeu extends Observable {
 				}		
 			}	
 		}
-			historique.affiherPasse();
-			historique.afficherFutur();
+			
 	}
 	
 	public Carte getCartepioche2() {
@@ -592,7 +590,18 @@ public class Jeu extends Observable {
 		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
 		osave.writeBoolean(annulation);
 		osave.writeObject(historique);
-		
+		osave.writeObject(Cartepioche1);
+		osave.writeObject(Cartepioche2);
+		osave.writeObject(paquet);
+		osave.writeInt(diff);// dificulter de l'ia
+		osave.writeBoolean(showCarte);// carte visible
+		osave.writeBoolean(IA);// prï¿½sence d'une IA
+		osave.writeInt(ind);//sert a determiner quelle carte posé dans la pioche
+		osave.writeBoolean(annulation);//sert a determiner s'il y a eu une annulation de coup
+	    osave.writeInt(carteApiocher);
+		osave.writeBoolean(debut);//indique si on est au premier coup du premier tour de jeu
+		osave.writeInt(selCarte);
+		osave.writeInt(selFond);
 	    // donnÃ©e a sauvegarder
 		osave.close();
 		System.out.println("Partie sauvegardée");
@@ -628,6 +637,17 @@ public class Jeu extends Observable {
 		  	ind = osave.readInt();;//sert a determiner quelle carte posé dans la pioche
 		  	annulation = osave.readBoolean();
 		  	historique = (Historique) osave.readObject();
+		  	Cartepioche1 = (Carte)osave.readObject();
+		  	Cartepioche2 = (Carte)osave.readObject();		  	paquet = (Deck)osave.readObject();
+			diff = osave.readInt();// dificulter de l'ia
+			showCarte = osave.readBoolean();// carte visible
+			IA = osave.readBoolean();// prï¿½sence d'une IA
+			ind = osave.readInt();//sert a determiner quelle carte posé dans la pioche
+			annulation = osave.readBoolean();//sert a determiner s'il y a eu une annulation de coup
+		    carteApiocher = osave.readInt();
+			debut = osave.readBoolean();//indique si on est au premier coup du premier tour de jeu
+			selCarte = osave.readInt();
+			selFond = osave.readInt();
 		      osave.close();
 		      metAJour();
 				System.out.println("Partie chargée");

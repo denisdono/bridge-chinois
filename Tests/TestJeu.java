@@ -98,30 +98,47 @@ public class TestJeu {
 //		jeu.setC_sub(c2);
 	}
 	
-	@Test
-	public void testTrouve_atout() {
-		
-	}
-	
-	@Test
-	public void testJouer() {
-		
-	}
 
 	@Test
-	public void testNouvelleManche() {
+	public void testJouer() {
+		System.out.println("/// TEST JOUER ///");
+		Hand mainTest = new Hand();
+		Hand mainTest2 = new Hand();
+		Carte [] cartes = new Carte[11];
+		Carte [] cartes2 = new Carte[11];
+		System.out.println("On initialise les mains");
+
+		for (int i = 0; i < 11; i++) {
+			cartes[i] = new Carte(i+2,Couleur.Trefle);
+			mainTest.ajoutCarte(cartes[i]);
+			System.out.println(i);
+		}
 		
+		for (int i = 0; i < 11; i++) {
+			cartes2[i] = new Carte(i+2,Couleur.Coeur);
+			mainTest2.ajoutCarte(cartes2[i]);
+			System.out.println(i);
+		}
+		System.out.println("Main OK");
+		jeu.getMains()[0] = mainTest;
+		jeu.getMains()[1] = mainTest2;
+		jeu.getMains()[0].afficherMain();
+		System.out.println();
+		jeu.getMains()[1].afficherMain();
+		jeu.jouer(0, 0);
+		System.out.println("");
+		System.out.println("Carte jouée :"+jeu.getC_dom()+" (attendu 2 Trefle)");
+		assertEquals(10,jeu.getMains()[0].getnbCarte());
+		jeu.jouer(0, 1);
+		System.out.println("Carte jouée :"+jeu.getC_sub()+" (attendu 2 Coeur)");
+		assertEquals(10,jeu.getMains()[1].getnbCarte());
+		assertEquals(2,jeu.etape());
+		jeu.jouer(0, 0);
+		assertEquals(11, jeu.getMains()[0].getnbCarte());
+		jeu.jouer(0, 1);
+		assertEquals(11, jeu.getMains()[1].getnbCarte());
 	}
+
 	
-	
-	@Test
-	public void testPilesvide() {
-		
-		
-	}
-	@Test
-	public void testPeutJouer() {
-		
-	}
 
 }
