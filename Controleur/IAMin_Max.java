@@ -18,19 +18,18 @@ public class IAMin_Max extends Joueur {
 	public IAMin_Max(int n,Jeu j) {
 		//cree et initialise notre IA
 		super(n,j);
-		int []CarteMain=new int[12];
+		int []CarteMain=new int[11];
 		Carte carte = new Carte(13,Couleur.Neutre);
-		contexte=new MemeCarte(12,jeu.getAtout());
+		contexte=new MemeCarte(11,jeu.getAtout());
 		for (int i=0;i<jeu.getMains()[num].getnbCarte();i++) {
 			//met a jour la position des carte qu'on a en main
 			contexte.Carte_Main(jeu.getMains()[num].voirCarte(i));
-			System.out.println("init carte "+jeu.getMains()[num].voirCarte(i)+"carte num"+i);
 			CarteMain[i]=contexte.CarteAInt(jeu.getMains()[num].voirCarte(i));
 			
-		}
+		}		
 		//cree notre noeud de depart
-		arbre.arbreMinMax(1,contexte,jeu.j_dom(),jeu.etape(),num,12,carte,CarteMain,0);
-		creeArbre(arbre,arbre.getetage()+1);//indique la profondeur voulu pour l'arbre
+		arbre.arbreMinMax(1,contexte,jeu.j_dom(),jeu.etape(),num,11,carte,CarteMain,0);
+		creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
 		int tmp;
 		tmp=comptefils(arbre);
 		etape=0;
@@ -98,6 +97,10 @@ public class IAMin_Max extends Joueur {
 		Carte Ajouer;
 		arbreMinMax fils[];
 		creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
+		int carteM[]=arbre.getcartemain();
+		for(int h=0;h<11;h++) {
+			System.out.println("carte num "+h+" est "+carteM[h]+" carte vaut "+contexte.IntACarte(carteM[h]));
+		}
 		switch (jeu.etape()) {
 		case 0:
 		case 1:
@@ -236,8 +239,7 @@ public class IAMin_Max extends Joueur {
 	public void deplace_arbre() {
 		//trouve la carte jouer a l'etape qui nous interesse
 		Carte jouer=null;
-		boolean finpioche=jeu.pilesvide();
-		while(jeu.etape()!=arbre.getetape() || finpioche){
+		while(jeu.etape()!=arbre.getetape()){
 			//notre arbre n'est pas sur l'etape en cour on le met a jour
 			switch(arbre.getetape()) {
 			case 0:
@@ -267,7 +269,6 @@ public class IAMin_Max extends Joueur {
 				break;
 			}
 			System.out.println("on  va avancer avec la carte "+jouer);
-			finpioche=false;
 			avancer_arbre(jouer);
 			/*System.out.println(" ");
 			System.out.println("joueur dominant est "+jeu.j_dom());

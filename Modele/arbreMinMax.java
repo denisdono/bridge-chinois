@@ -26,8 +26,8 @@ public class arbreMinMax {
 		dom=d;
 		carteAction=ca;
 		context=new MemeCarte(c.nbCadv,c.getAtout());
-		carteMain=new int[12];
-		for (int u=0;u<12;u++) {
+		carteMain=new int[11];
+		for (int u=0;u<11;u++) {
 			//copie notre main
 			carteMain[u]=cm[u];
 		}
@@ -37,7 +37,7 @@ public class arbreMinMax {
 			//copie les information sur les position des cartes
 			context.CarteVue[i]=c.CarteVue[i];
 		}
-		for(int j=0;j<12;j++) {
+		for(int j=0;j<11;j++) {
 			//copie la main de l'adverssaire
 			context.MainAdv[j]=c.MainAdv[j];
 		}
@@ -51,6 +51,11 @@ public class arbreMinMax {
 		num=n;
 		nbcarteMain=nbcm;
 		ActionInconnue=false;
+	}
+	
+	
+	public int[] getcartemain() {
+		return carteMain;
 	}
 	
 	
@@ -100,7 +105,7 @@ public class arbreMinMax {
 		//cree les successeur lorsque l'on est le premier a jouer
 		fils=new arbreMinMax[nbfils];
 		int numeroSuc=0;
-		for (int i=0;i<12;i++) {
+		for (int i=0;i<11;i++) {
 			if(carteMain[i]>=0) {
 				fils[numeroSuc]=new arbreMinMax();
 				fils[numeroSuc].arbreMinMax(1,context,dom,etape+1,num,nbcarteMain,context.IntACarte(carteMain[i]),carteMain,etage+1);
@@ -125,7 +130,7 @@ public class arbreMinMax {
 		else {
 			nextetape=0;
 		}
-		for (int i=0;i<12;i++) {
+		for (int i=0;i<11;i++) {
 			if(carteMain[i]>=0) {
 				if(context.SuposerJouable(carteAction,context.IntACarte(carteMain[i]),false,Carte_col_Joueur(carteAction.getCouleur())!=0)) {
 					gagnant=context.carte_gagnante(carteAction,context.IntACarte(carteMain[i]));
@@ -133,6 +138,7 @@ public class arbreMinMax {
 						//le joueur dominant n'a pas gagner le plis
 						nextDom=(nextDom+1)%2;
 					}
+					System.out.println(" ");
 					fils[numeroSuc]=new arbreMinMax();
 					fils[numeroSuc].arbreMinMax(1,context,nextDom,nextetape,num,nbcarteMain,context.IntACarte(carteMain[i]),carteMain,etage+1);
 					fils[numeroSuc].PoseMainJoueur(i);
@@ -140,6 +146,7 @@ public class arbreMinMax {
 						probdef=probdef+1;
 					}
 					numeroSuc++;
+					nextDom=dom;
 				}
 			}
 		}
@@ -162,7 +169,7 @@ public class arbreMinMax {
 		else {
 			nextetape=0;
 		}
-		for (int i=0;i<12;i++) {
+		for (int i=0;i<11;i++) {
 			//on liste tout les carte connue de notre adverssaire
 			if(carteAdv[i]>=0) {
 				//les carte connue de l'adverssaire
@@ -180,6 +187,7 @@ public class arbreMinMax {
 					if(nextDom!=num) {
 						probdef=probdef+1;
 					}
+					nextDom=dom;
 				}
 			}
 		}
@@ -209,6 +217,7 @@ public class arbreMinMax {
 						if(nextDom!=num) {
 							probdef=probdef+prob;
 						}
+						nextDom=dom;
 					}
 				}
 			}
@@ -223,7 +232,7 @@ public class arbreMinMax {
 		int nextetape;
 		int numeroSuc=0;
 		if(etape==2) {
-			nextetape=etape+1;
+			nextetape=3;
 		}
 		else {
 			nextetape=0;
@@ -235,7 +244,7 @@ public class arbreMinMax {
 				//si les carte sont en position inconnue ou sur la pile
 				fils[numeroSuc]=new arbreMinMax();
 				fils[numeroSuc].arbreMinMax(prob,context,dom,nextetape,num,nbcarteMain,context.IntACarte(i),carteMain,etage+1);
-				if(dom==(etape%2)+1) {
+				if((dom==num && etape==2)||(dom!=num && etape==3)) {
 					//c'est nous qui piochons
 					fils[numeroSuc].PiocheMainJoueur(i);
 					//mise a jour du contexte dans le fils
@@ -254,7 +263,7 @@ public class arbreMinMax {
 		fils=new arbreMinMax[nbfils];
 		int numeroSuc=0;
 		int[] carteAdv=context.getMainAdv();
-		for (int i=0;i<12;i++) {
+		for (int i=0;i<11;i++) {
 			//on liste tout les carte connue de notre adverssaire
 			if(carteAdv[i]>=0) {
 				fils[numeroSuc]=new arbreMinMax();
@@ -265,7 +274,14 @@ public class arbreMinMax {
 		}
 		if(ActionInconnue) {
 			//l'adverssaire a des carte inconnue on liste tout les carte joueble
-			float prob=context.getnbCadvInonnue()/context.getnbCInconnue();
+			
+			float prob;
+			if(context.getnbCInconnue()!=0) {
+				prob=context.getnbCadvInonnue()/context.getnbCInconnue();
+			}
+			else {
+				prob=1;
+			}
 			int cartevue[]=context.getCarteVue();
 			for (int j=0;j<52;j++) {
 				if(cartevue[j]==-1) {
@@ -400,7 +416,7 @@ public class arbreMinMax {
 		//renvoi le nombre de carte de la couleur demander
 		int nbcol=0;
 		Carte c;
-		for(int i=0;i<12;i++) {
+		for(int i=0;i<11;i++) {
 			if(carteMain[i]>=0) {
 				c=context.IntACarte(carteMain[i]);
 				if (c.getCouleur()==col) {
@@ -442,6 +458,11 @@ public class arbreMinMax {
 	
 	public int maxtauxvictoir() {
 		float meilleur=0;
+		for (int h=0;h<11;h++) {
+			if(carteMain[h]!=-1) {
+				System.out.println("carte IA "+h+" "+context.IntACarte(carteMain[h]));
+			}
+		}
 		int ifin=0;
 		for (int i=0;i<nbfils;i++) {
 			if(fils[i].gettauxvictoir()>meilleur) {
@@ -456,7 +477,7 @@ public class arbreMinMax {
 		return tauxvictoir;
 	}
 	public boolean peutPiocher() {
-		return context.getnbCInconnue()-context.getnbCadvConnue()>0;
+		return context.getnbCpiochable()>0;
 	}
 	
 	public Carte getCarteAction() {

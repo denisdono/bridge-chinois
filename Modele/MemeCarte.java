@@ -4,7 +4,7 @@ public class MemeCarte{
 		int [] CarteVue;//un tableu indiquant les information disponible sur chaque carte
 		int [] MainAdv;//information sur la carte adv
 		int nbCadv;//nombre de carte adverssaire
-		int [] colAdv;//tableaux indiquant si l'adverssaire a une couleure 
+		boolean [] colAdv;//tableaux indiquant si l'adverssaire a une couleure 
 		//en main ou nonl'indice cooresond a la valeur de la couleur
 		Couleur atout;
 	
@@ -22,21 +22,19 @@ public class MemeCarte{
 		//1 la carte est en sommet de pile
 		//2 on a la carte en main
 		//3 la carte a deja ete jouer
-		//4 la carte est dans la pioche (non visible)
-		MainAdv=new int[12];
-		for(int c=0;c<12;c++) {
+		MainAdv=new int[11];
+		for(int c=0;c<11;c++) {
 			MainAdv[c]=-1;
 		}
 		//MainAdv sert a connaitre les cartes en main de l'adverssert
 		//-1 carte inconnue 
 		//-2 pas de carte
 		//sinon notre le nombre est la crte de notre adversset
-		colAdv=new int[4];
+		colAdv=new boolean[4];
 		for (int k=0;k<4;k++){
-			//-1 on ne sait pas 
-			//0 il n'as pas cette couleur
-			//1 il as cette couleur
-			colAdv[k]=-1;
+			//on pars du rincipe que l'adverssaire n'a aucune 
+			//couleur et peut don jouer se qu'il veut
+			colAdv[k]=false;
 		}
 		
 	}
@@ -53,7 +51,7 @@ public class MemeCarte{
 		return ValCol*13 +valCarte;
 	}
 	
-	Carte IntACarte (int c) {
+	public Carte IntACarte (int c) {
 		//renvoie la carte correspondant a un int
 		Carte res;
 		int valCarte=c%13+2;//calcule la valeur de la carte
@@ -98,9 +96,9 @@ public class MemeCarte{
 		//par le joueur
 		boolean trouver=false;
 		int i=0;
-		int pos=CarteAInt (c);
+		int pos=CarteAInt(c);
 		CarteVue[pos]=0;
-		while(i<12 && !trouver) {
+		while(i<11 && !trouver) {
 			//ajoute la carte a la main de l'adverssaire 
 			if(MainAdv[i]==-2) {
 				//on met a jour une carte de la main deja poser
@@ -110,7 +108,7 @@ public class MemeCarte{
 			i++;
 		}
 		nbCadv++;
-		colAdv[c.getCouleur().getVal()]=1;
+		colAdv[c.getCouleur().getVal()]=true;
 	}
 	
 	public void Carte_Poser(int pos) {
@@ -124,7 +122,7 @@ public class MemeCarte{
 		//met a jour les info quand l'adverssaire poseune carte
 		int i=0;
 		boolean trouver=false;
-		while(i<12 && !trouver) {
+		while(i<11 && !trouver) {
 			//trouve la carte dans la main du joueuret la met a jourS 
 			if(MainAdv[i]==carte) {
 				MainAdv[i]=-2;
@@ -136,7 +134,7 @@ public class MemeCarte{
 			//on a pas trouver la carte on ne la connaissit pas
 			//on retire une carte inconnue
 			i=0;
-			while(i<12 && !trouver) {
+			while(i<11 && !trouver) {
 				if(MainAdv[i]==-1) {
 					MainAdv[i]=-2;
 					trouver=true;
@@ -146,22 +144,24 @@ public class MemeCarte{
 		}
 		nbCadv--;//met a jour le nombre de carte de l'adverssaire
 		Carte_Poser(carte);//indique que la carte est poser
-		if (premier && IntACarte(carte).getCouleur()!=cartejouer.getCouleur())//vérifie si l'aversaire a cette couleur
-			colAdv[cartejouer.getCouleur().getVal()]=0;
-			MetAJourColAdv(cartejouer.getCouleur().getVal());
+		MetAJourColAdv();
 	}
 	
 	
-	public void MetAJourColAdv(int col) {
+	public void MetAJourColAdv() {
 		//met a jour les information sur les couleur de la main adversse d'apres se qu'on sait
-		if (colAdv[col]==0) {
-			for (int j=0;j<52;j++) {
-				if (CarteVue[j]==-1 && IntACarte(j).getCouleur().getVal()==col) {
-					CarteVue[j]=4;
-				}
+		int ValCol;
+		for(int k=0;k<4;k++) {
+			//reinitialise tout les information sur les couleur de la main adversse
+			colAdv[k]=false;
+		}
+		for(int i=0;i<11;i++) {
+			//indique les couleur que l'on ssait que notre adverssaire possedent
+			if(MainAdv[i]>=0){
+				ValCol=MainAdv[i]/13;
+				colAdv[ValCol]=true;
 			}
 		}
-		
 	}
 	
 	
@@ -234,7 +234,7 @@ public class MemeCarte{
 		//les information sur sa main utile pour arbreMinMax
 		int i=0;
 		boolean trouver=false;
-		while(i<12 && !trouver) {
+		while(i<11 && !trouver) {
 			if(MainAdv[i]==-1) {
 				MainAdv[i]=-2;
 				trouver=true;
@@ -249,7 +249,7 @@ public class MemeCarte{
 		//les information sur sa main utile pour arbreMinMax
 		int i=0;
 		boolean trouver=false;
-		while(i<12 && !trouver) {
+		while(i<11 && !trouver) {
 			if(MainAdv[i]==-2) {
 				MainAdv[i]=-1;
 				trouver=true;
@@ -268,6 +268,18 @@ public class MemeCarte{
 	}
 	
 	
+	public int getnbCpiochable() {
+		//renvoi le nombre de cate qui peuvent etre en sommet de pile
+		int pioche=0;
+		for(int i=0;i<52;i++) {
+			if(CarteVue[i]==-1 ||CarteVue[i]==1) {
+				pioche++;
+			}
+		}
+		pioche=pioche-getnbCadvInonnue();
+		return pioche;
+	}
+	
 	public int getnbCInconnue() {
 		//si retour =0 on connait tout les carte  du jeu
 		//sinon on renvoi le nombre de carte inconnue
@@ -281,7 +293,7 @@ public class MemeCarte{
 	}
 	
 	public boolean possedecolAdv(Couleur col) {
-		return colAdv[col.getVal()]==1;
+		return colAdv[col.getVal()];
 	}
 	
 	public int CartePosableAdv(Carte c_pos,boolean premier) {
@@ -290,10 +302,10 @@ public class MemeCarte{
 		//avec les carte que l'on connait de sa main
 		int posable=0;
 		Carte c;
-		for(int i=0;i<12;i++) {
+		for(int i=0;i<11;i++) {
 			if (MainAdv[i]>=0) {
 				c=IntACarte(MainAdv[i]);
-				if (SuposerJouable(c_pos ,c,premier,colAdv[c_pos.getCouleur().getVal()]==1)) {
+				if (SuposerJouable(c_pos ,c,premier,colAdv[c_pos.getCouleur().getVal()])) {
 					//la carte est posable
 					posable ++;
 				}
@@ -354,7 +366,7 @@ public class MemeCarte{
 	
 	public int getnbCadvConnue() {
 		int connue=0;
-		for(int i=0;i<12;i++) {
+		for(int i=0;i<11;i++) {
 			if(MainAdv[i]>=0) {
 				connue++;
 			}
@@ -363,8 +375,9 @@ public class MemeCarte{
 	}
 	
 	public int getnbCadvInonnue() {
+		//renvoi le nombre de carte inconnue de l'adverssaire
 		int inconnue=0;
-		for(int i=0;i<12;i++) {
+		for(int i=0;i<11;i++) {
 			if(MainAdv[i]==-1) {
 				inconnue++;
 			}
