@@ -320,7 +320,7 @@ public class Plateau extends JPanel implements Observateur {
             playedCards.get(0).setIcon(null);
             playedCards.get(1).setIcon(null);
         }
-        if (jeu.etape() == 1 || jeu.etape() == 2 || timed) {
+        if (jeu.etape() == 1 || jeu.etape() == 2 ||  jeu.etape() == 3 || timed) {//  jeu.etape() == 3 pour corriger bug annule
 
             ImageIcon icon = new ImageIcon(
                     new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_dom().getResourceName()))
@@ -328,7 +328,7 @@ public class Plateau extends JPanel implements Observateur {
 
             playedCards.get(0).setIcon(icon);
         }
-        if (jeu.etape() == 2 || timed) {
+        if (jeu.etape() == 2 ||  jeu.etape() == 3 || timed) {//  jeu.etape() == 3 pour meme raison
 
             Icon img = new ImageIcon(
                     new ImageIcon(ClassLoader.getSystemClassLoader().getResource(jeu.getC_sub().getResourceName()))
