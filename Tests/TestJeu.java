@@ -47,10 +47,10 @@ public class TestJeu {
 	@Test
 	public void testVainqueurPartie() {
 		System.out.println("///test vainqueurPartie()///");
-		jeu.getMains()[0].addScore(100);
-		System.out.println("Score J1 : "+jeu.getMains()[0].getnbScore());
-		jeu.getMains()[1].addScore(0);
-		System.out.println("Score J2 : "+jeu.getMains()[1].getnbScore());
+		jeu.getMains()[0].addScoreM(100);
+		System.out.println("Score J1 : "+jeu.getMains()[0].getnbScoreM());
+		jeu.getMains()[1].addScoreM(0);
+		System.out.println("Score J2 : "+jeu.getMains()[1].getnbScoreM());
 		assertEquals(jeu.vainqueurPartie(),0);//J1 gagne
 		if(jeu.vainqueurPartie()==0) {
 			System.out.println("J1 gagne");
@@ -60,10 +60,10 @@ public class TestJeu {
 			System.out.println("Egalite");
 		}
 		
-		jeu.getMains()[0].addScore(0);
-		System.out.println("Score J1 : "+jeu.getMains()[0].getnbScore());
-		jeu.getMains()[1].addScore(101);
-		System.out.println("Score J2 : "+jeu.getMains()[1].getnbScore());
+		jeu.getMains()[0].addScoreM(0);
+		System.out.println("Score J1 : "+jeu.getMains()[0].getnbScoreM());
+		jeu.getMains()[1].addScoreM(101);
+		System.out.println("Score J2 : "+jeu.getMains()[1].getnbScoreM());
 		assertEquals(jeu.vainqueurPartie(),1);//J2 gagne
 		if(jeu.vainqueurPartie()==0) {
 			System.out.println("J1 gagne");
@@ -73,10 +73,10 @@ public class TestJeu {
 			System.out.println("Egalite");
 		}
 		
-		jeu.getMains()[0].addScore(1);
-		System.out.println("Score J1 : "+jeu.getMains()[0].getnbScore());
-		jeu.getMains()[1].addScore(0);
-		System.out.println("Score J2 : "+jeu.getMains()[1].getnbScore());
+		jeu.getMains()[0].addScoreM(1);
+		System.out.println("Score J1 : "+jeu.getMains()[0].getnbScoreM());
+		jeu.getMains()[1].addScoreM(0);
+		System.out.println("Score J2 : "+jeu.getMains()[1].getnbScoreM());
 		assertEquals(jeu.vainqueurPartie(),-1);//egalite
 		if(jeu.vainqueurPartie()==0) {
 			System.out.println("J1 gagne");
