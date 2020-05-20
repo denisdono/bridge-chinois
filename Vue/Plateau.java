@@ -165,8 +165,8 @@ public class Plateau extends JPanel implements Observateur {
             if (manchePrec != jeu.getMancheactuelle() && jeu.getMancheactuelle()!=1) {
                 System.out.println("changement de manche");
                 chgtManche = true;
-                m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(),
-                        jeu.getMains()[1].getnbScore());
+                m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getScore(0),
+                		jeu.getScore(1));
                 this.removeAll();
                 this.revalidate();
                 this.repaint();
@@ -190,8 +190,8 @@ public class Plateau extends JPanel implements Observateur {
                 //Mise a jour des infos du menu de coté
                 m.setNumManche(jeu.getMancheactuelle());
                 m.indiqueAtout(jeu.getAtout().name(), dimlabel);
-                m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getMains()[0].getnbScore(),
-                        jeu.getMains()[1].getnbScore());
+                m.setPlis(jeu.getMains()[0].getnbPlis(), jeu.getMains()[1].getnbPlis(), jeu.getScore(0),
+                		jeu.getScore(1));
                 //Si l'etape precedente est 1, CAD que les 2 joueurs ont placé leur carte du tour
                 if (etapePrecedente == 1 && jeu.getC_sub() != null && jeu.getC_dom() != null && !timed) {
                     m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(),
@@ -442,10 +442,10 @@ public class Plateau extends JPanel implements Observateur {
         JPanel textPan = new JPanel();
         textPan.setLayout(new BorderLayout());
         JLabel finRemporte;
-        if (jeu.getMains()[0].getnbScore() > jeu.getMains()[1].getnbScore()) {
-            finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 1 avec un score de " + jeu.getMains()[0].getnbScore() + " a " + jeu.getMains()[1].getnbScore() + "<html>");
-        } else if (jeu.getMains()[1].getnbScore() > jeu.getMains()[0].getnbScore()) {
-            finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 2 avec un score de" + jeu.getMains()[1].getnbScore() + " a " + jeu.getMains()[0].getnbScore() + "<html>");
+        if (jeu.getScore(0) > jeu.getScore(1)) {
+            finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 1 avec un score de " + jeu.getScore(0) + " a " + jeu.getScore(1)+ "<html>");
+        } else if (jeu.getScore(1) > jeu.getScore(0)) {
+            finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Remportée par le joueur 2 avec un score de" + jeu.getScore(1) + " a " +jeu.getScore(0) + "<html>");
         } else {
             finRemporte = new JLabel("<html><p style=\"font-size:30px;color:red\">La partie est terminée</p>" + "Egalité <html>");
         }
@@ -458,7 +458,7 @@ public class Plateau extends JPanel implements Observateur {
         JButton menuButton = new JButton("Retour au menu");
         menuButton.setFont(new Font("Calibri", Font.PLAIN, 28));
         ButtonP.add(menuButton);
-        JButton restartButton = new JButton("Recommencer");
+        JButton restartButton = new JButton("Nouvelle Partie");
         restartButton.setFont(new Font("Calibri", Font.PLAIN, 28));
         ButtonP.add(restartButton);
         background.add(ButtonP, BorderLayout.SOUTH);
@@ -489,7 +489,7 @@ public class Plateau extends JPanel implements Observateur {
     }
 
     private void initNouvellePartie() {
-        c.recommencer();
+        c.nouvellePartie();
         background.removeAll();
         this.creerPlateau();
     }
