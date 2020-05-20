@@ -7,14 +7,11 @@ import Modele.Jeu;
 import Modele.MemeCarte;
 import Modele.arbreMinMax;
 import Modele.Deck;
-import Modele.Coup;
-import Modele.Historique;
 
 public class IAMin_Max extends Joueur {
 	MemeCarte contexte;//contient tout le contexte de la partie
 	arbreMinMax arbre=new arbreMinMax();//notre arbre de chois possible
 	int etape;//la dernier etape a la quelle on a jouer
-	boolean dernjeu;
 	
 	public IAMin_Max(int n,Jeu j) {
 		//cree et initialise notre IA
@@ -23,7 +20,7 @@ public class IAMin_Max extends Joueur {
 	}
 	
 	void nouvellemanche() {
-		dernjeu=false;
+
 		int []CarteMain=new int[11];
 		Carte carte = new Carte(13,Couleur.Neutre);
 		contexte=new MemeCarte(11,jeu.getAtout());
@@ -120,8 +117,6 @@ public class IAMin_Max extends Joueur {
 				tmp=fils[j];
 				Ajouer=tmp.getCarteAction();
 				i=indiceCarteMain(Ajouer);
-				dernjeu=true;
-				etape=jeu.etape();
 				nextetape();
 				creeArbre(arbre,arbre.getetage()+etageSup());
 				avancer_arbre(Ajouer);
@@ -130,7 +125,6 @@ public class IAMin_Max extends Joueur {
 			case 3:
 				deplace_arbre();
 				i=meilleurPioche();
-				etape=jeu.etape();
 				break;
 			}
 			return i;
@@ -250,17 +244,8 @@ public class IAMin_Max extends Joueur {
 	public void deplace_arbre() {
 		//trouve la carte jouer a l'etape qui nous interesse
 		Carte jouer=null;
-		boolean avance;
-		if(jeu.etape()==arbre.getetape()&& !dernjeu) {
-			avance=true;
-		}
-		else {
-			avance=false;
-		}
-		while(jeu.etape()!=arbre.getetape()||avance){
+		while(jeu.etape()!=arbre.getetape()){
 			//notre arbre n'est pas sur l'etape en cour on le met a jour
-			dernjeu=false;
-			avance=false;
 			switch(arbre.getetape()) {
 			case 0:
 				//System.out.println("carte poser premier ");
