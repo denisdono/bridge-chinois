@@ -109,34 +109,48 @@ public class TestJeu {
 		System.out.println("On initialise les mains");
 
 		for (int i = 0; i < 11; i++) {
-			cartes[i] = new Carte(i+2,Couleur.Trefle);
+			cartes[i] = new Carte(i+2,Couleur.Pique);
 			mainTest.ajoutCarte(cartes[i]);
-			System.out.println(i);
 		}
 		
 		for (int i = 0; i < 11; i++) {
 			cartes2[i] = new Carte(i+2,Couleur.Coeur);
 			mainTest2.ajoutCarte(cartes2[i]);
-			System.out.println(i);
 		}
 		System.out.println("Main OK");
 		jeu.getMains()[0] = mainTest;
 		jeu.getMains()[1] = mainTest2;
+		System.out.print("Main j1 : ");
+
 		jeu.getMains()[0].afficherMain();
 		System.out.println();
+		System.out.print("Main j2 : ");
+
 		jeu.getMains()[1].afficherMain();
+		System.out.println("J1 joue une carte ");
 		jeu.jouer(0, 0);
 		System.out.println("");
-		System.out.println("Carte jouée :"+jeu.getC_dom()+" (attendu 2 Trefle)");
+		System.out.println("Carte jouée :"+jeu.getC_dom()+" (attendu 2 Pique)");
 		assertEquals(10,jeu.getMains()[0].getnbCarte());
+		
+		System.out.println("J2 joue une carte ");
 		jeu.jouer(0, 1);
 		System.out.println("Carte jouée :"+jeu.getC_sub()+" (attendu 2 Coeur)");
 		assertEquals(10,jeu.getMains()[1].getnbCarte());
 		assertEquals(2,jeu.etape());
+		
+		
+		System.out.println("J1 pioche ");
+
 		jeu.jouer(0, 0);
 		assertEquals(11, jeu.getMains()[0].getnbCarte());
+		
+		System.out.println("J2 pioche ");
 		jeu.jouer(0, 1);
 		assertEquals(11, jeu.getMains()[1].getnbCarte());
+		assertEquals(0,jeu.etape());
+		System.out.println("Fin manche ");
+
 	}
 
 	
