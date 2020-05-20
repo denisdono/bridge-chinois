@@ -97,7 +97,7 @@ public class Jeu extends Observable {
 		}
 		Hand h1=new Hand(mains[0]);
 		Hand h2=new Hand(mains[1]);
-			c1 =  new Coup(0,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
+			c1 =  new Coup(joueurdominant,changerjoueur,enCours,finmanche,piochage,parManche,pi,h1,h2,totalfin,manche,etape,joueurdominant,joueurdominantpred,atout,c_dom,c_sub,diff,showCarte,IA);
 			historique.ajouterCoup(c1);
 	}
 	
@@ -120,6 +120,7 @@ public class Jeu extends Observable {
 	
 	
 	public void nouvelleManche() {
+		
 		finmanche=false;
 		piochage= true;
 		etape=0;
@@ -128,10 +129,14 @@ public class Jeu extends Observable {
 		// creation d'un paquet de carte (deja melanger)
 		paquet =new Deck();
 		paquet.remplirPaquet();
+		c_sub = null;
+		c_dom=null;
 		distrubition(paquet);
+		
 	}
 	
 	public void jouer(int i,int n) {
+		
 		annulation=false;
 		historique.getFutur().clear();
 		if(etape==3)
@@ -261,12 +266,16 @@ public class Jeu extends Observable {
 						nouvelleManche();
 					}
 					manche++;
+					System.out.println("JOUEUR COURANT :"+joueurActuelle());
+
 					metAJour();
 				}		
 			}	
 		}
+			System.out.println("Historique après jouer");
 			historique.affiherPasse();
 			historique.afficherFutur();
+			System.out.println("");
 	}
 	
 	public Carte getCartepioche2() {
@@ -281,8 +290,11 @@ public class Jeu extends Observable {
 	public void annuler() {
 		
 		annulation = true;
+		historique.affiherPasse();
+		historique.afficherFutur();
 		
-		if(historique.getPasse().size()==1) {
+		if(historique.getPasse().size()<=1 || (historique.getPasse().size()<=2 && joueurdominant==1)) {
+			System.out.println("On ne peut annuler");
 			return;
 		}else {
 			
@@ -372,7 +384,12 @@ public class Jeu extends Observable {
 		if(getIA()) {
 			
 			 cj = historique.refaire();//on redo 1 coup de l'ia
-			
+//			 if(historique.getPasse().size()==3 && historique.getFutur().size()==0) {
+//				 System.out.println("Ne pas refaire");
+//			 }else {
+//				 
+			 if(historique.getFutur().size()>0) {
+				 
 			 cpeek=historique.getFutur().peek();
 				if(cj.getJoueur()!=1) {
 					
@@ -384,9 +401,11 @@ public class Jeu extends Observable {
 					historique.afficherFutur();
 				}
 				
-//				cj = historique.refaire();
 				}
+//				cj = historique.refaire();
+//				}
 
+			 }
 //		
 			
 		}else {
@@ -401,7 +420,8 @@ public class Jeu extends Observable {
 		System.out.println("main :");
 		 //c.main1.afficherMain();
 			//historique.setAuPasse(true);
-			this.changerjoueur = cj.isChangerjoueur();// doit on changer de joueur OK
+		cpeek=historique.getPasse().peek();
+			this.changerjoueur = false;//cj.isChangerjoueur();// doit on changer de joueur OK
 			this.enCours = cj.isEnCours();// partie en cour OK
 			this.finmanche = cj.isFinmanche();// a t'on fini la manche ?
 			this.piochage = cj.isPiochage();// y'as t'il des cartes a piocher ?
@@ -415,7 +435,8 @@ public class Jeu extends Observable {
 			this.totalfin = cj.getTotalfin();// score a obtenir ou nombre de manche a faire avant la fin de partie PK
 			this.manche = cj.getManche();// le nombre de manche actuelle OK
 			this.etape = (cj.getEtape()+1)%4;// etape actuelle d'un tour de jeu OK
-			this.joueurdominant =cj.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
+//			if(cj.joueurdominant!=cj.joueurdominantpred)
+				this.joueurdominant =cj.getJoueurdominant();// quel joueur à la main (premier a jouer/piocher) OK
 			this.joueurdominantpred=cj.getJoueurdominantpred();//a prendre en compte que lors du changement de tour
 			this.atout = cj.getAtout();// l'atout de la manche OK
 			this.c_dom = cj.getC_dom();// carte jouer par le joueur dominant OK
@@ -433,12 +454,15 @@ public class Jeu extends Observable {
 
 	
 	public void giveUp() {
+		
 		if (enCours) {
+			historique=new Historique();
 			changerjoueur=true;
 			mains[0].videMain();
 			mains[1].videMain();
 			finmanche=true;
 			etape=0;
+			joueurdominant=manche%2;
 			for (int i=0;i<6;i++) {// boucle sur les six piles
 				piles[i].videPaquet();
 			}
@@ -462,12 +486,11 @@ public class Jeu extends Observable {
 			else{
 				enCours=(mains[0].getnbScoreP()<totalfin && mains[1].getnbScoreP()<totalfin);//on vÃƒÂ©rifie si on fini la partie
 			}
+			manche++;
 			if (enCours) {
 				//si la partie n'est pas fini on lance une nouvelle manche
 				nouvelleManche();
 			}
-			joueurdominant=manche%2;
-			manche++;
 			metAJour();
 			
 		}
