@@ -84,8 +84,9 @@ public class Historique implements Serializable {
 
 	public void affiherPasse() {
 		// TODO Auto-generated method stub
-		for(int i=0;i<passe.size();i++)
-			System.out.println("Passé :"+passe.get(i).toString());
+		for(int i=0;i<passe.size();i++) {
+			//System.out.println("Passé :"+passe.get(i).toString());
+		}
 	}
 	
 	public void afficherFutur() {

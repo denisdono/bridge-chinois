@@ -7,12 +7,14 @@ import Modele.Jeu;
 import Modele.MemeCarte;
 import Modele.arbreMinMax;
 import Modele.Deck;
+import Modele.Coup;
+import Modele.Historique;
 
 public class IAMin_Max extends Joueur {
 	MemeCarte contexte;//contient tout le contexte de la partie
 	arbreMinMax arbre=new arbreMinMax();//notre arbre de chois possible
 	int etape;//la dernier etape a la quelle on a jouer
-	int etage;
+	boolean dernjeu;
 	
 	public IAMin_Max(int n,Jeu j) {
 		//cree et initialise notre IA
@@ -21,7 +23,7 @@ public class IAMin_Max extends Joueur {
 	}
 	
 	void nouvellemanche() {
-		etage=0;
+		dernjeu=false;
 		int []CarteMain=new int[11];
 		Carte carte = new Carte(13,Couleur.Neutre);
 		contexte=new MemeCarte(11,jeu.getAtout());
@@ -112,20 +114,23 @@ public class IAMin_Max extends Joueur {
 			case 0:
 			case 1:
 				arbreMinMax tmp;
-				//deplace_arbre();
+				deplace_arbre();
 				j=arbre.maxtauxvictoir();
 				fils=arbre.getfils();
 				tmp=fils[j];
 				Ajouer=tmp.getCarteAction();
 				i=indiceCarteMain(Ajouer);
+				dernjeu=true;
+				etape=jeu.etape();
 				nextetape();
 				creeArbre(arbre,arbre.getetage()+etageSup());
-				//avancer_arbre(Ajouer);
+				avancer_arbre(Ajouer);
 				break;
 			case 2:
 			case 3:
-				//deplace_arbre();
+				deplace_arbre();
 				i=meilleurPioche();
+				etape=jeu.etape();
 				break;
 			}
 			return i;
@@ -245,16 +250,25 @@ public class IAMin_Max extends Joueur {
 	public void deplace_arbre() {
 		//trouve la carte jouer a l'etape qui nous interesse
 		Carte jouer=null;
-		while(arbre.getetage()!=etage){
+		boolean avance;
+		if(jeu.etape()==arbre.getetape()&& !dernjeu) {
+			avance=true;
+		}
+		else {
+			avance=false;
+		}
+		while(jeu.etape()!=arbre.getetape()||avance){
 			//notre arbre n'est pas sur l'etape en cour on le met a jour
+			dernjeu=false;
+			avance=false;
 			switch(arbre.getetape()) {
 			case 0:
-				System.out.println("carte poser premier ");
+				//System.out.println("carte poser premier ");
 					jouer=jeu.getC_dom();
 				etape=1;
 				break;
 			case 1:
-				System.out.println("carte poser second ");
+				//System.out.println("carte poser second ");
 					jouer=jeu.getC_sub();
 				if(jeu.pilesvide()) {
 					etape=0;
@@ -274,7 +288,15 @@ public class IAMin_Max extends Joueur {
 				etape=0;
 				break;
 			}
+			//System.out.println("on  va avancer avec la carte "+jouer);
 			avancer_arbre(jouer);
+			/*System.out.println(" ");
+			System.out.println("joueur dominant est "+jeu.j_dom());
+			System.out.println("joueur dominant de l'arbre est "+arbre.getdom());
+			System.out.println(" ");
+			System.out.println(" ");
+			System.out.println("etape est "+jeu.etape());
+			System.out.println("etape de l'arbre est "+arbre.getetape());*/
 		}
 	}
 		
@@ -295,6 +317,5 @@ public class IAMin_Max extends Joueur {
 			}
 			i++;	
 		}
-		etage=arbre.getetage();
 	}
 }

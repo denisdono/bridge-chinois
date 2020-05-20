@@ -34,7 +34,6 @@ public class Jeu extends Observable {
 	Carte c_sub;// carte jouer par l'autre joueur
 	Carte c_0;//carte piochée par le joueur dominant
 	Carte c_1;//carte piochée par l'autre joueur
-	Carte dern;
 	Carte Cartepioche1;
 	Carte Cartepioche2;
 	Deck paquet;
@@ -163,7 +162,6 @@ public class Jeu extends Observable {
 				case 0:
 				// joueurdominant pose une carte
 					c_dom=mains[n].poserCarte(i);
-					dern=c_dom;
 					h1=new Hand(mains[0]);
 					h2=new Hand(mains[1]);
 					for (int k=0;k<6;k++) {// boucle sur les six piles
@@ -178,7 +176,6 @@ public class Jeu extends Observable {
 				case 1:
 					// le second joueur pose une carte en consÃƒÂ©quences (limiter par raport a la cartes)
 					c_sub=mains[n].poserCarte(i);
-					dern=c_sub;
 					for (int k=0;k<6;k++) {// boucle sur les six piles
 						pi[k]=new Deck(piles[k]);
 					}
@@ -209,8 +206,8 @@ public class Jeu extends Observable {
 				case 2:
 					
 						//s'il reste des cartes a piocher le joueur dominant pioche
-						dern=piles[i].piocher();
-						mains[n].ajoutCarte(dern);
+						Cartepioche1=piles[i].piocher();
+						mains[n].ajoutCarte(Cartepioche1);
 						mains[n].trierMain();
 						h1=new Hand(mains[0]);
 						h2=new Hand(mains[1]);
@@ -227,8 +224,8 @@ public class Jeu extends Observable {
 					break;
 				case 3:
 					//le deuxiÃƒÂ¨me joueure pioche
-					dern=piles[i].piocher();
-					mains[n].ajoutCarte(dern);
+					Cartepioche2=piles[i].piocher();
+					mains[n].ajoutCarte(Cartepioche2);
 					mains[n].trierMain();
 					
 					for (int k=0;k<6;k++) {// boucle sur les six piles
@@ -287,10 +284,6 @@ public class Jeu extends Observable {
 	
 	public Carte getCartepioche1() {
 		return Cartepioche1;
-	}
-	
-		public Carte getdern() {
-		return dern;
 	}
 	
 	
