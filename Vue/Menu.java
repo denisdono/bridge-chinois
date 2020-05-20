@@ -28,6 +28,7 @@ import javax.swing.border.LineBorder;
  * @author Administrator
  * @created April 28, 2020
  */
+//Menu sur la droite du jeu donnant des infos sur la partie en cours
 class Menu extends JPanel implements ActionListener{
 
     Historique his;

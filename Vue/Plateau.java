@@ -29,6 +29,7 @@ public class Plateau extends JPanel implements Observateur {
     private boolean chgtJoueur = false;
     private int etapePrecedente;
     private int manchePrec = 1;
+    private int joueurPrec;
     private boolean chgtManche = false;
     private int lastnbPlis1 = 0;
     private int lastnbPlis2 = 0;
@@ -41,13 +42,14 @@ public class Plateau extends JPanel implements Observateur {
         this.m = m;
         this.c = c;
         this.frame = frame;
+        
         setLayout(new BorderLayout());
 
         // On ajoute le plateau dans la liste des observateur
         // Les observateurs seront mis à jour par le jeu dès que nécessaire
         jeu = j;
         jeu.ajouteObservateur(this);
-
+        joueurPrec=jeu.joueurActuelle();
         this.setPreferredSize(new Dimension(dimlabel.width * 14, dimlabel.height * 7));
         creerPlateau();
     }
@@ -146,8 +148,9 @@ public class Plateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         //Fonction qui met a jour toutes les infos sur le plateau et le menu de droite
+        
         //Si on est a 2 joueur et a une nouvelle main, on veut cacher les cartes et indiquer le chgt de joueur
-        if(((jeu.etape()==0 && etapePrecedente==3) || (jeu.etape()==0 && etapePrecedente==1)) && !jeu.getIA() && chgtJoueur && !jeu.isShowCarte()){
+        if(joueurPrec != jeu.joueurActuelle() && !jeu.getIA() && chgtJoueur && !jeu.isShowCarte()){
             majMainJoueur(0, true);
             majMainJoueur(1, true);
             JoueurCarteListener.active=false;
@@ -194,7 +197,7 @@ public class Plateau extends JPanel implements Observateur {
                     m.setResDernierPlis(jeu.j_dom(), jeu.getC_sub().getResourceName(), jeu.getC_dom().getResourceName(),
                             dimlabel);
                     //Si il n'y a plus de pioche, on souhaite attendre un court temps pour laisser ces 2 cartes affichées
-                    if (jeu.pilesvide()) {
+                    if (jeu.pilesvide()&&JoueurCarteListener.active) {
                         System.out.println("majTimer");
                         timed = true;
                         JoueurCarteListener.active = false;
@@ -227,6 +230,7 @@ public class Plateau extends JPanel implements Observateur {
         }
         chgtJoueur = true;
         }
+        joueurPrec = jeu.joueurActuelle();
     }
 
     private void majMainJoueur(int numJ, boolean hide) {
@@ -258,7 +262,7 @@ public class Plateau extends JPanel implements Observateur {
                 } else {
                     //Grisage des cartes du joueur courant qu'il ne peut jouer si ce n'est pas une IA
                     if ((jeu.etape() == 0 || jeu.etape() == 1) && jeu.joueurActuelle() == numJ
-                            && !jeu.peutJouer(i, numJ) && !(jeu.getIA() && jeu.joueurActuelle() == 1)) {
+                            && !jeu.peutJouer(i, numJ) && !(jeu.getIA() && jeu.joueurActuelle() == 1) &&!hide) {
                         Icon img = new ImageIcon(GrayFilter.createDisabledImage(icon2.getImage()));
                         hands.get(numJ).get(i).setIcon(img);
                     }
