@@ -162,7 +162,7 @@ public class Plateau extends JPanel implements Observateur {
             int cartePioche = jeu.getCarteApiocher();
 
             //Si on est a un une nouvelle manche
-            if (manchePrec != jeu.getMancheactuelle()) {
+            if (manchePrec != jeu.getMancheactuelle() && jeu.getMancheactuelle()!=1) {
                 System.out.println("changement de manche");
                 chgtManche = true;
                 m.ajouterManche(manchePrec, lastnbPlis1, lastnbPlis2, jeu.getMains()[0].getnbScore(),
