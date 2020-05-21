@@ -35,7 +35,7 @@ public class IAMin_Max extends Joueur {
 		arbre=null;
 		arbre=new arbreMinMax();
 		arbre.arbreMinMax(1,contexte,jeu.j_dom(),jeu.etape(),num,11,carte,CarteMain,0);
-		creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
+		creeArbre(arbre,arbre.getetage()+1);//indique la profondeur voulu pour l'arbre
 		int tmp;
 		tmp=comptefils(arbre);
 		etape=0;
@@ -92,14 +92,14 @@ public class IAMin_Max extends Joueur {
 	}
 	
 	public int IAjeu() {
-		if(arbre.getnbcarteMain()<=0 || arbre.getnbcarteAdv()<=0) {
-			nouvellemanche();
-		}
 		int i=0;
 		int j;
 		Carte Ajouer;
 		arbreMinMax fils[];
 		creeArbre(arbre,arbre.getetage()+etageSup());//indique la profondeur voulu pour l'arbre
+		if(arbre.getnbfils()==0) {
+			nouvellemanche();
+		}
 		switch (jeu.etape()) {
 		case 0:
 		case 1:
@@ -220,6 +220,9 @@ public class IAMin_Max extends Joueur {
 				}
 				i++;	
 			}
+		}
+		if(arbre.getnbfils()==0 &&jeu.j_dom()!=num) {
+			nouvellemanche();
 		}
 	}
 }
